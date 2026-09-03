@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Épreuves de Fort Boyard — Semaine de Marius</title>
+<style>
+  :root {
+    --stone-dark: #1c1d2b;
+    --stone-mid: #2c2d42;
+    --stone-light: #3d3e5c;
+    --gold: #d4a017;
+    --gold-bright: #f0c14b;
+    --parchment: #f0e4c8;
+    --parchment-dark: #d8c8a0;
+    --ink: #2b2013;
+    --teal: #3e7c9a;
+    --teal-light: #6fa8c4;
+    --cream: #f5efdd;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(ellipse at top, #33344a 0%, var(--stone-dark) 55%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 2px, transparent 2px, transparent 40px);
+    color: var(--cream);
+    font-family: Georgia, 'Times New Roman', serif;
+    min-height: 100vh;
+    padding: 24px 14px 50px;
+  }
+
+  .wrap { max-width: 820px; margin: 0 auto; }
+
+  .crenellations {
+    height: 16px;
+    background: linear-gradient(90deg, var(--gold) 0 40%, transparent 40% 60%, var(--gold) 60% 100%) repeat-x;
+    background-size: 44px 16px;
+    opacity: 0.85;
+    margin-bottom: 16px;
+    border-radius: 2px;
+  }
+
+  header { text-align: center; margin-bottom: 20px; }
+  header .eyebrow {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 0.75rem; letter-spacing: 1px; color: var(--gold-bright); margin-bottom: 4px;
+  }
+  header h1 {
+    font-size: clamp(1.4rem, 4.5vw, 2.1rem);
+    margin: 0 0 6px; color: var(--parchment);
+    text-shadow: 0 2px 0 rgba(0,0,0,0.4); font-weight: 700;
+  }
+  header p.sub {
+    font-family: 'Trebuchet MS', sans-serif; color: var(--teal-light); font-size: 0.9rem; margin: 0;
+  }
+
+  .week-bar {
+    background: linear-gradient(180deg, var(--stone-light), var(--stone-mid));
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .week-top {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    font-family: 'Trebuchet MS', sans-serif;
+  }
+  .week-top .num { font-size: 1.4rem; font-weight: 700; color: var(--gold-bright); font-family: Georgia, serif; }
+  .week-top .lbl { font-size: 0.72rem; opacity: 0.85; }
+  .bonus-badge {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.68rem; color: var(--gold-bright);
+    opacity: 0.9; margin-left: 4px;
+  }
+  .progress-track {
+    background: rgba(0,0,0,0.35); border-radius: 8px; height: 14px; margin: 10px 0 4px; overflow: hidden;
+    border: 1px solid rgba(212,160,23,0.4);
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold-bright));
+    transition: width 0.3s ease; border-radius: 8px;
+  }
+  .reward-row {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem; margin-top: 12px;
+    padding-top: 10px; border-top: 1px dashed rgba(212,160,23,0.5);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .reward-row .icon { font-size: 1.1rem; flex-shrink: 0; }
+  .reward-row [contenteditable] {
+    outline: none; border-bottom: 1px dotted var(--teal-light); color: var(--cream);
+    min-width: 60px; display: inline;
+  }
+  .reward-row [contenteditable]:focus { border-bottom: 1px solid var(--gold-bright); }
+  .treasure-total {
+    text-align: center; font-family: 'Trebuchet MS', sans-serif; font-size: 0.72rem;
+    color: var(--teal-light); margin-top: 10px; opacity: 0.85;
+  }
+
+  .clues-bar {
+    background: linear-gradient(180deg, #241f3d, #1a1730);
+    border: 2px solid var(--gold-bright);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+  }
+  .clues-title {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.78rem; letter-spacing: 0.5px;
+    color: var(--gold-bright); margin-bottom: 2px; text-align: center;
+  }
+  .clues-sub {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.68rem; color: var(--teal-light);
+    text-align: center; margin-bottom: 10px; opacity: 0.85;
+  }
+  .clue-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 8px; margin-bottom: 6px;
+    background: rgba(255,255,255,0.03);
+  }
+  .clue-row .clue-day {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.7rem; font-weight: 700;
+    color: var(--teal-light); width: 42px; flex-shrink: 0;
+  }
+  .clue-row .clue-text {
+    flex: 1; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; outline: none;
+    color: var(--gold-bright); border-bottom: 1px dotted transparent; text-transform: uppercase;
+  }
+  .clue-row .clue-text:focus { border-bottom: 1px dotted var(--gold-bright); }
+  .clue-row .clue-icon { font-size: 0.9rem; flex-shrink: 0; }
+  .clue-row.locked .clue-text {
+    filter: blur(5px);
+    color: var(--teal-light);
+    user-select: none;
+  }
+  .clue-row.locked.editing .clue-text {
+    filter: none;
+    color: var(--cream);
+  }
+
+  .final-word-row {
+    margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(212,160,23,0.5);
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem;
+  }
+  .final-word-row .fw-text {
+    outline: none; border-bottom: 1px dotted var(--teal-light); color: var(--cream);
+    font-weight: 700; letter-spacing: 1px; min-width: 80px;
+  }
+  .final-word-row.hidden .fw-text { filter: blur(6px); user-select: none; }
+  .fw-toggle {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.7rem;
+    background: transparent; border: 1px solid var(--teal); color: var(--teal-light);
+    border-radius: 14px; padding: 4px 10px; cursor: pointer;
+  }
+  .fw-toggle:hover { background: rgba(62,124,154,0.15); }
+
+  .day-tabs {
+    display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .day-tab {
+    flex-shrink: 0; font-family: 'Trebuchet MS', sans-serif; font-size: 0.78rem;
+    padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--teal);
+    background: transparent; color: var(--teal-light); cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 62px;
+  }
+  .day-tab .d { font-weight: 700; }
+  .day-tab .k { font-size: 0.68rem; opacity: 0.8; }
+  .day-tab.active { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+  .day-tab.active .k { color: var(--ink); opacity: 0.75; }
+  .day-tab.complete:not(.active) { border-color: var(--gold-bright); color: var(--gold-bright); }
+  .day-tab .star { font-size: 0.7rem; }
+  .day-tab .gift { font-size: 0.65rem; }
+
+  .period { margin-bottom: 18px; }
+  .period-title {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem; font-weight: 700;
+    color: var(--gold-bright); margin-bottom: 8px; padding-left: 2px;
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px;
+  }
+  .card {
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+    border-radius: 9px; padding: 12px 12px 11px; color: var(--ink);
+    border: 2px solid #b89b5e; position: relative; cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease; user-select: none;
+  }
+  .card:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(0,0,0,0.32); }
+  .card.done {
+    background: linear-gradient(180deg, #fff3cf 0%, #e8cf8e 100%);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,160,23,0.35), 0 5px 12px rgba(0,0,0,0.28);
+  }
+  .card.bonus {
+    border-style: dashed;
+    background: linear-gradient(180deg, #ece1f5 0%, #d9c6e8 100%);
+    border-color: #8a5fa8;
+  }
+  .card.bonus.done {
+    background: linear-gradient(180deg, #fff3cf 0%, #e8cf8e 100%);
+    border-color: var(--gold); border-style: dashed;
+  }
+  .card .ribbon {
+    position: absolute; top: -8px; left: 10px;
+    background: #6d4790; color: var(--cream);
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.6rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px;
+  }
+  .card.bonus.done .ribbon { background: var(--gold); color: var(--ink); }
+  .card .icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
+  .card .name {
+    font-family: 'Trebuchet MS', sans-serif; font-weight: 700; font-size: 0.68rem;
+    letter-spacing: 0.3px; color: #7a5a1e; margin-bottom: 3px;
+  }
+  .card .task { font-size: 0.92rem; font-weight: 700; line-height: 1.2; }
+  .card .check {
+    position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--teal); background: rgba(255,255,255,0.5);
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
+    font-weight: bold; color: transparent; transition: all 0.12s ease;
+  }
+  .card.done .check { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+
+  .card .timer-btn {
+    position: absolute; bottom: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%;
+    border: none; background: rgba(43,32,19,0.12); color: var(--ink); font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .card .timer-btn:hover { background: rgba(43,32,19,0.22); }
+
+  .timer-overlay {
+    position: fixed; inset: 0; background: rgba(10,10,18,0.82);
+    display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+  }
+  .timer-overlay.open { display: flex; }
+  .timer-box {
+    background: linear-gradient(180deg, var(--stone-light), var(--stone-dark));
+    border: 3px solid var(--gold); border-radius: 16px; padding: 28px 26px; text-align: center;
+    max-width: 320px; width: 100%;
+  }
+  .timer-box .t-icon { font-size: 1.8rem; margin-bottom: 4px; }
+  .timer-box .t-name {
+    font-family: 'Trebuchet MS', sans-serif; font-weight: 700; font-size: 1rem; color: var(--parchment);
+    margin-bottom: 14px;
+  }
+  .timer-box .t-clock {
+    font-family: Georgia, serif; font-size: 3rem; font-weight: 700; color: var(--gold-bright);
+    margin-bottom: 6px; letter-spacing: 2px;
+  }
+  .timer-box.done .t-clock { color: #ff9d4d; animation: pulse 0.6s infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+  .timer-box .t-msg {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.85rem; color: var(--teal-light);
+    min-height: 20px; margin-bottom: 14px;
+  }
+  .timer-box .t-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .timer-box button.t-btn {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem; padding: 8px 14px;
+    border-radius: 20px; border: 1.5px solid var(--teal); background: transparent;
+    color: var(--teal-light); cursor: pointer;
+  }
+  .timer-box button.t-btn.primary { background: var(--gold); border-color: var(--gold); color: var(--ink); font-weight: 700; }
+  .timer-box button.t-btn:hover { background: rgba(62,124,154,0.2); }
+  .timer-box button.t-btn.primary:hover { background: var(--gold-bright); }
+  .timer-box .t-close {
+    font-family: 'Trebuchet MS', sans-serif; font-size: 0.72rem; color: var(--teal-light);
+    background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 4px;
+  }
+
+  .reset-btn {
+    display: block; margin: 22px auto 0; background: transparent; border: 1.5px solid var(--teal);
+    color: var(--teal-light); font-family: 'Trebuchet MS', sans-serif; font-size: 0.72rem;
+    padding: 7px 14px; border-radius: 20px; cursor: pointer;
+  }
+  .reset-btn:hover { background: rgba(62,124,154,0.15); }
+
+  footer {
+    text-align: center; margin-top: 20px; font-family: 'Trebuchet MS', sans-serif;
+    font-size: 0.7rem; color: var(--teal-light); opacity: 0.75;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crenellations"></div>
+  <header>
+    <div class="eyebrow">FORT BOYARD</div>
+    <h1>Les Épreuves de la Semaine</h1>
+    <p class="sub">Aventurier : Marius</p>
+  </header>
+
+  <div class="week-bar">
+    <div class="week-top">
+      <div><span class="num" id="week-count">0/0</span> <span class="lbl">clés cette semaine</span></div>
+      <div><span class="num" id="today-count">0/0</span> <span class="lbl" id="today-label">clés aujourd'hui</span></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="week-fill" style="width:0%"></div></div>
+
+    <div class="reward-row">
+      <span class="icon">🎴</span>
+      <div>Récompense du jour (épreuves obligatoires réussies) :
+        <span contenteditable="true" id="daily-reward">une carte Pokémon</span>
+      </div>
+    </div>
+    <div class="reward-row">
+      <span class="icon">🏆</span>
+      <div>Récompense de la semaine (à partir de <span contenteditable="true" id="week-threshold">45</span> clés) :
+        <span contenteditable="true" id="week-reward">un booster de cartes Pokémon</span>
+      </div>
+    </div>
+    <div class="reward-row">
+      <span class="icon">✨</span>
+      <div>Récompense bonus (à chaque temps fort réussi, immédiat et léger) :
+        <span contenteditable="true" id="bonus-reward">le droit de choisir le dessert du soir</span>
+      </div>
+    </div>
+
+    <div class="treasure-total">Trésor total cumulé (toutes les semaines) : <span id="treasure-total">0</span> clés</div>
+  </div>
+
+  <div class="clues-bar">
+    <div class="clues-title">🔑 LES INDICES DU PÈRE FOURAS</div>
+    <div class="clues-sub">un mot par jour — réunis-les tous pour trouver le mot final</div>
+    <div id="clue-rows"></div>
+    <div class="final-word-row hidden" id="final-word-row">
+      <span>Mot final (secret parent) :</span>
+      <span class="fw-text" contenteditable="true" id="final-word">TRÉSOR</span>
+      <button class="fw-toggle" id="fw-toggle">👁️ Afficher / cacher</button>
+    </div>
+  </div>
+
+  <div class="day-tabs" id="day-tabs"></div>
+
+  <div id="periods"></div>
+
+  <button class="reset-btn" id="reset-btn">Réinitialiser toute la semaine</button>
+  <footer>Les épreuves en pointillés violets sont des <strong>temps forts bonus</strong> : facultatives, elles rapportent une clé en plus mais ne sont jamais obligatoires pour valider la journée. Le ⏱️ sur chaque carte lance un minuteur façon Fort Boyard.</footer>
+</div>
+
+<div class="timer-overlay" id="timer-overlay">
+  <div class="timer-box" id="timer-box">
+    <div class="t-icon" id="t-icon">⏱️</div>
+    <div class="t-name" id="t-name">Épreuve</div>
+    <div class="t-clock" id="t-clock">02:00</div>
+    <div class="t-msg" id="t-msg"></div>
+    <div class="t-controls">
+      <button class="t-btn" id="t-minus">−30s</button>
+      <button class="t-btn primary" id="t-start">Démarrer</button>
+      <button class="t-btn" id="t-plus">+30s</button>
+    </div>
+    <button class="t-close" id="t-close">Fermer</button>
+  </div>
+</div>
+
+<script>
+const DAYS = [
+  { id: 'lundi', label: 'Lun', weekend: false },
+  { id: 'mardi', label: 'Mar', weekend: false },
+  { id: 'mercredi', label: 'Mer', weekend: false },
+  { id: 'jeudi', label: 'Jeu', weekend: false },
+  { id: 'vendredi', label: 'Ven', weekend: false },
+  { id: 'samedi', label: 'Sam', weekend: true },
+  { id: 'dimanche', label: 'Dim', weekend: true },
+];
+
+const DEFAULT_CLUES = {
+  lundi: 'GROTTE',
+  mardi: 'CARTE',
+  mercredi: 'PIRATES',
+  jeudi: 'OR',
+  vendredi: 'COFFRE',
+  samedi: 'DORÉ',
+  dimanche: 'CACHÉ',
+};
+
+// Ordre chronologique réel de la journée. "bonus: true" = temps fort facultatif (ne compte pas pour valider le jour).
+const PERIOD_DEFS = {
+  matin: {
+    title: 'MATIN', tasks: [
+      { id: 'faire-lit', icon: '🛌', name: 'LA CHAMBRE ROYALE', task: "Faire son lit" },
+      { id: 'habiller', icon: '👕', name: 'ÉPREUVE DE PASSE-PARTOUT', task: "S'habiller" },
+      { id: 'debarrasser-matin', icon: '🍽️', name: 'LA SALLE DES ASSIETTES', task: "Débarrasser la table du petit-déjeuner" },
+      { id: 'dents-matin', icon: '🪥', name: 'LA FONTAINE ÉTINCELANTE', task: "Se laver les dents" },
+    ]
+  },
+  midi: {
+    title: 'MIDI', tasks: [
+      { id: 'couvert-midi', icon: '🍴', name: 'TEMPS FORT DU BUFFET', task: "Mettre le couvert", bonus: true },
+      { id: 'debarrasser-midi', icon: '🍽️', name: 'LA SALLE DES ASSIETTES', task: "Débarrasser la table du déjeuner" },
+    ]
+  },
+  soir: {
+    title: 'SOIR', tasks: [
+      { id: 'douche', icon: '🚿', name: 'LA CASCADE MYSTÉRIEUSE', task: "Aller à la douche" },
+      { id: 'couvert-soir', icon: '🍴', name: 'TEMPS FORT DU BUFFET', task: "Mettre le couvert", bonus: true },
+      { id: 'debarrasser-soir', icon: '🍽️', name: 'LA SALLE DES ASSIETTES', task: "Débarrasser la table du dîner" },
+      { id: 'dents-soir', icon: '🦷', name: 'LA GROTTE AUX DENTS DE NACRE', task: "Se brosser les dents" },
+      { id: 'toilettes', icon: '🚪', name: 'LE PASSAGE SECRET', task: "Aller aux toilettes" },
+      { id: 'coucher', icon: '🛏️', name: 'LA CHAMBRE DU TRÉSOR', task: "Aller se coucher" },
+    ]
+  },
+};
+
+// Durées par défaut des minuteurs, en secondes (façon Fort Boyard)
+const DURATIONS = {
+  'faire-lit': 120,
+  'habiller': 300,
+  'debarrasser-matin': 180,
+  'dents-matin': 120,
+  'couvert-midi': 180,
+  'debarrasser-midi': 180,
+  'douche': 600,
+  'couvert-soir': 180,
+  'debarrasser-soir': 180,
+  'dents-soir': 120,
+  'toilettes': 120,
+  'coucher': 300,
+};
+
+function periodsForDay(dayId) {
+  const day = DAYS.find(d => d.id === dayId);
+  const order = ['matin', 'soir'];
+  if (day && day.weekend) order.splice(1, 0, 'midi');
+  return order.map(key => ({ id: key, ...PERIOD_DEFS[key] }));
+}
+function tasksForDay(dayId) {
+  return periodsForDay(dayId).flatMap(p => p.tasks);
+}
+function coreTasksForDay(dayId) {
+  return tasksForDay(dayId).filter(t => !t.bonus);
+}
+
+const STORAGE_KEY = 'fort-boyard-marius-week';
+let state = {
+  weekStart: null,
+  days: {},
+  treasureTotal: 0,
+  dailyReward: "une carte Pokémon",
+  weekReward: "un booster de cartes Pokémon",
+  bonusReward: "le droit de choisir le dessert du soir",
+  weekThreshold: 45,
+  finalWord: "TRÉSOR",
+  finalWordVisible: false,
+  dailyClues: Object.assign({}, DEFAULT_CLUES),
+};
+let activeDay = 'lundi';
+
+function getMonday(d) {
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+  const monday = new Date(date.setDate(diff));
+  monday.setHours(0,0,0,0);
+  return monday;
+}
+function dateKey(d) { return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
+
+function ensureDays() {
+  DAYS.forEach(d => { if (!state.days[d.id]) state.days[d.id] = {}; });
+}
+
+// Comptages "core" (obligatoires) — déterminent la validation du jour
+function dayCoreCount(dayId) {
+  const checks = state.days[dayId] || {};
+  return coreTasksForDay(dayId).filter(t => checks[t.id]).length;
+}
+function dayCoreMax(dayId) { return coreTasksForDay(dayId).length; }
+function dayComplete(dayId) { return dayCoreCount(dayId) === dayCoreMax(dayId); }
+
+// Comptages "tout compris" (core + bonus) — pour les clés / le trésor
+function dayAllCount(dayId) {
+  return Object.values(state.days[dayId] || {}).filter(Boolean).length;
+}
+function dayBonusDone(dayId) {
+  const checks = state.days[dayId] || {};
+  return tasksForDay(dayId).some(t => t.bonus && checks[t.id]);
+}
+function weekCount() {
+  return DAYS.reduce((sum, d) => sum + dayAllCount(d.id), 0);
+}
+function weekCoreMax() {
+  return DAYS.reduce((sum, d) => sum + dayCoreMax(d.id), 0);
+}
+
+function renderClues() {
+  const rowsEl = document.getElementById('clue-rows');
+  rowsEl.innerHTML = '';
+  DAYS.forEach(d => {
+    const complete = dayComplete(d.id);
+    const row = document.createElement('div');
+    row.className = 'clue-row' + (complete ? '' : ' locked');
+    row.dataset.day = d.id;
+    row.innerHTML = `
+      <span class="clue-day">${d.label}</span>
+      <span class="clue-icon">${complete ? '🔓' : '🔒'}</span>
+      <span class="clue-text" contenteditable="true" data-day="${d.id}"></span>
+    `;
+    rowsEl.appendChild(row);
+  });
+
+  DAYS.forEach(d => {
+    const el = rowsEl.querySelector(`.clue-text[data-day="${d.id}"]`);
+    if (document.activeElement !== el) {
+      el.textContent = state.dailyClues[d.id] || '';
+    }
+    el.addEventListener('focus', () => {
+      el.closest('.clue-row').classList.add('editing');
+    });
+    el.addEventListener('blur', async () => {
+      // on ne garde qu'un seul mot (le premier)
+      const firstWord = (el.textContent.trim().split(/\s+/)[0] || '').toUpperCase();
+      state.dailyClues[d.id] = firstWord;
+      el.closest('.clue-row').classList.remove('editing');
+      renderClues();
+      await save();
+    });
+  });
+
+  const fwRow = document.getElementById('final-word-row');
+  fwRow.classList.toggle('hidden', !state.finalWordVisible);
+  const fwEl = document.getElementById('final-word');
+  if (document.activeElement !== fwEl) fwEl.textContent = state.finalWord;
+}
+
+function render() {
+  ensureDays();
+
+  const tabsEl = document.getElementById('day-tabs');
+  tabsEl.innerHTML = '';
+  DAYS.forEach(d => {
+    const count = dayCoreCount(d.id);
+    const max = dayCoreMax(d.id);
+    const complete = count === max;
+    const gift = dayBonusDone(d.id);
+    const btn = document.createElement('button');
+    btn.className = 'day-tab' + (d.id === activeDay ? ' active' : '') + (complete ? ' complete' : '');
+    btn.innerHTML = `<span class="d">${d.label}${complete ? ' <span class="star">★</span>' : ''}${gift ? ' <span class="gift">🎁</span>' : ''}</span><span class="k">${count}/${max}</span>`;
+    btn.addEventListener('click', () => { activeDay = d.id; render(); });
+    tabsEl.appendChild(btn);
+  });
+
+  const periodsEl = document.getElementById('periods');
+  periodsEl.innerHTML = '';
+  periodsForDay(activeDay).forEach(period => {
+    const block = document.createElement('div');
+    block.className = 'period';
+    const title = document.createElement('div');
+    title.className = 'period-title';
+    title.textContent = period.title;
+    block.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    period.tasks.forEach(t => {
+      const done = !!(state.days[activeDay] && state.days[activeDay][t.id]);
+      const card = document.createElement('div');
+      card.className = 'card' + (done ? ' done' : '') + (t.bonus ? ' bonus' : '');
+      card.innerHTML = `
+        ${t.bonus ? '<div class="ribbon">BONUS</div>' : ''}
+        <div class="check">${done ? '✓' : ''}</div>
+        <span class="icon">${t.icon}</span>
+        <div class="name">${t.name}</div>
+        <div class="task">${t.task}</div>
+        <button class="timer-btn" title="Lancer le minuteur">⏱️</button>
+      `;
+      card.addEventListener('click', () => toggle(activeDay, t.id));
+      card.querySelector('.timer-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openTimer(t);
+      });
+      grid.appendChild(card);
+    });
+    block.appendChild(grid);
+    periodsEl.appendChild(block);
+  });
+
+  const dMax = dayCoreMax(activeDay);
+  document.getElementById('today-count').textContent = `${dayCoreCount(activeDay)}/${dMax}`;
+  document.getElementById('today-label').innerHTML = `clés — ${DAYS.find(d=>d.id===activeDay).label}${dayBonusDone(activeDay) ? '<span class="bonus-badge">+ bonus 🎁</span>' : ''}`;
+  const wc = weekCount();
+  const wcm = weekCoreMax();
+  document.getElementById('week-count').textContent = `${wc}/${wcm}`;
+  document.getElementById('week-fill').style.width = Math.min(100, (wc / wcm) * 100) + '%';
+  document.getElementById('treasure-total').textContent = state.treasureTotal;
+
+  const dailyRewardEl = document.getElementById('daily-reward');
+  const weekRewardEl = document.getElementById('week-reward');
+  const weekThresholdEl = document.getElementById('week-threshold');
+  const bonusRewardEl = document.getElementById('bonus-reward');
+  if (document.activeElement !== dailyRewardEl) dailyRewardEl.textContent = state.dailyReward;
+  if (document.activeElement !== weekRewardEl) weekRewardEl.textContent = state.weekReward;
+  if (document.activeElement !== weekThresholdEl) weekThresholdEl.textContent = state.weekThreshold;
+  if (document.activeElement !== bonusRewardEl) bonusRewardEl.textContent = state.bonusReward;
+
+  renderClues();
+}
+
+async function toggle(dayId, taskId) {
+  if (!state.days[dayId]) state.days[dayId] = {};
+  state.days[dayId][taskId] = !state.days[dayId][taskId];
+  render();
+  await save();
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.warn('Sauvegarde locale impossible sur cet appareil/navigateur.', e);
+  }
+}
+
+async function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const loaded = JSON.parse(raw);
+      state = Object.assign(state, loaded);
+      state.dailyClues = Object.assign({}, DEFAULT_CLUES, loaded.dailyClues || {});
+    }
+  } catch (e) {
+    // pas de donnée existante
+  }
+
+  const monday = getMonday(new Date());
+  const mondayKey = dateKey(monday);
+
+  if (state.weekStart !== mondayKey) {
+    if (state.weekStart) {
+      state.treasureTotal = (state.treasureTotal || 0) + weekCount();
+    }
+    state.weekStart = mondayKey;
+    state.days = {};
+    await save();
+  }
+
+  const jsDay = new Date().getDay();
+  const idx = jsDay === 0 ? 6 : jsDay - 1;
+  activeDay = DAYS[idx].id;
+
+  render();
+}
+
+['daily-reward', 'week-reward', 'week-threshold', 'bonus-reward'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('blur', async () => {
+    if (id === 'daily-reward') state.dailyReward = el.textContent.trim();
+    if (id === 'week-reward') state.weekReward = el.textContent.trim();
+    if (id === 'week-threshold') state.weekThreshold = parseInt(el.textContent.trim(), 10) || state.weekThreshold;
+    if (id === 'bonus-reward') state.bonusReward = el.textContent.trim();
+    await save();
+  });
+});
+
+// --- Minuteur façon Fort Boyard ---
+let timerTask = null;
+let timerRemaining = 0;
+let timerRunning = false;
+let timerInterval = null;
+let audioCtx = null;
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60).toString().padStart(2, '0');
+  const s = Math.floor(sec % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+function beep() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = 880;
+    gain.gain.value = 0.15;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.18);
+  } catch (e) { /* audio indisponible, tant pis */ }
+}
+
+function openTimer(task) {
+  timerTask = task;
+  timerRemaining = DURATIONS[task.id] || 180;
+  timerRunning = false;
+  clearInterval(timerInterval);
+  document.getElementById('timer-box').classList.remove('done');
+  document.getElementById('t-icon').textContent = task.icon;
+  document.getElementById('t-name').textContent = task.task;
+  document.getElementById('t-msg').textContent = '';
+  document.getElementById('t-start').textContent = 'Démarrer';
+  updateTimerDisplay();
+  document.getElementById('timer-overlay').classList.add('open');
+}
+
+function updateTimerDisplay() {
+  document.getElementById('t-clock').textContent = formatTime(timerRemaining);
+}
+
+function closeTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  document.getElementById('timer-overlay').classList.remove('open');
+}
+
+function tickTimer() {
+  if (timerRemaining > 0) {
+    timerRemaining--;
+    updateTimerDisplay();
+  }
+  if (timerRemaining <= 0) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-box').classList.add('done');
+    document.getElementById('t-msg').textContent = "Temps écoulé ! Épreuve terminée ?";
+    document.getElementById('t-start').textContent = 'Démarrer';
+    beep(); setTimeout(beep, 260); setTimeout(beep, 520);
+  }
+}
+
+document.getElementById('t-start').addEventListener('click', () => {
+  if (timerRemaining <= 0) return;
+  timerRunning = !timerRunning;
+  document.getElementById('t-start').textContent = timerRunning ? 'Pause' : 'Reprendre';
+  if (timerRunning) {
+    document.getElementById('timer-box').classList.remove('done');
+    document.getElementById('t-msg').textContent = '';
+    timerInterval = setInterval(tickTimer, 1000);
+  } else {
+    clearInterval(timerInterval);
+  }
+});
+document.getElementById('t-minus').addEventListener('click', () => {
+  timerRemaining = Math.max(10, timerRemaining - 30);
+  updateTimerDisplay();
+});
+document.getElementById('t-plus').addEventListener('click', () => {
+  timerRemaining += 30;
+  updateTimerDisplay();
+});
+document.getElementById('t-close').addEventListener('click', closeTimer);
+document.getElementById('timer-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'timer-overlay') closeTimer();
+});
+
+document.getElementById('final-word').addEventListener('blur', async (e) => {
+  state.finalWord = e.target.textContent.trim();
+  await save();
+});
+
+document.getElementById('fw-toggle').addEventListener('click', async () => {
+  state.finalWordVisible = !state.finalWordVisible;
+  renderClues();
+  await save();
+});
+
+document.getElementById('reset-btn').addEventListener('click', async () => {
+  if (confirm('Remettre toute la semaine et le trésor total à zéro ?')) {
+    state = {
+      weekStart: dateKey(getMonday(new Date())),
+      days: {},
+      treasureTotal: 0,
+      dailyReward: state.dailyReward,
+      weekReward: state.weekReward,
+      bonusReward: state.bonusReward,
+      weekThreshold: state.weekThreshold,
+      finalWord: state.finalWord,
+      finalWordVisible: false,
+      dailyClues: state.dailyClues,
+    };
+    render();
+    await save();
+  }
+});
+
+load();
+</script>
+</body>
+</html>
