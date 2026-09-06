@@ -157,12 +157,17 @@ t('sans simulation, on revient au temps réel', enSimulation(), false);
 
 titre('La réserve d\'énigmes');
 t('au moins trois mois de jeu', ENIGMES.length >= 12, true);
+t('TRÉSOR reste hors rotation : c\'est l\'exemple des règles',
+  ENIGMES.some(e => normaliser(e.motCode) === 'TRESOR'), false);
+t('aucun mot-code en double', new Set(ENIGMES.map(e => normaliser(e.motCode))).size, ENIGMES.length);
 ENIGMES.forEach((e, i) => {
   const souci =
     e.mots.length !== 6 ? 'il ne faut pas ' + e.mots.length + ' mots mais 6'
     : e.mots.some(m => !m || !m.trim()) ? 'un mot est vide'
     : new Set(e.mots).size !== 6 ? 'deux mots identiques'
     : e.mots.some(m => normaliser(m) === normaliser(e.motCode)) ? 'un indice donne le mot-code'
+    : e.mots.some(m => normaliser(m).includes(normaliser(e.motCode)) ||
+                       normaliser(e.motCode).includes(normaliser(m))) ? 'un indice contient le mot-code'
     : !e.motCode.trim() ? 'mot-code vide'
     : null;
   t('énigme ' + (i + 1) + ' « ' + e.motCode + ' »', souci, null);

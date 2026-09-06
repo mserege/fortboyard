@@ -544,21 +544,27 @@ var TEMPS_FORTS_POSSIBLES = [
 /**
  * La réserve d'énigmes : une par semaine, servie automatiquement.
  * Chaque énigme, c'est un mot-code et six mots qui l'évoquent par association.
+ *
+ * Les mots sont rangés du plus vague au plus révélateur : le lundi ne
+ * doit rien trahir, le samedi peut presque tout dire. C'est ce qui fait
+ * durer le mystère jusqu'au bout de la semaine.
+ *
  * Le parent peut toujours les remplacer depuis le registre.
  */
 var ENIGMES = [
-  { motCode: 'TRESOR',  mots: ['COFFRE', 'OR', 'CARTE', 'PIRATE', 'CACHÉ', 'GROTTE'] },
-  { motCode: 'TIGRE',   mots: ['RAYURES', 'GRIFFES', 'JUNGLE', 'FÉLIN', 'RUGIR', 'CROCS'] },
-  { motCode: 'PIRATE',  mots: ['SABRE', 'PERROQUET', 'DRAPEAU', 'BATEAU', 'CROCHET', 'ÎLE'] },
-  { motCode: 'CHATEAU', mots: ['TOUR', 'DONJON', 'REMPART', 'CHEVALIER', 'PIERRE', 'PONT'] },
-  { motCode: 'DRAGON',  mots: ['ÉCAILLES', 'FEU', 'AILES', 'CAVERNE', 'MONSTRE', 'LÉGENDE'] },
-  { motCode: 'NUIT',    mots: ['LUNE', 'ÉTOILE', 'NOIR', 'RÊVE', 'DORMIR', 'CHOUETTE'] },
-  { motCode: 'OCEAN',   mots: ['VAGUE', 'BALEINE', 'SEL', 'BLEU', 'PROFOND', 'NAGER'] },
-  { motCode: 'ORAGE',   mots: ['ÉCLAIR', 'TONNERRE', 'PLUIE', 'VENT', 'NUAGE', 'GRONDE'] },
-  { motCode: 'CLE',     mots: ['SERRURE', 'PORTE', 'OUVRIR', 'MÉTAL', 'SECRET', 'TROUSSEAU'] },
-  { motCode: 'SABLIER', mots: ['SABLE', 'VERRE', 'MINUTE', 'COULER', 'TEMPS', 'RETOURNER'] },
-  { motCode: 'FORET',   mots: ['ARBRE', 'FEUILLES', 'SENTIER', 'ÉCUREUIL', 'MOUSSE', 'BRANCHE'] },
-  { motCode: 'VOLCAN',  mots: ['LAVE', 'CRATÈRE', 'FUMÉE', 'CENDRE', 'ÉRUPTION', 'MONTAGNE'] }
+  // TRÉSOR sert d'exemple dans regles.html : elle est volontairement hors rotation.
+  { motCode: 'TIGRE',   mots: ['JUNGLE', 'GRIFFES', 'CROCS', 'RUGIR', 'RAYURES', 'FÉLIN'] },
+  { motCode: 'PIRATE',  mots: ['ÎLE', 'BATEAU', 'DRAPEAU', 'SABRE', 'PERROQUET', 'CROCHET'] },
+  { motCode: 'CHATEAU', mots: ['PIERRE', 'PONT', 'TOUR', 'CHEVALIER', 'REMPART', 'DONJON'] },
+  { motCode: 'DRAGON',  mots: ['LÉGENDE', 'CAVERNE', 'MONSTRE', 'AILES', 'ÉCAILLES', 'FEU'] },
+  { motCode: 'NUIT',    mots: ['CHOUETTE', 'RÊVE', 'DORMIR', 'ÉTOILE', 'LUNE', 'NOIR'] },
+  { motCode: 'OCEAN',   mots: ['NAGER', 'BLEU', 'SEL', 'PROFOND', 'BALEINE', 'VAGUE'] },
+  { motCode: 'ORAGE',   mots: ['VENT', 'NUAGE', 'PLUIE', 'GRONDE', 'ÉCLAIR', 'TONNERRE'] },
+  { motCode: 'CLE',     mots: ['MÉTAL', 'SECRET', 'PORTE', 'OUVRIR', 'TROUSSEAU', 'SERRURE'] },
+  { motCode: 'SABLIER', mots: ['VERRE', 'COULER', 'MINUTE', 'TEMPS', 'RETOURNER', 'SABLE'] },
+  { motCode: 'FORET',   mots: ['MOUSSE', 'SENTIER', 'ÉCUREUIL', 'BRANCHE', 'FEUILLES', 'ARBRE'] },
+  { motCode: 'VOLCAN',  mots: ['MONTAGNE', 'FUMÉE', 'CENDRE', 'CRATÈRE', 'ÉRUPTION', 'LAVE'] },
+  { motCode: 'DESERT',  mots: ['CHALEUR', 'SOIF', 'CARAVANE', 'CHAMEAU', 'DUNE', 'OASIS'] }
 ];
 
 /** Range les six mots d'une énigme sur les six jours qui en portent un. */
