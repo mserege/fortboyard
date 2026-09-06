@@ -1,0 +1,12 @@
+# Site familial privé : rien à indexer ici.
+#
+# Les pages HTML restent explorables à dessein : c'est la seule façon
+# pour un robot de lire la balise <meta name="robots" content="noindex">
+# qu'elles contiennent. Une page bloquée ici peut encore apparaître dans
+# les résultats sur la foi d'un lien externe ; une page en noindex, non.
+#
+# Les images, elles, sont bloquées à la source : aucune balise ne peut
+# les protéger, et c'est par la recherche d'images qu'on tomberait dessus.
+
+User-agent: *
+Disallow: /assets/
