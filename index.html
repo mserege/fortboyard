@@ -2,787 +2,1697 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Les Épreuves de Fort Boyard — Semaine de Marius</title>
-<link rel="apple-touch-icon" href="data:image/png;base64,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">
-<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Le Fort de Marius</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Fort Boyard">
+<meta name="apple-mobile-web-app-title" content="Le Fort">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1c1d2b">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <style>
   :root {
-    --stone-dark: #1c1d2b;
-    --stone-mid: #2c2d42;
-    --stone-light: #3d3e5c;
-    --gold: #d4a017;
-    --gold-bright: #f0c14b;
-    --parchment: #f0e4c8;
-    --parchment-dark: #d8c8a0;
-    --ink: #2b2013;
-    --teal: #3e7c9a;
-    --teal-light: #6fa8c4;
-    --cream: #f5efdd;
+    --noir: #000000;
+    --noir-doux: #0b0906;
+    --bois: #5E4D39;
+    --bois-clair: #6f5c45;
+    --bois-sombre: #3d3227;
+    --bronze: #8E7024;
+    --bronze-clair: #B89631;
+    --bronze-vif: #d8b463;
+    --peche: #FFBC7D;
+    --blanc: #FFFFFF;
+    --parchemin: #f3ead6;
+    --encre: #2b2318;
+    --braise: #d2691e;
+    --cendre: #7a7266;
+    --vert: #6f8f4a;
+
+    --titre: "Cinzel", "Trajan Pro", Georgia, serif;
+    --corps: "EB Garamond", "Adobe Garamond Pro", Garamond, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   body {
     margin: 0;
-    background:
-      radial-gradient(ellipse at top, #33344a 0%, var(--stone-dark) 55%),
-      repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 2px, transparent 2px, transparent 40px);
-    color: var(--cream);
-    font-family: Georgia, 'Times New Roman', serif;
+    background: radial-gradient(ellipse 90% 50% at 50% 0%, #1d1710 0%, var(--noir) 62%) no-repeat;
+    background-color: var(--noir);
+    color: var(--blanc);
+    font-family: var(--corps);
+    font-size: 18px;
+    line-height: 1.5;
     min-height: 100vh;
-    padding: 24px 14px 50px;
+    -webkit-font-smoothing: antialiased;
+    padding: 16px 14px calc(40px + env(safe-area-inset-bottom));
+  }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 780px; margin: 0 auto; }
+  [hidden] { display: none !important; }
+
+  /* ---------------- en-tête ---------------- */
+  header { text-align: center; margin-bottom: 18px; }
+  .logo { max-width: 200px; margin: 0 auto 12px; }
+  .aventurier {
+    font-family: var(--titre); font-size: 12px; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--peche); margin: 0;
   }
 
-  .wrap { max-width: 820px; margin: 0 auto; }
+  .banniere {
+    background: var(--braise); color: var(--noir);
+    font-family: var(--titre); font-weight: 600; font-size: 12px;
+    letter-spacing: .1em; text-transform: uppercase; text-align: center;
+    padding: 10px 14px; border-radius: 4px; margin-bottom: 14px;
+  }
+  .banniere button {
+    font: inherit; text-transform: none; letter-spacing: .04em;
+    background: rgba(0,0,0,.28); color: var(--blanc); border: none;
+    border-radius: 30px; padding: 4px 12px; margin-left: 10px; cursor: pointer;
+  }
+  .bac { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .bac .btn { flex: 1 1 auto; }
 
-  .crenellations {
-    height: 16px;
-    background: linear-gradient(90deg, var(--gold) 0 40%, transparent 40% 60%, var(--gold) 60% 100%) repeat-x;
-    background-size: 44px 16px;
-    opacity: 0.85;
-    margin-bottom: 16px;
-    border-radius: 2px;
+  /* ---------------- onglets ---------------- */
+  .onglets { display: flex; gap: 8px; margin-bottom: 20px; }
+  .onglet {
+    flex: 1; font-family: var(--titre); font-weight: 600; font-size: 12px;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 11px 6px; border-radius: 30px;
+    border: 1px solid var(--bronze); background: var(--bois-sombre);
+    color: var(--peche); cursor: pointer;
   }
+  .onglet.actif { background: var(--bronze-clair); border-color: var(--bronze-clair); color: var(--noir); }
+  .onglet.cadenas { flex: 0 0 52px; font-size: 15px; }
+  .onglet:focus-visible { outline: 2px solid var(--peche); outline-offset: 2px; }
 
-  header { text-align: center; margin-bottom: 20px; }
-  header .eyebrow {
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: 0.75rem; letter-spacing: 1px; color: var(--gold-bright); margin-bottom: 4px;
+  /* ---------------- blocs ---------------- */
+  .panneau {
+    background: var(--bois); border: 1px solid rgba(184,150,49,.4);
+    border-radius: 4px; padding: 18px 18px; margin-bottom: 14px;
   }
-  header h1 {
-    font-size: clamp(1.4rem, 4.5vw, 2.1rem);
-    margin: 0 0 6px; color: var(--parchment);
-    text-shadow: 0 2px 0 rgba(0,0,0,0.4); font-weight: 700;
+  .panneau.sombre { background: var(--bois-sombre); }
+  h2.section-titre {
+    font-family: var(--titre); font-weight: 700; font-size: 12px;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--bronze-clair); margin: 0 0 12px;
   }
-  header p.sub {
-    font-family: 'Trebuchet MS', sans-serif; color: var(--teal-light); font-size: 0.9rem; margin: 0;
-  }
+  .sous { color: var(--peche); font-size: 15px; margin: 0 0 12px; }
 
-  .week-bar {
-    background: linear-gradient(180deg, var(--stone-light), var(--stone-mid));
-    border: 2px solid var(--gold);
-    border-radius: 10px;
-    padding: 16px 18px;
-    margin-bottom: 14px;
+  /* ---------------- épreuve en vedette ---------------- */
+  .vedette { text-align: center; padding: 24px 20px; }
+  .vedette .glyphe { font-size: 46px; line-height: 1; margin-bottom: 8px; }
+  .vedette h3 {
+    font-family: var(--titre); font-weight: 700; font-size: clamp(19px, 4.6vw, 25px);
+    letter-spacing: .05em; text-transform: uppercase; margin: 0 0 6px; color: var(--blanc);
   }
-  .week-top {
-    display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap;
-    font-family: 'Trebuchet MS', sans-serif;
-  }
-  .week-top .num { font-size: 1.4rem; font-weight: 700; color: var(--gold-bright); font-family: Georgia, serif; }
-  .week-top .lbl { font-size: 0.72rem; opacity: 0.85; }
-  .bonus-badge {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.68rem; color: var(--gold-bright);
-    opacity: 0.9; margin-left: 4px;
-  }
-  .progress-track {
-    background: rgba(0,0,0,0.35); border-radius: 8px; height: 14px; margin: 10px 0 4px; overflow: hidden;
-    border: 1px solid rgba(212,160,23,0.4);
-  }
-  .progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold-bright));
-    transition: width 0.3s ease; border-radius: 8px;
-  }
-  .reward-row {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem; margin-top: 12px;
-    padding-top: 10px; border-top: 1px dashed rgba(212,160,23,0.5);
-    display: flex; gap: 8px; align-items: flex-start;
-  }
-  .reward-row .icon { font-size: 1.1rem; flex-shrink: 0; }
-  .reward-row [contenteditable] {
-    outline: none; border-bottom: 1px dotted var(--teal-light); color: var(--cream);
-    min-width: 60px; display: inline;
-  }
-  .reward-row [contenteditable]:focus { border-bottom: 1px solid var(--gold-bright); }
-  .treasure-total {
-    text-align: center; font-family: 'Trebuchet MS', sans-serif; font-size: 0.72rem;
-    color: var(--teal-light); margin-top: 10px; opacity: 0.85;
+  .vedette .gestes { color: var(--peche); font-size: 16px; margin: 0 0 16px; }
+  .vedette .etat { font-size: 16px; margin: 0 0 16px; }
+  .vedette .promesse {
+    font-family: var(--titre); font-size: 13px; letter-spacing: .06em;
+    color: var(--bronze-vif); margin: -8px 0 16px;
   }
 
-  .clues-bar {
-    background: linear-gradient(180deg, #241f3d, #1a1730);
-    border: 2px solid var(--gold-bright);
-    border-radius: 10px;
-    padding: 16px 18px;
-    margin-bottom: 18px;
+  /* la torche */
+  .torche { margin: 0 auto 16px; max-width: 320px; }
+  .torche-piste {
+    height: 10px; border-radius: 30px; background: rgba(0,0,0,.45);
+    border: 1px solid rgba(184,150,49,.5); overflow: hidden;
   }
-  .clues-title {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.78rem; letter-spacing: 0.5px;
-    color: var(--gold-bright); margin-bottom: 2px; text-align: center;
+  .torche-flamme {
+    height: 100%; border-radius: 30px;
+    background: linear-gradient(90deg, var(--bronze), var(--peche));
+    transition: width .5s linear;
   }
-  .clues-sub {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.68rem; color: var(--teal-light);
-    text-align: center; margin-bottom: 10px; opacity: 0.85;
+  .torche.vacille .torche-flamme {
+    background: linear-gradient(90deg, var(--braise), #ffdca8);
+    animation: vaciller 1.1s ease-in-out infinite;
   }
-  .clue-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 10px; border-radius: 8px; margin-bottom: 6px;
-    background: rgba(255,255,255,0.03);
+  @keyframes vaciller { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+  .torche-legende {
+    font-family: var(--mono); font-size: 13px; color: var(--peche);
+    margin: 7px 0 0; font-variant-numeric: tabular-nums;
   }
-  .clue-row .clue-day {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.7rem; font-weight: 700;
-    color: var(--teal-light); width: 42px; flex-shrink: 0;
+  .torche.vacille .torche-legende { color: var(--braise); }
+
+  .vedette.en-cours { padding-bottom: 20px; }
+  .compte { margin: 6px 0 10px; }
+  .compte-valeur {
+    display: block; font-family: var(--mono); font-size: clamp(46px, 13vw, 68px);
+    font-weight: 600; line-height: 1; color: var(--bronze-vif);
+    font-variant-numeric: tabular-nums;
   }
-  .clue-row .clue-text {
-    flex: 1; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; outline: none;
-    color: var(--gold-bright); border-bottom: 1px dotted transparent; text-transform: uppercase;
+  .compte-legende {
+    display: block; font-family: var(--titre); font-size: 10px;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--peche); margin-top: 6px;
   }
-  .clue-row .clue-text:focus { border-bottom: 1px dotted var(--gold-bright); }
-  .clue-row .clue-icon { font-size: 0.9rem; flex-shrink: 0; }
-  .clue-row.locked .clue-text {
-    filter: blur(5px);
-    color: var(--teal-light);
-    user-select: none;
+  .compte.vacille .compte-valeur { color: var(--braise); }
+  .vedette .gestes-liste { margin: 16px 0 0; text-align: left; }
+  .vedette .indication { text-align: center; }
+
+  /* ---------------- boutons ---------------- */
+  .btn {
+    font-family: var(--titre); font-weight: 600; font-size: 13px;
+    letter-spacing: .14em; text-transform: uppercase;
+    padding: 14px 26px; border-radius: 30px; cursor: pointer;
+    border: 1px solid var(--bronze); background: var(--bois-sombre); color: var(--peche);
   }
-  .clue-row.locked.editing .clue-text {
-    filter: none;
-    color: var(--cream);
+  .btn.principal { background: var(--bronze-clair); border-color: var(--bronze-clair); color: var(--noir); }
+  .btn.principal:hover { background: var(--bronze-vif); }
+  .btn.large { display: block; width: 100%; }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .btn:focus-visible { outline: 2px solid var(--peche); outline-offset: 2px; }
+  .btn.discret {
+    font-size: 11px; letter-spacing: .12em; padding: 9px 18px;
+    background: transparent; color: var(--cendre); border-color: var(--cendre);
   }
 
-  .final-word-row {
-    margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(212,160,23,0.5);
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem;
+  /* ---------------- liste des épreuves du jour ---------------- */
+  .liste-epreuves { display: flex; flex-direction: column; }
+  .ligne-epreuve {
+    display: grid; grid-template-columns: 34px 1fr auto; gap: 4px 12px;
+    align-items: center; padding: 13px 0; text-align: left;
+    background: none; border: none; color: inherit; font: inherit; cursor: pointer; width: 100%;
   }
-  .final-word-row .fw-text {
-    outline: none; border-bottom: 1px dotted var(--teal-light); color: var(--cream);
-    font-weight: 700; letter-spacing: 1px; min-width: 80px;
+  .ligne-epreuve + .ligne-epreuve { border-top: 1px solid rgba(184,150,49,.28); }
+  .ligne-epreuve:disabled { cursor: default; }
+  .ligne-epreuve .glyphe { font-size: 24px; grid-row: span 2; }
+  .ligne-epreuve .nom {
+    font-family: var(--titre); font-weight: 700; font-size: 15px;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--bronze-vif);
   }
-  .final-word-row.hidden .fw-text { filter: blur(6px); user-select: none; }
-  .fw-toggle {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.7rem;
-    background: transparent; border: 1px solid var(--teal); color: var(--teal-light);
-    border-radius: 14px; padding: 4px 10px; cursor: pointer;
-  }
-  .fw-toggle:hover { background: rgba(62,124,154,0.15); }
+  .ligne-epreuve .creneau { font-family: var(--mono); font-size: 12px; color: var(--peche); }
+  .ligne-epreuve .badge { grid-row: span 2; font-size: 20px; }
+  .ligne-epreuve.reussie .nom { color: var(--blanc); }
+  .ligne-epreuve.ratee { opacity: .5; }
+  .ligne-epreuve.ratee .nom { text-decoration: line-through; }
 
-  .day-tabs {
-    display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px;
-    -webkit-overflow-scrolling: touch;
+  /* ---------------- indice du soir ---------------- */
+  .mot { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 4px 0 10px; }
+  .lettre {
+    width: 34px; height: 44px; display: grid; place-items: center;
+    font-family: var(--titre); font-weight: 700; font-size: 21px;
+    color: var(--encre); background: var(--parchemin); border-radius: 2px;
   }
-  .day-tab {
-    flex-shrink: 0; font-family: 'Trebuchet MS', sans-serif; font-size: 0.78rem;
-    padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--teal);
-    background: transparent; color: var(--teal-light); cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 62px;
+  .lettre.vide {
+    color: rgba(255,255,255,.4); background: transparent;
+    border: 1px solid rgba(184,150,49,.55);
   }
-  .day-tab .d { font-weight: 700; }
-  .day-tab .k { font-size: 0.68rem; opacity: 0.8; }
-  .day-tab.active { background: var(--gold); border-color: var(--gold); color: var(--ink); }
-  .day-tab.active .k { color: var(--ink); opacity: 0.75; }
-  .day-tab.complete:not(.active) { border-color: var(--gold-bright); color: var(--gold-bright); }
-  .day-tab .star { font-size: 0.7rem; }
-  .day-tab .gift { font-size: 0.65rem; }
+  .verdict { text-align: center; font-size: 15px; color: var(--peche); margin: 0; }
 
-  .period { margin-bottom: 18px; }
-  .period-title {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem; font-weight: 700;
-    color: var(--gold-bright); margin-bottom: 8px; padding-left: 2px;
+  /* ---------------- temps forts ---------------- */
+  .tf-liste { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-direction: column; gap: 8px; }
+  .tf-liste li {
+    display: flex; align-items: center; gap: 10px; justify-content: space-between;
+    font-size: 15px; padding: 9px 12px; background: var(--bois-sombre); border-radius: 4px;
   }
-  .grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px;
+  .etiquette {
+    font-family: var(--titre); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 30px; white-space: nowrap;
   }
-  .card {
-    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-dark) 100%);
-    border-radius: 9px; padding: 12px 12px 11px; color: var(--ink);
-    border: 2px solid #b89b5e; position: relative; cursor: pointer;
-    transition: transform 0.12s ease, box-shadow 0.12s ease; user-select: none;
-  }
-  .card:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(0,0,0,0.32); }
-  .card.done {
-    background: linear-gradient(180deg, #fff3cf 0%, #e8cf8e 100%);
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(212,160,23,0.35), 0 5px 12px rgba(0,0,0,0.28);
-  }
-  .card.bonus {
-    border-style: dashed;
-    background: linear-gradient(180deg, #ece1f5 0%, #d9c6e8 100%);
-    border-color: #8a5fa8;
-  }
-  .card.bonus.done {
-    background: linear-gradient(180deg, #fff3cf 0%, #e8cf8e 100%);
-    border-color: var(--gold); border-style: dashed;
-  }
-  .card .ribbon {
-    position: absolute; top: -8px; left: 10px;
-    background: #6d4790; color: var(--cream);
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.6rem; font-weight: 700;
-    padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px;
-  }
-  .card.bonus.done .ribbon { background: var(--gold); color: var(--ink); }
-  .card .icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
-  .card .name {
-    font-family: 'Trebuchet MS', sans-serif; font-weight: 700; font-size: 0.68rem;
-    letter-spacing: 0.3px; color: #7a5a1e; margin-bottom: 3px;
-  }
-  .card .task { font-size: 0.92rem; font-weight: 700; line-height: 1.2; }
-  .card .check {
-    position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%;
-    border: 2px solid var(--teal); background: rgba(255,255,255,0.5);
-    display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
-    font-weight: bold; color: transparent; transition: all 0.12s ease;
-  }
-  .card.done .check { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+  .etiquette.attente { background: var(--bronze); color: var(--blanc); }
+  .etiquette.valide { background: var(--vert); color: var(--blanc); }
+  .etiquette.refuse { background: var(--bois-clair); color: var(--cendre); }
 
-  .card .timer-btn {
-    position: absolute; bottom: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%;
-    border: none; background: rgba(43,32,19,0.12); color: var(--ink); font-size: 0.85rem;
-    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  /* ---------------- semaine ---------------- */
+  .compteurs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; margin-bottom: 14px; }
+  .compteur { background: var(--bois-sombre); border-radius: 4px; padding: 14px 8px; }
+  .compteur .val {
+    font-family: var(--titre); font-weight: 700; font-size: 26px; color: var(--bronze-vif);
+    display: block; font-variant-numeric: tabular-nums; line-height: 1.1;
   }
-  .card .timer-btn:hover { background: rgba(43,32,19,0.22); }
+  .compteur .lbl {
+    font-family: var(--titre); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--peche); display: block; margin-top: 4px;
+  }
+  .piste {
+    height: 14px; border-radius: 30px; background: rgba(0,0,0,.45);
+    border: 1px solid rgba(184,150,49,.5); overflow: hidden; margin: 4px 0 6px; position: relative;
+  }
+  .piste-plein { height: 100%; background: linear-gradient(90deg, var(--bronze), var(--bronze-vif)); transition: width .4s ease; }
+  .piste-seuil { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--peche); }
+  .piste-note { font-family: var(--mono); font-size: 12px; color: var(--peche); margin: 0; }
 
-  .timer-overlay {
-    position: fixed; inset: 0; background: rgba(10,10,18,0.82);
-    display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+  .jours { display: flex; flex-direction: column; }
+  .jour {
+    display: grid; grid-template-columns: 46px 1fr auto; gap: 10px; align-items: center;
+    padding: 11px 0; font-size: 15px;
   }
-  .timer-overlay.open { display: flex; }
-  .timer-box {
-    background: linear-gradient(180deg, var(--stone-light), var(--stone-dark));
-    border: 3px solid var(--gold); border-radius: 16px; padding: 28px 26px; text-align: center;
-    max-width: 320px; width: 100%;
+  .jour + .jour { border-top: 1px solid rgba(184,150,49,.25); }
+  .jour .nom {
+    font-family: var(--titre); font-size: 12px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--peche);
   }
-  .timer-box .t-icon { font-size: 1.8rem; margin-bottom: 4px; }
-  .timer-box .t-name {
-    font-family: 'Trebuchet MS', sans-serif; font-weight: 700; font-size: 1rem; color: var(--parchment);
-    margin-bottom: 14px;
+  .jour.aujourdhui .nom { color: var(--bronze-vif); }
+  .jour .indice { font-family: var(--titre); letter-spacing: .12em; font-size: 15px; color: var(--blanc); }
+  .jour .indice.muet { color: var(--cendre); font-family: var(--corps); letter-spacing: 0; font-style: italic; font-size: 14px; }
+  .jour .cles { font-family: var(--mono); font-size: 13px; color: var(--bronze-vif); font-variant-numeric: tabular-nums; }
+
+  /* ---------------- salle du trésor ---------------- */
+  .porte { text-align: center; padding: 26px 20px; }
+  .porte .tigre { max-width: 190px; margin: 0 auto 16px; }
+  .porte h3 {
+    font-family: var(--titre); font-weight: 700; font-size: 20px;
+    letter-spacing: .06em; text-transform: uppercase; margin: 0 0 10px;
   }
-  .timer-box .t-clock {
-    font-family: Georgia, serif; font-size: 3rem; font-weight: 700; color: var(--gold-bright);
-    margin-bottom: 6px; letter-spacing: 2px;
+  .champ-code {
+    font-family: var(--titre); font-weight: 700; font-size: 22px; letter-spacing: .18em;
+    text-align: center; text-transform: uppercase;
+    background: var(--parchemin); color: var(--encre);
+    border: 1px solid var(--bronze); border-radius: 4px;
+    padding: 12px; width: 100%; max-width: 320px; margin: 0 auto 14px; display: block;
   }
-  .timer-box.done .t-clock { color: #ff9d4d; animation: pulse 0.6s infinite; }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
-  .timer-box .t-msg {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.85rem; color: var(--teal-light);
-    min-height: 20px; margin-bottom: 14px;
+  .jetons { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 16px; }
+  .jeton {
+    font-family: var(--titre); font-weight: 600; font-size: 12px; letter-spacing: .12em;
+    border: 1px solid var(--bronze-clair); background: var(--bois-sombre);
+    border-radius: 30px; padding: 5px 13px; color: var(--blanc);
   }
-  .timer-box .t-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
-  .timer-box button.t-btn {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.8rem; padding: 8px 14px;
-    border-radius: 20px; border: 1.5px solid var(--teal); background: transparent;
-    color: var(--teal-light); cursor: pointer;
+  .jeton.muet { color: var(--cendre); border-color: var(--cendre); }
+
+  .arene {
+    position: relative; height: 330px; overflow: hidden;
+    background: radial-gradient(ellipse 70% 60% at 50% 100%, #2a1d0d 0%, var(--noir-doux) 70%);
+    border: 1px solid var(--bronze); border-radius: 4px; margin-bottom: 12px;
   }
-  .timer-box button.t-btn.primary { background: var(--gold); border-color: var(--gold); color: var(--ink); font-weight: 700; }
-  .timer-box button.t-btn:hover { background: rgba(62,124,154,0.2); }
-  .timer-box button.t-btn.primary:hover { background: var(--gold-bright); }
-  .timer-box .t-close {
-    font-family: 'Trebuchet MS', sans-serif; font-size: 0.72rem; color: var(--teal-light);
-    background: none; border: none; cursor: pointer; text-decoration: underline; margin-top: 4px;
+  .boyard {
+    position: absolute; top: -46px; width: 42px; height: 42px; border-radius: 50%;
+    background: radial-gradient(circle at 34% 30%, #ffe9a8 0%, var(--bronze-vif) 45%, #8a6a1c 100%);
+    box-shadow: 0 0 12px rgba(216,180,99,.55); cursor: pointer; border: none; padding: 0;
+    animation: chute linear forwards;
+  }
+  @keyframes chute { to { transform: translateY(380px) rotate(220deg); } }
+  .arene-hud {
+    position: absolute; inset: 10px 12px auto 12px; display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 22px; color: var(--bronze-vif);
+    font-variant-numeric: tabular-nums; pointer-events: none; text-shadow: 0 2px 6px #000;
+  }
+  .butin {
+    text-align: center; font-family: var(--titre); font-weight: 700;
+    font-size: clamp(22px, 6vw, 34px); letter-spacing: .06em; color: var(--bronze-vif);
+    margin: 0 0 8px; text-transform: uppercase;
   }
 
-  .reset-btn {
-    display: block; margin: 22px auto 0; background: transparent; border: 1.5px solid var(--teal);
-    color: var(--teal-light); font-family: 'Trebuchet MS', sans-serif; font-size: 0.72rem;
-    padding: 7px 14px; border-radius: 20px; cursor: pointer;
+  /* ---------------- mode parent ---------------- */
+  .champ { display: block; margin-bottom: 12px; }
+  .champ span {
+    font-family: var(--titre); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--peche); display: block; margin-bottom: 4px;
   }
-  .reset-btn:hover { background: rgba(62,124,154,0.15); }
+  .champ input {
+    width: 100%; font-family: var(--corps); font-size: 16px;
+    background: var(--bois-sombre); color: var(--blanc);
+    border: 1px solid var(--bronze); border-radius: 4px; padding: 9px 11px;
+  }
+  .champ select {
+    width: 100%; font-family: var(--corps); font-size: 16px;
+    background: var(--bois-sombre); color: var(--blanc);
+    border: 1px solid var(--bronze); border-radius: 4px; padding: 9px 11px;
+  }
+  .champ input:focus-visible, .champ select:focus-visible { outline: 2px solid var(--peche); outline-offset: 1px; }
+  .grille-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+  .fenetre-ligne {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; padding: 10px 0;
+  }
+  .fenetre-ligne + .fenetre-ligne { border-top: 1px solid rgba(184,150,49,.28); }
+  .fenetre-nom { font-size: 15px; }
+  .fenetre-nom small { color: var(--peche); }
+  .fenetre-champs { display: flex; gap: 6px; }
+  .fenetre-champs input {
+    font-family: var(--mono); font-size: 15px; width: 108px;
+    background: var(--bois-sombre); color: var(--blanc);
+    border: 1px solid var(--bronze); border-radius: 30px; padding: 7px 12px;
+  }
+  .action-tf { display: flex; gap: 6px; }
+  .mini {
+    font-family: var(--titre); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    border-radius: 30px; padding: 5px 12px; cursor: pointer; border: 1px solid;
+  }
+  .mini.oui { background: var(--vert); border-color: var(--vert); color: var(--blanc); }
+  .mini.non { background: transparent; border-color: var(--cendre); color: var(--cendre); }
 
-  footer {
-    text-align: center; margin-top: 20px; font-family: 'Trebuchet MS', sans-serif;
-    font-size: 0.7rem; color: var(--teal-light); opacity: 0.75;
+  /* ---------------- superposition ---------------- */
+  .voile {
+    position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 50;
+    display: flex; align-items: center; justify-content: center; padding: 18px;
+    overflow-y: auto;
+  }
+  .boite {
+    background: var(--bois); border: 1px solid var(--bronze); border-radius: 6px;
+    padding: 24px 22px; max-width: 420px; width: 100%; text-align: center;
+  }
+  .boite h3 {
+    font-family: var(--titre); font-weight: 700; font-size: 18px;
+    letter-spacing: .06em; text-transform: uppercase; margin: 0 0 4px;
+  }
+  .indication { font-size: 16px; color: var(--peche); min-height: 22px; margin: 14px 0 18px; }
+
+  .gestes-liste { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-direction: column; gap: 8px; }
+  .geste {
+    display: flex; align-items: center; gap: 12px; text-align: left;
+    width: 100%; font: inherit; font-size: 17px; color: var(--blanc);
+    background: var(--bois-sombre); border: 1px solid transparent;
+    border-radius: 4px; padding: 12px 14px; cursor: pointer;
+  }
+  .geste .case {
+    width: 26px; height: 26px; border-radius: 50%; flex: none;
+    border: 2px solid var(--bronze-clair); display: grid; place-items: center;
+    font-size: 15px; color: transparent;
+  }
+  .geste.fait { border-color: var(--bronze-clair); }
+  .geste.fait .case { background: var(--bronze-clair); color: var(--noir); }
+  .geste.fait .txt { color: var(--peche); }
+
+  .geste.sablier { border-color: var(--bronze-vif); }
+  .mini-horloge {
+    font-family: var(--mono); font-size: 14px; color: var(--bronze-vif);
+    margin-left: 6px; font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .rangee-btn { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .fermer {
+    background: none; border: none; color: var(--cendre); font: inherit; font-size: 13px;
+    text-decoration: underline; cursor: pointer; margin-top: 14px;
+  }
+
+  .pied {
+    text-align: center; font-size: 13px; color: var(--cendre); margin-top: 22px;
+  }
+  .pied a { color: var(--peche); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, .torche.vacille .torche-flamme { animation: none !important; transition: none !important; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="crenellations"></div>
+
+  <div class="banniere" id="banniere-test" hidden></div>
+
   <header>
-    <div class="eyebrow">FORT BOYARD</div>
-    <h1>Les Épreuves de la Semaine</h1>
-    <p class="sub">Aventurier : Marius</p>
+    <img class="logo" src="assets/logo-fb.webp" alt="Fort Boyard Aventures">
+    <p class="aventurier">Aventurier : Marius</p>
   </header>
 
-  <div class="week-bar">
-    <div class="week-top">
-      <div><span class="num" id="week-count">0/0</span> <span class="lbl">clés cette semaine</span></div>
-      <div><span class="num" id="today-count">0/0</span> <span class="lbl" id="today-label">clés aujourd'hui</span></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="week-fill" style="width:0%"></div></div>
+  <nav class="onglets">
+    <button class="onglet actif" data-vue="jour" type="button">Aujourd'hui</button>
+    <button class="onglet" data-vue="semaine" type="button">La semaine</button>
+    <button class="onglet" data-vue="tresor" type="button">Le trésor</button>
+    <button class="onglet cadenas" data-vue="parent" type="button" aria-label="Mode parent">🔒</button>
+  </nav>
 
-    <div class="reward-row">
-      <span class="icon">🎴</span>
-      <div>Récompense du jour (épreuves obligatoires réussies) :
-        <span contenteditable="true" id="daily-reward">une carte Pokémon</span>
+  <!-- ================= AUJOURD'HUI ================= -->
+  <main id="vue-jour">
+    <div id="vedette"></div>
+
+    <div class="panneau sombre">
+      <h2 class="section-titre">Les épreuves du jour</h2>
+      <div class="liste-epreuves" id="liste-epreuves"></div>
+    </div>
+
+    <div class="panneau">
+      <h2 class="section-titre">Les temps forts</h2>
+      <p class="sous">Quelque chose de bien que tu as fait sans qu'on te le demande.</p>
+      <button class="btn large" id="btn-temps-fort" type="button">Signaler un temps fort</button>
+      <ul class="tf-liste" id="tf-liste"></ul>
+    </div>
+
+    <div class="panneau sombre">
+      <h2 class="section-titre">L'indice du Père Fouras</h2>
+      <div class="mot" id="mot-indice"></div>
+      <p class="verdict" id="verdict-indice"></p>
+    </div>
+  </main>
+
+  <!-- ================= LA SEMAINE ================= -->
+  <main id="vue-semaine" hidden>
+    <div class="panneau">
+      <div class="compteurs">
+        <div class="compteur"><span class="val" id="c-cles">0</span><span class="lbl">Clés</span></div>
+        <div class="compteur"><span class="val" id="c-tf">0</span><span class="lbl">Temps forts</span></div>
+        <div class="compteur"><span class="val" id="c-secondes">25 s</span><span class="lbl">Dans la salle</span></div>
       </div>
-    </div>
-    <div class="reward-row">
-      <span class="icon">🏆</span>
-      <div>Récompense de la semaine (à partir de <span contenteditable="true" id="week-threshold">45</span> clés) :
-        <span contenteditable="true" id="week-reward">un booster de cartes Pokémon</span>
-      </div>
-    </div>
-    <div class="reward-row">
-      <span class="icon">✨</span>
-      <div>Récompense bonus (à chaque temps fort réussi, immédiat et léger) :
-        <span contenteditable="true" id="bonus-reward">le droit de choisir le dessert du soir</span>
-      </div>
+      <div class="piste"><div class="piste-plein" id="piste-plein" style="width:0%"></div><div class="piste-seuil" id="piste-seuil"></div></div>
+      <p class="piste-note" id="piste-note"></p>
     </div>
 
-    <div class="treasure-total">Trésor total cumulé (toutes les semaines) : <span id="treasure-total">0</span> clés</div>
-  </div>
-
-  <div class="clues-bar">
-    <div class="clues-title">🔑 LES INDICES DU PÈRE FOURAS</div>
-    <div class="clues-sub">un mot par jour — réunis-les tous pour trouver le mot final</div>
-    <div id="clue-rows"></div>
-    <div class="final-word-row hidden" id="final-word-row">
-      <span>Mot final (secret parent) :</span>
-      <span class="fw-text" contenteditable="true" id="final-word">TRÉSOR</span>
-      <button class="fw-toggle" id="fw-toggle">👁️ Afficher / cacher</button>
+    <div class="panneau sombre">
+      <h2 class="section-titre">Les six indices</h2>
+      <div class="jours" id="jours"></div>
     </div>
-  </div>
+  </main>
 
-  <div class="day-tabs" id="day-tabs"></div>
+  <!-- ================= LE TRÉSOR ================= -->
+  <main id="vue-tresor" hidden>
+    <div id="tresor-contenu"></div>
+  </main>
 
-  <div id="periods"></div>
+  <!-- ================= MODE PARENT ================= -->
+  <main id="vue-parent" hidden>
+    <div id="parent-verrou" class="panneau">
+      <h2 class="section-titre">Le registre du gardien</h2>
+      <p class="sous">Code à quatre chiffres.</p>
+      <label class="champ"><span>Code</span><input type="password" inputmode="numeric" maxlength="8" id="saisie-pin"></label>
+      <button class="btn principal large" id="btn-pin" type="button">Ouvrir le registre</button>
+      <p class="verdict" id="pin-erreur"></p>
+    </div>
+    <div id="parent-contenu" hidden></div>
+  </main>
 
-  <button class="reset-btn" id="reset-btn">Réinitialiser toute la semaine</button>
-  <footer>Les épreuves en pointillés violets sont des <strong>temps forts bonus</strong> : facultatives, elles rapportent une clé en plus mais ne sont jamais obligatoires pour valider la journée. Le ⏱️ sur chaque carte lance un minuteur façon Fort Boyard.</footer>
+  <p class="pied"><a href="regles.html">Les règles du Fort</a></p>
 </div>
 
-<div class="timer-overlay" id="timer-overlay">
-  <div class="timer-box" id="timer-box">
-    <div class="t-icon" id="t-icon">⏱️</div>
-    <div class="t-name" id="t-name">Épreuve</div>
-    <div class="t-clock" id="t-clock">02:00</div>
-    <div class="t-msg" id="t-msg"></div>
-    <div class="t-controls">
-      <button class="t-btn" id="t-minus">−30s</button>
-      <button class="t-btn primary" id="t-start">Démarrer</button>
-      <button class="t-btn" id="t-plus">+30s</button>
-    </div>
-    <button class="t-close" id="t-close">Fermer</button>
+<!-- ================= SUPERPOSITIONS ================= -->
+<div class="voile" id="voile-tf" hidden>
+  <div class="boite">
+    <h3>Un temps fort</h3>
+    <p class="sous-titre">Qu'est-ce que tu as fait tout seul ?</p>
+    <div class="gestes-liste" id="tf-choix"></div>
+    <button class="fermer" id="tf-fermer" type="button">Annuler</button>
   </div>
 </div>
 
 <script>
-const DAYS = [
-  { id: 'lundi', label: 'Lun', weekend: false },
-  { id: 'mardi', label: 'Mar', weekend: false },
-  { id: 'mercredi', label: 'Mer', weekend: false },
-  { id: 'jeudi', label: 'Jeu', weekend: false },
-  { id: 'vendredi', label: 'Ven', weekend: false },
-  { id: 'samedi', label: 'Sam', weekend: true },
-  { id: 'dimanche', label: 'Dim', weekend: true },
+"use strict";
+
+/* =========================================================
+   1. LE MODÈLE DU JEU
+   ========================================================= */
+
+var JOURS = [
+  { id: 'lundi',    nom: 'Lundi',    court: 'Lun', weekend: false },
+  { id: 'mardi',    nom: 'Mardi',    court: 'Mar', weekend: false },
+  { id: 'mercredi', nom: 'Mercredi', court: 'Mer', weekend: false },
+  { id: 'jeudi',    nom: 'Jeudi',    court: 'Jeu', weekend: false },
+  { id: 'vendredi', nom: 'Vendredi', court: 'Ven', weekend: false },
+  { id: 'samedi',   nom: 'Samedi',   court: 'Sam', weekend: true  },
+  { id: 'dimanche', nom: 'Dimanche', court: 'Dim', weekend: true  }
 ];
 
-const DEFAULT_CLUES = {
-  lundi: 'GROTTE',
-  mardi: 'CARTE',
-  mercredi: 'PIRATES',
-  jeudi: 'OR',
-  vendredi: 'COFFRE',
-  samedi: 'DORÉ',
-  dimanche: 'CACHÉ',
+// Le dimanche n'a pas d'indice : c'est le soir de la salle du trésor.
+var JOURS_INDICE = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+
+/**
+ * Une épreuve = une fenêtre + des gestes.
+ * Pas de chrono : la torche de la fenêtre est la seule horloge.
+ * À lui de s'organiser dedans.
+ */
+var EPREUVES = [
+  { id: 'eveil', nom: "L'Éveil du Fort", glyphe: '🌅', moment: 'Matin',
+    gestes: [
+      "S'habiller",
+      'Faire son lit',
+      'Débarrasser la table du petit-déjeuner',
+      'Se laver les dents et le visage'
+    ],
+    promesse: 'Fini avant 8h00 : le dessin animé t\'attend.',
+    fenetre: ['07:15', '08:00'], quand: 'tous' },
+
+  { id: 'banquet-midi', nom: 'La Salle du Banquet', glyphe: '🍽️', moment: 'Midi',
+    gestes: ['Mettre le couvert', 'Débarrasser la table'],
+    fenetre: ['12:00', '13:30'], quand: 'weekend' },
+
+  { id: 'retour', nom: "Le Retour d'École", glyphe: '🚿', moment: "Retour d'école",
+    gestes: ['Les devoirs', 'La douche', 'Le pyjama', 'Le linge sale dans le panier'],
+    fenetre: ['18:00', '18:30'], quand: 'tous' },
+
+  { id: 'veillee', nom: 'La Veillée du Fort', glyphe: '🕯️', moment: 'Soir',
+    gestes: ['Débarrasser la table', 'Se laver les dents', 'Passer aux toilettes'],
+    fenetre: ['19:30', '20:05'], quand: 'tous' },
+
+  { id: 'chambre', nom: 'La Chambre du Trésor', glyphe: '🌙', moment: 'Coucher',
+    gestes: ['Au lit', 'Prêt pour demain'],
+    promesse: 'Au lit tôt : plus de lecture avant 20h30.',
+    fenetre: ['20:05', '20:30'], quand: 'tous' }
+];
+
+function texteGeste(g) { return (typeof g === 'string') ? g : g.texte; }
+
+var TEMPS_FORTS_POSSIBLES = [
+  "J'ai débarrassé sans qu'on me le demande",
+  "J'ai aidé à ranger",
+  "J'ai aidé en cuisine",
+  "J'ai rendu service à quelqu'un",
+  "J'ai fait mes devoirs tout seul",
+  "J'ai lu un moment"
+];
+
+/**
+ * La réserve d'énigmes : une par semaine, servie automatiquement.
+ * Chaque énigme, c'est un mot-code et six mots qui l'évoquent par association.
+ * Le parent peut toujours les remplacer depuis le registre.
+ */
+var ENIGMES = [
+  { motCode: 'TRESOR',  mots: ['COFFRE', 'OR', 'CARTE', 'PIRATE', 'CACHÉ', 'GROTTE'] },
+  { motCode: 'TIGRE',   mots: ['RAYURES', 'GRIFFES', 'JUNGLE', 'FÉLIN', 'RUGIR', 'CROCS'] },
+  { motCode: 'PIRATE',  mots: ['SABRE', 'PERROQUET', 'DRAPEAU', 'BATEAU', 'CROCHET', 'ÎLE'] },
+  { motCode: 'CHATEAU', mots: ['TOUR', 'DONJON', 'REMPART', 'CHEVALIER', 'PIERRE', 'PONT'] },
+  { motCode: 'DRAGON',  mots: ['ÉCAILLES', 'FEU', 'AILES', 'CAVERNE', 'MONSTRE', 'LÉGENDE'] },
+  { motCode: 'NUIT',    mots: ['LUNE', 'ÉTOILE', 'NOIR', 'RÊVE', 'DORMIR', 'CHOUETTE'] },
+  { motCode: 'OCEAN',   mots: ['VAGUE', 'BALEINE', 'SEL', 'BLEU', 'PROFOND', 'NAGER'] },
+  { motCode: 'ORAGE',   mots: ['ÉCLAIR', 'TONNERRE', 'PLUIE', 'VENT', 'NUAGE', 'GRONDE'] },
+  { motCode: 'CLE',     mots: ['SERRURE', 'PORTE', 'OUVRIR', 'MÉTAL', 'SECRET', 'TROUSSEAU'] },
+  { motCode: 'SABLIER', mots: ['SABLE', 'VERRE', 'MINUTE', 'COULER', 'TEMPS', 'RETOURNER'] },
+  { motCode: 'FORET',   mots: ['ARBRE', 'FEUILLES', 'SENTIER', 'ÉCUREUIL', 'MOUSSE', 'BRANCHE'] },
+  { motCode: 'VOLCAN',  mots: ['LAVE', 'CRATÈRE', 'FUMÉE', 'CENDRE', 'ÉRUPTION', 'MONTAGNE'] }
+];
+
+/** Range les six mots d'une énigme sur les six jours qui en portent un. */
+function indicesDeLEnigme(n) {
+  var e = ENIGMES[((n % ENIGMES.length) + ENIGMES.length) % ENIGMES.length];
+  var indices = {};
+  JOURS_INDICE.forEach(function (id, i) { indices[id] = e.mots[i]; });
+  return indices;
+}
+
+var REGLAGES_DEFAUT = {
+  motCode: 'TRESOR',
+  seuilPorte: 21,
+  secondesPlancher: 25,
+  secondesParTempsFort: 10,
+  secondesPlafond: 90,
+  tempsFortsMaxParJour: 2,
+  indiceVerrouilleSousSeuil: 2,
+  paliers: [
+    { boyards: 55, butin: 'Le booster complet' },
+    { boyards: 35, butin: '3 cartes' },
+    { boyards: 20, butin: '2 cartes' },
+    { boyards: 0,  butin: '1 carte' }
+  ],
+  pin: '1234',
+  fenetres: null,          // réglées par le parent ; sinon celles d'EPREUVES
+  salleToujoursOuverte: false   // pour les tests
 };
 
-// Ordre chronologique réel de la journée. "bonus: true" = temps fort facultatif (ne compte pas pour valider le jour).
-const PERIOD_DEFS = {
-  matin: {
-    title: 'MATIN', tasks: [
-      { id: 'faire-lit', icon: '🛌', name: 'LA CHAMBRE ROYALE', task: "Faire son lit" },
-      { id: 'habiller', icon: '👕', name: 'ÉPREUVE DE PASSE-PARTOUT', task: "S'habiller" },
-      { id: 'debarrasser-matin', icon: '🍽️', name: 'LA SALLE DES ASSIETTES', task: "Débarrasser la table du petit-déjeuner" },
-      { id: 'dents-matin', icon: '🪥', name: 'LA FONTAINE ÉTINCELANTE', task: "Se laver les dents" },
-    ]
-  },
-  midi: {
-    title: 'MIDI', tasks: [
-      { id: 'couvert-midi', icon: '🍴', name: 'TEMPS FORT DU BUFFET', task: "Mettre le couvert", bonus: true },
-      { id: 'debarrasser-midi', icon: '🍽️', name: 'LA SALLE DES ASSIETTES', task: "Débarrasser la table du déjeuner" },
-    ]
-  },
-  soir: {
-    title: 'SOIR', tasks: [
-      { id: 'douche', icon: '🚿', name: 'LA CASCADE MYSTÉRIEUSE', task: "Aller à la douche" },
-      { id: 'couvert-soir', icon: '🍴', name: 'TEMPS FORT DU BUFFET', task: "Mettre le couvert", bonus: true },
-      { id: 'debarrasser-soir', icon: '🍽️', name: 'LA SALLE DES ASSIETTES', task: "Débarrasser la table du dîner" },
-      { id: 'dents-soir', icon: '🦷', name: 'LA GROTTE AUX DENTS DE NACRE', task: "Se brosser les dents" },
-      { id: 'toilettes', icon: '🚪', name: 'LE PASSAGE SECRET', task: "Aller aux toilettes" },
-      { id: 'coucher', icon: '🛏️', name: 'LA CHAMBRE DU TRÉSOR', task: "Aller se coucher" },
-    ]
-  },
-};
+var CLE_STOCKAGE = 'fort-marius-v2';
 
-// Durées par défaut des minuteurs, en secondes (façon Fort Boyard)
-const DURATIONS = {
-  'faire-lit': 120,
-  'habiller': 300,
-  'debarrasser-matin': 180,
-  'dents-matin': 120,
-  'couvert-midi': 180,
-  'debarrasser-midi': 180,
-  'douche': 600,
-  'couvert-soir': 180,
-  'debarrasser-soir': 180,
-  'dents-soir': 120,
-  'toilettes': 120,
-  'coucher': 300,
-};
+/* =========================================================
+   2. L'ÉTAT
+   ========================================================= */
 
-function periodsForDay(dayId) {
-  const day = DAYS.find(d => d.id === dayId);
-  const order = ['matin', 'soir'];
-  if (day && day.weekend) order.splice(1, 0, 'midi');
-  return order.map(key => ({ id: key, ...PERIOD_DEFS[key] }));
-}
-function tasksForDay(dayId) {
-  return periodsForDay(dayId).flatMap(p => p.tasks);
-}
-function coreTasksForDay(dayId) {
-  return tasksForDay(dayId).filter(t => !t.bonus);
+var etat = null;
+var vueActive = 'jour';
+var parentDeverrouille = false;
+
+function etatNeuf(lundiIso, numeroEnigme) {
+  var jours = {};
+  JOURS.forEach(function (j) { jours[j.id] = { epreuves: {}, tempsForts: [] }; });
+  var n = numeroEnigme || 0;
+  return {
+    version: 2,
+    semaine: lundiIso,
+    jours: jours,
+    enigme: n,
+    indices: indicesDeLEnigme(n),
+    reglages: Object.assign({}, REGLAGES_DEFAUT, { motCode: ENIGMES[n % ENIGMES.length].motCode }),
+    salle: null,           // { ouverte, codeTrouve, boyards, butin, faiteLe }
+    boyardsCumul: 0,
+    semainesJouees: 0
+  };
 }
 
-const STORAGE_KEY = 'fort-boyard-marius-week';
-let state = {
-  weekStart: null,
-  days: {},
-  treasureTotal: 0,
-  dailyReward: "une carte Pokémon",
-  weekReward: "un booster de cartes Pokémon",
-  bonusReward: "le droit de choisir le dessert du soir",
-  weekThreshold: 45,
-  finalWord: "TRÉSOR",
-  finalWordVisible: false,
-  dailyClues: Object.assign({}, DEFAULT_CLUES),
-};
-let activeDay = 'lundi';
+function charger() {
+  var lundi = isoDuLundi(new Date());
+  var brut = null;
+  try { brut = localStorage.getItem(CLE_STOCKAGE); } catch (e) { /* stockage indisponible */ }
 
-function getMonday(d) {
-  const date = new Date(d);
-  const day = date.getDay();
-  const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(date.setDate(diff));
-  monday.setHours(0,0,0,0);
-  return monday;
-}
-function dateKey(d) { return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
+  if (brut) {
+    try {
+      var lu = JSON.parse(brut);
+      if (lu && lu.version === 2) {
+        etat = lu;
+        etat.reglages = Object.assign({}, REGLAGES_DEFAUT, lu.reglages || {});
+        if (typeof etat.enigme !== 'number') etat.enigme = 0;
+        etat.indices = Object.assign({}, indicesDeLEnigme(etat.enigme), lu.indices || {});
+        JOURS.forEach(function (j) {
+          if (!etat.jours[j.id]) etat.jours[j.id] = { epreuves: {}, tempsForts: [] };
+          if (!etat.jours[j.id].tempsForts) etat.jours[j.id].tempsForts = [];
+        });
+      }
+    } catch (e) { /* donnée illisible : on repart à neuf */ }
+  }
 
-function ensureDays() {
-  DAYS.forEach(d => { if (!state.days[d.id]) state.days[d.id] = {}; });
+  if (!etat) { etat = etatNeuf(lundi, 0); return; }
+
+  if (etat.semaine !== lundi) nouvelleSemaine(lundi);
 }
 
-// Comptages "core" (obligatoires) — déterminent la validation du jour
-function dayCoreCount(dayId) {
-  const checks = state.days[dayId] || {};
-  return coreTasksForDay(dayId).filter(t => checks[t.id]).length;
-}
-function dayCoreMax(dayId) { return coreTasksForDay(dayId).length; }
-function dayComplete(dayId) { return dayCoreCount(dayId) === dayCoreMax(dayId); }
-
-// Comptages "tout compris" (core + bonus) — pour les clés / le trésor
-function dayAllCount(dayId) {
-  return Object.values(state.days[dayId] || {}).filter(Boolean).length;
-}
-function dayBonusDone(dayId) {
-  const checks = state.days[dayId] || {};
-  return tasksForDay(dayId).some(t => t.bonus && checks[t.id]);
-}
-function weekCount() {
-  return DAYS.reduce((sum, d) => sum + dayAllCount(d.id), 0);
-}
-function weekCoreMax() {
-  return DAYS.reduce((sum, d) => sum + dayCoreMax(d.id), 0);
+function nouvelleSemaine(lundi) {
+  var reglages = etat.reglages;                 // seuils, fenêtres, PIN : on garde tout
+  var cumul = etat.boyardsCumul || 0;
+  var jouees = (etat.semainesJouees || 0) + 1;
+  var suivante = (etat.enigme || 0) + 1;        // l'énigme tourne toute seule
+  etat = etatNeuf(lundi, suivante);
+  var motCode = etat.reglages.motCode;
+  etat.reglages = reglages;
+  etat.reglages.motCode = motCode;
+  etat.boyardsCumul = cumul;
+  etat.semainesJouees = jouees;
+  sauver();
 }
 
-function renderClues() {
-  const rowsEl = document.getElementById('clue-rows');
-  rowsEl.innerHTML = '';
-  DAYS.forEach(d => {
-    const complete = dayComplete(d.id);
-    const row = document.createElement('div');
-    row.className = 'clue-row' + (complete ? '' : ' locked');
-    row.dataset.day = d.id;
-    row.innerHTML = `
-      <span class="clue-day">${d.label}</span>
-      <span class="clue-icon">${complete ? '🔓' : '🔒'}</span>
-      <span class="clue-text" contenteditable="true" data-day="${d.id}"></span>
-    `;
-    rowsEl.appendChild(row);
+function sauver() {
+  try { localStorage.setItem(CLE_STOCKAGE, JSON.stringify(etat)); }
+  catch (e) { console.warn('Sauvegarde impossible sur cet appareil.', e); }
+}
+
+/* =========================================================
+   3. LE TEMPS
+   ========================================================= */
+
+function isoDuLundi(d) {
+  var date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  var jour = date.getDay();                       // 0 = dimanche
+  date.setDate(date.getDate() - (jour === 0 ? 6 : jour - 1));
+  return date.getFullYear() + '-' +
+         String(date.getMonth() + 1).padStart(2, '0') + '-' +
+         String(date.getDate()).padStart(2, '0');
+}
+
+/** Le bac à sable peut forcer le jour et l'heure ; sinon c'est la vraie horloge. */
+function simulation() { return (etat && etat.simulation) || {}; }
+function enSimulation() { var s = simulation(); return !!(s.jour || s.heure); }
+
+function idDuJour(d) {
+  if (!d && simulation().jour) return simulation().jour;
+  var j = (d || new Date()).getDay();
+  return JOURS[j === 0 ? 6 : j - 1].id;
+}
+
+function minutesDe(hhmm) {
+  var p = hhmm.split(':');
+  return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+}
+
+function minutesMaintenant() {
+  if (simulation().heure) return minutesDe(simulation().heure);
+  var d = new Date();
+  return d.getHours() * 60 + d.getMinutes();
+}
+
+function formatMinutes(total) {
+  if (total >= 60) {
+    var h = Math.floor(total / 60);
+    var m = total % 60;
+    return m ? h + ' h ' + m + ' min' : h + ' h';
+  }
+  return total + ' min';
+}
+
+function formatChrono(sec) {
+  if (sec < 0) sec = 0;
+  var m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+  return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+/* =========================================================
+   4. LES RÈGLES
+   ========================================================= */
+
+/** La fenêtre d'une épreuve : celle réglée par le parent, sinon celle du modèle. */
+function fenetreDe(e) {
+  var perso = etat.reglages.fenetres && etat.reglages.fenetres[e.id];
+  return (perso && perso.length === 2) ? perso : e.fenetre;
+}
+
+function epreuvesDuJour(jourId) {
+  var jour = JOURS.filter(function (j) { return j.id === jourId; })[0];
+  return EPREUVES.filter(function (e) {
+    return e.quand === 'tous' || (e.quand === 'weekend' && jour && jour.weekend);
   });
+}
 
-  DAYS.forEach(d => {
-    const el = rowsEl.querySelector(`.clue-text[data-day="${d.id}"]`);
-    if (document.activeElement !== el) {
-      el.textContent = state.dailyClues[d.id] || '';
+function resultat(jourId, epreuveId) {
+  var j = etat.jours[jourId];
+  return (j && j.epreuves[epreuveId]) || null;
+}
+
+function nbReussies(jourId) {
+  return epreuvesDuJour(jourId).filter(function (e) {
+    var r = resultat(jourId, e.id);
+    return r && r.statut === 'reussie';
+  }).length;
+}
+
+function clesSemaine() {
+  return JOURS.reduce(function (n, j) { return n + nbReussies(j.id); }, 0);
+}
+
+function clesMaxSemaine() {
+  return JOURS.reduce(function (n, j) { return n + epreuvesDuJour(j.id).length; }, 0);
+}
+
+/**
+ * État d'une épreuve pour un jour donné.
+ * 'reussie' | 'ratee' | 'a-venir' | 'ouverte' | 'vacillante' | 'fermee' | 'passee'
+ */
+function etatEpreuve(jourId, epreuve) {
+  var r = resultat(jourId, epreuve.id);
+  if (r && r.statut) return r.statut;                    // 'reussie' ou 'ratee'
+
+  var aujourdhui = idDuJour();
+  var indexJour = JOURS.map(function (j) { return j.id; }).indexOf(jourId);
+  var indexAuj = JOURS.map(function (j) { return j.id; }).indexOf(aujourdhui);
+
+  if (indexJour > indexAuj) return 'a-venir';            // jour futur
+  if (indexJour < indexAuj) return 'passee';             // jour écoulé, non jouée
+
+  var f = fenetreDe(epreuve);
+  var maintenant = minutesMaintenant();
+  var debut = minutesDe(f[0]);
+  var fin = minutesDe(f[1]);
+  if (maintenant < debut) return 'a-venir';
+  if (maintenant >= fin) return 'fermee';
+  return (fin - maintenant <= 5) ? 'vacillante' : 'ouverte';
+}
+
+function minutesRestantesFenetre(epreuve) {
+  return Math.max(0, minutesDe(fenetreDe(epreuve)[1]) - minutesMaintenant());
+}
+
+/** Le temps restant avant que la torche s'éteigne, à la seconde près. */
+function secondesRestantesFenetre(epreuve) {
+  var fin = minutesDe(fenetreDe(epreuve)[1]) * 60;
+  if (simulation().heure) return Math.max(0, fin - minutesDe(simulation().heure) * 60);
+  var d = new Date();
+  return Math.max(0, fin - (d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds()));
+}
+
+function formatCompte(sec) {
+  return Math.floor(sec / 60) + ':' + String(Math.floor(sec % 60)).padStart(2, '0');
+}
+
+/** L'épreuve à mettre en vedette : celle qui est ouverte, sinon la prochaine. */
+function epreuveEnVedette() {
+  var jourId = idDuJour();
+  var liste = epreuvesDuJour(jourId);
+  var ouverte = null, prochaine = null;
+  liste.forEach(function (e) {
+    var st = etatEpreuve(jourId, e);
+    if (!ouverte && (st === 'ouverte' || st === 'vacillante')) ouverte = e;
+    if (!prochaine && st === 'a-venir') prochaine = e;
+  });
+  return ouverte || prochaine || null;
+}
+
+function tempsFortsValides() {
+  return JOURS.reduce(function (n, j) {
+    return n + etat.jours[j.id].tempsForts.filter(function (t) { return t.statut === 'valide'; }).length;
+  }, 0);
+}
+
+function tempsFortsEnAttente() {
+  var liste = [];
+  JOURS.forEach(function (j) {
+    etat.jours[j.id].tempsForts.forEach(function (t, i) {
+      if (t.statut === 'attente') liste.push({ jour: j, index: i, tf: t });
+    });
+  });
+  return liste;
+}
+
+function secondesDansLaSalle() {
+  var r = etat.reglages;
+  return Math.min(r.secondesPlafond, r.secondesPlancher + r.secondesParTempsFort * tempsFortsValides());
+}
+
+function butinPour(boyards) {
+  var p = etat.reglages.paliers;
+  for (var i = 0; i < p.length; i++) if (boyards >= p[i].boyards) return p[i].butin;
+  return p[p.length - 1].butin;
+}
+
+/**
+ * L'indice du jour : chaque épreuve ratée cache une lettre de plus.
+ * Sous le seuil de réussites, le Père Fouras ne dit rien.
+ */
+/**
+ * Ordre de masquage des lettres, calculé pour le mot lui-même.
+ * On disperse les trous au maximum et on garde l'initiale pour la fin :
+ * une lettre ratée de plus doit toujours cacher une lettre de plus.
+ */
+function ordreMasquage(n) {
+  if (n <= 1) return [0];
+  var candidats = [];
+  for (var i = 1; i < n; i++) candidats.push(i);   // l'initiale reste visible le plus longtemps
+  var choisis = [];
+  while (candidats.length) {
+    var meilleur = 0, score = -1;
+    for (var k = 0; k < candidats.length; k++) {
+      var c = candidats[k];
+      var d = choisis.length
+        ? Math.min.apply(null, choisis.map(function (x) { return Math.abs(x - c); }))
+        : Math.min(c, n - 1 - c);                  // premier trou : le plus central
+      if (d > score) { score = d; meilleur = k; }
     }
-    el.addEventListener('focus', () => {
-      el.closest('.clue-row').classList.add('editing');
-    });
-    el.addEventListener('blur', async () => {
-      // on ne garde qu'un seul mot (le premier)
-      const firstWord = (el.textContent.trim().split(/\s+/)[0] || '').toUpperCase();
-      state.dailyClues[d.id] = firstWord;
-      el.closest('.clue-row').classList.remove('editing');
-      renderClues();
-      await save();
-    });
-  });
-
-  const fwRow = document.getElementById('final-word-row');
-  fwRow.classList.toggle('hidden', !state.finalWordVisible);
-  const fwEl = document.getElementById('final-word');
-  if (document.activeElement !== fwEl) fwEl.textContent = state.finalWord;
+    choisis.push(candidats.splice(meilleur, 1)[0]);
+  }
+  choisis.push(0);
+  return choisis;
 }
 
-function render() {
-  ensureDays();
-
-  const tabsEl = document.getElementById('day-tabs');
-  tabsEl.innerHTML = '';
-  DAYS.forEach(d => {
-    const count = dayCoreCount(d.id);
-    const max = dayCoreMax(d.id);
-    const complete = count === max;
-    const gift = dayBonusDone(d.id);
-    const btn = document.createElement('button');
-    btn.className = 'day-tab' + (d.id === activeDay ? ' active' : '') + (complete ? ' complete' : '');
-    btn.innerHTML = `<span class="d">${d.label}${complete ? ' <span class="star">★</span>' : ''}${gift ? ' <span class="gift">🎁</span>' : ''}</span><span class="k">${count}/${max}</span>`;
-    btn.addEventListener('click', () => { activeDay = d.id; render(); });
-    tabsEl.appendChild(btn);
+/** Une journée est finie quand plus aucune fenêtre n'est ouverte ni à venir. */
+function journeeFinie(jourId) {
+  return epreuvesDuJour(jourId).every(function (e) {
+    var st = etatEpreuve(jourId, e);
+    return st !== 'a-venir' && st !== 'ouverte' && st !== 'vacillante';
   });
+}
 
-  const periodsEl = document.getElementById('periods');
-  periodsEl.innerHTML = '';
-  periodsForDay(activeDay).forEach(period => {
-    const block = document.createElement('div');
-    block.className = 'period';
-    const title = document.createElement('div');
-    title.className = 'period-title';
-    title.textContent = period.title;
-    block.appendChild(title);
+function indiceRevele(jourId) {
+  var mot = (etat.indices[jourId] || '').toUpperCase();
+  if (!mot || JOURS_INDICE.indexOf(jourId) === -1) return null;
 
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    period.tasks.forEach(t => {
-      const done = !!(state.days[activeDay] && state.days[activeDay][t.id]);
-      const card = document.createElement('div');
-      card.className = 'card' + (done ? ' done' : '') + (t.bonus ? ' bonus' : '');
-      card.innerHTML = `
-        ${t.bonus ? '<div class="ribbon">BONUS</div>' : ''}
-        <div class="check">${done ? '✓' : ''}</div>
-        <span class="icon">${t.icon}</span>
-        <div class="name">${t.name}</div>
-        <div class="task">${t.task}</div>
-        <button class="timer-btn" title="Lancer le minuteur">⏱️</button>
-      `;
-      card.addEventListener('click', () => toggle(activeDay, t.id));
-      card.querySelector('.timer-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        openTimer(t);
+  var total = epreuvesDuJour(jourId).length;
+  var reussies = nbReussies(jourId);
+  var rates = total - reussies;
+
+  if (!journeeFinie(jourId)) return { mot: mot, etat: 'en-cours', reussies: reussies, total: total };
+
+  if (reussies < etat.reglages.indiceVerrouilleSousSeuil) {
+    return { mot: mot, etat: 'verrouille', reussies: reussies, total: total };
+  }
+
+  var ordre = ordreMasquage(mot.length);
+  var caches = {};
+  for (var i = 0; i < rates && i < ordre.length; i++) caches[ordre[i]] = true;
+  return { mot: mot, etat: 'revele', caches: caches, rates: rates, reussies: reussies, total: total };
+}
+
+/**
+ * Remplit la semaine pour un essai : les réussites sont réparties
+ * jour par jour, en tournant, pour obtenir des journées partielles
+ * et donc des indices à trous variés.
+ */
+function remplirSemaine(nbCles, nbTempsForts) {
+  JOURS.forEach(function (j) { etat.jours[j.id] = { epreuves: {}, tempsForts: [] }; });
+
+  var restant = nbCles;
+  var tour = 0;
+  var maxTours = Math.max.apply(null, JOURS.map(function (j) { return epreuvesDuJour(j.id).length; }));
+  while (restant > 0 && tour < maxTours) {
+    for (var k = 0; k < JOURS.length && restant > 0; k++) {
+      var liste = epreuvesDuJour(JOURS[k].id);
+      if (tour < liste.length) {
+        etat.jours[JOURS[k].id].epreuves[liste[tour].id] = {
+          statut: 'reussie', gestes: []
+        };
+        restant--;
+      }
+    }
+    tour++;
+  }
+  var tf = nbTempsForts, i = 0;
+  while (tf > 0 && i < JOURS.length * etat.reglages.tempsFortsMaxParJour) {
+    var jour = JOURS[i % JOURS.length];
+    if (etat.jours[jour.id].tempsForts.length < etat.reglages.tempsFortsMaxParJour) {
+      etat.jours[jour.id].tempsForts.push({
+        libelle: TEMPS_FORTS_POSSIBLES[tf % TEMPS_FORTS_POSSIBLES.length],
+        statut: 'valide', a: new Date().toISOString()
       });
-      grid.appendChild(card);
-    });
-    block.appendChild(grid);
-    periodsEl.appendChild(block);
+      tf--;
+    }
+    i++;
+  }
+  etat.salle = null;
+  sauver();
+}
+
+/** Rouvre une journée : on efface ses épreuves pour pouvoir la rejouer. */
+function viderJour(jourId) {
+  etat.jours[jourId] = { epreuves: {}, tempsForts: [] };
+  sauver();
+}
+
+/* =========================================================
+   5. LE SON
+   ========================================================= */
+
+var audio = null;
+function reveillerAudio() {
+  try {
+    if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+    if (audio.state === 'suspended') audio.resume();
+  } catch (e) { audio = null; }
+}
+function jouer(freqDepart, freqFin, duree, type, volume) {
+  if (!audio) return;
+  try {
+    var osc = audio.createOscillator(), gain = audio.createGain(), t = audio.currentTime;
+    osc.type = type || 'triangle';
+    osc.frequency.setValueAtTime(freqDepart, t);
+    if (freqFin && freqFin !== freqDepart) osc.frequency.exponentialRampToValueAtTime(freqFin, t + duree);
+    gain.gain.setValueAtTime(volume || 0.16, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + duree);
+    osc.connect(gain); gain.connect(audio.destination);
+    osc.start(t); osc.stop(t + duree);
+  } catch (e) { /* audio indisponible */ }
+}
+var SONS = {
+  gong:    function () { jouer(150, 70, 1.4, 'sine', 0.3); jouer(300, 140, 1.1, 'triangle', 0.12); },
+  cle:     function () { jouer(880, 1320, 0.25, 'triangle', 0.2); setTimeout(function () { jouer(1320, 1760, 0.3, 'triangle', 0.16); }, 130); },
+  boyard:  function () { jouer(1400, 2100, 0.07, 'square', 0.06); },
+  fin:     function () { jouer(440, 220, 0.7, 'sawtooth', 0.14); },
+  ouvre:   function () { [262, 330, 392, 523].forEach(function (f, i) { setTimeout(function () { jouer(f, f, 0.35, 'triangle', 0.18); }, i * 150); }); }
+};
+
+/* =========================================================
+   6. RENDU — AUJOURD'HUI
+   ========================================================= */
+
+var vedetteEtat = '';   // pour ne reconstruire que si quelque chose a changé
+
+function rendreVedette() {
+  var hote = document.getElementById('vedette');
+  var jourId = idDuJour();
+  var e = epreuveEnVedette();
+
+  if (!e) {
+    vedetteEtat = 'fin';
+    var fait = nbReussies(jourId), total = epreuvesDuJour(jourId).length;
+    hote.innerHTML =
+      '<div class="panneau vedette">' +
+        '<div class="glyphe">🏁</div>' +
+        '<h3>Journée terminée</h3>' +
+        '<p class="gestes">' + fait + ' clé' + (fait > 1 ? 's' : '') + ' sur ' + total + ' aujourd\'hui.</p>' +
+      '</div>';
+    return;
+  }
+
+  var st = etatEpreuve(jourId, e);
+  var ouverte = (st === 'ouverte' || st === 'vacillante');
+  var gestes = gestesDe(e);
+  var signature = e.id + '|' + st + '|' + gestes.join(',');
+  if (signature === vedetteEtat) { majCompteur(); return; }
+  vedetteEtat = signature;
+
+  if (!ouverte) {
+    hote.innerHTML =
+      '<div class="panneau vedette">' +
+        '<div class="glyphe">' + e.glyphe + '</div>' +
+        '<h3>' + e.nom + '</h3>' +
+        (e.promesse ? '<p class="promesse">' + e.promesse + '</p>' : '') +
+        '<p class="etat">La torche s\'allume à <strong>' + fenetreDe(e)[0].replace(':', 'h') + '</strong>.</p>' +
+        '<p class="gestes">' + e.gestes.join(' · ') + '</p>' +
+      '</div>';
+    return;
+  }
+
+  // --- l'épreuve est ouverte : tout se joue ici, sans fenêtre surgissante ---
+  var html =
+    '<div class="panneau vedette en-cours">' +
+      '<div class="glyphe">' + e.glyphe + '</div>' +
+      '<h3>' + e.nom + '</h3>' +
+      (e.promesse ? '<p class="promesse">' + e.promesse + '</p>' : '') +
+      '<div class="compte" id="compte">' +
+        '<span class="compte-valeur" id="compte-valeur">--:--</span>' +
+        '<span class="compte-legende">avant que la torche s\'éteigne</span>' +
+      '</div>' +
+      '<div class="torche" id="torche">' +
+        '<div class="torche-piste"><div class="torche-flamme" id="torche-flamme"></div></div>' +
+      '</div>' +
+      '<div class="gestes-liste" id="gestes-liste"></div>' +
+      '<p class="indication" id="indication"></p>' +
+      '<button class="btn large" id="btn-fini" type="button">J\'ai fini !</button>' +
+    '</div>';
+  hote.innerHTML = html;
+
+  var liste = document.getElementById('gestes-liste');
+  e.gestes.forEach(function (g, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'geste' + (gestes[i] ? ' fait' : '');
+    b.innerHTML = '<span class="case">✓</span><span class="txt">' + texteGeste(g) + '</span>';
+    b.addEventListener('click', function () { basculerGeste(e, i); });
+    liste.appendChild(b);
   });
 
-  const dMax = dayCoreMax(activeDay);
-  document.getElementById('today-count').textContent = `${dayCoreCount(activeDay)}/${dMax}`;
-  document.getElementById('today-label').innerHTML = `clés — ${DAYS.find(d=>d.id===activeDay).label}${dayBonusDone(activeDay) ? '<span class="bonus-badge">+ bonus 🎁</span>' : ''}`;
-  const wc = weekCount();
-  const wcm = weekCoreMax();
-  document.getElementById('week-count').textContent = `${wc}/${wcm}`;
-  document.getElementById('week-fill').style.width = Math.min(100, (wc / wcm) * 100) + '%';
-  document.getElementById('treasure-total').textContent = state.treasureTotal;
-
-  const dailyRewardEl = document.getElementById('daily-reward');
-  const weekRewardEl = document.getElementById('week-reward');
-  const weekThresholdEl = document.getElementById('week-threshold');
-  const bonusRewardEl = document.getElementById('bonus-reward');
-  if (document.activeElement !== dailyRewardEl) dailyRewardEl.textContent = state.dailyReward;
-  if (document.activeElement !== weekRewardEl) weekRewardEl.textContent = state.weekReward;
-  if (document.activeElement !== weekThresholdEl) weekThresholdEl.textContent = state.weekThreshold;
-  if (document.activeElement !== bonusRewardEl) bonusRewardEl.textContent = state.bonusReward;
-
-  renderClues();
+  document.getElementById('btn-fini').addEventListener('click', function () { validerEpreuve(e); });
+  majCompteur();
 }
 
-async function toggle(dayId, taskId) {
-  if (!state.days[dayId]) state.days[dayId] = {};
-  state.days[dayId][taskId] = !state.days[dayId][taskId];
-  render();
-  await save();
-}
+/** Seul le compte à rebours bouge chaque seconde : le reste du panneau ne bouge pas. */
+function majCompteur() {
+  var e = epreuveEnVedette();
+  var valeur = document.getElementById('compte-valeur');
+  if (!e || !valeur) return;
 
-function save() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch (e) {
-    console.warn('Sauvegarde locale impossible sur cet appareil/navigateur.', e);
-  }
-}
+  var f = fenetreDe(e);
+  var sec = secondesRestantesFenetre(e);
+  var total = (minutesDe(f[1]) - minutesDe(f[0])) * 60;
+  var vacille = sec <= 5 * 60;
 
-async function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const loaded = JSON.parse(raw);
-      state = Object.assign(state, loaded);
-      state.dailyClues = Object.assign({}, DEFAULT_CLUES, loaded.dailyClues || {});
-    }
-  } catch (e) {
-    // pas de donnée existante
-  }
+  valeur.textContent = formatCompte(sec);
+  document.getElementById('compte').className = 'compte' + (vacille ? ' vacille' : '');
+  document.getElementById('torche').className = 'torche' + (vacille ? ' vacille' : '');
+  document.getElementById('torche-flamme').style.width =
+    Math.max(0, Math.min(100, (sec / total) * 100)) + '%';
 
-  const monday = getMonday(new Date());
-  const mondayKey = dateKey(monday);
+  var gestes = gestesDe(e);
+  var reste = gestes.filter(function (fait) { return !fait; }).length;
+  var indication = document.getElementById('indication');
+  var bouton = document.getElementById('btn-fini');
 
-  if (state.weekStart !== mondayKey) {
-    if (state.weekStart) {
-      state.treasureTotal = (state.treasureTotal || 0) + weekCount();
-    }
-    state.weekStart = mondayKey;
-    state.days = {};
-    await save();
-  }
-
-  const jsDay = new Date().getDay();
-  const idx = jsDay === 0 ? 6 : jsDay - 1;
-  activeDay = DAYS[idx].id;
-
-  render();
-}
-
-['daily-reward', 'week-reward', 'week-threshold', 'bonus-reward'].forEach(id => {
-  const el = document.getElementById(id);
-  el.addEventListener('blur', async () => {
-    if (id === 'daily-reward') state.dailyReward = el.textContent.trim();
-    if (id === 'week-reward') state.weekReward = el.textContent.trim();
-    if (id === 'week-threshold') state.weekThreshold = parseInt(el.textContent.trim(), 10) || state.weekThreshold;
-    if (id === 'bonus-reward') state.bonusReward = el.textContent.trim();
-    await save();
-  });
-});
-
-// --- Minuteur façon Fort Boyard ---
-let timerTask = null;
-let timerRemaining = 0;
-let timerRunning = false;
-let timerInterval = null;
-let audioCtx = null;
-
-function formatTime(sec) {
-  const m = Math.floor(sec / 60).toString().padStart(2, '0');
-  const s = Math.floor(sec % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
-
-function beep() {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.value = 880;
-    gain.gain.value = 0.15;
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.18);
-  } catch (e) { /* audio indisponible, tant pis */ }
-}
-
-function openTimer(task) {
-  timerTask = task;
-  timerRemaining = DURATIONS[task.id] || 180;
-  timerRunning = false;
-  clearInterval(timerInterval);
-  document.getElementById('timer-box').classList.remove('done');
-  document.getElementById('t-icon').textContent = task.icon;
-  document.getElementById('t-name').textContent = task.task;
-  document.getElementById('t-msg').textContent = '';
-  document.getElementById('t-start').textContent = 'Démarrer';
-  updateTimerDisplay();
-  document.getElementById('timer-overlay').classList.add('open');
-}
-
-function updateTimerDisplay() {
-  document.getElementById('t-clock').textContent = formatTime(timerRemaining);
-}
-
-function closeTimer() {
-  clearInterval(timerInterval);
-  timerRunning = false;
-  document.getElementById('timer-overlay').classList.remove('open');
-}
-
-function tickTimer() {
-  if (timerRemaining > 0) {
-    timerRemaining--;
-    updateTimerDisplay();
-  }
-  if (timerRemaining <= 0) {
-    clearInterval(timerInterval);
-    timerRunning = false;
-    document.getElementById('timer-box').classList.add('done');
-    document.getElementById('t-msg').textContent = "Temps écoulé ! Épreuve terminée ?";
-    document.getElementById('t-start').textContent = 'Démarrer';
-    beep(); setTimeout(beep, 260); setTimeout(beep, 520);
-  }
-}
-
-document.getElementById('t-start').addEventListener('click', () => {
-  if (timerRemaining <= 0) return;
-  timerRunning = !timerRunning;
-  document.getElementById('t-start').textContent = timerRunning ? 'Pause' : 'Reprendre';
-  if (timerRunning) {
-    document.getElementById('timer-box').classList.remove('done');
-    document.getElementById('t-msg').textContent = '';
-    timerInterval = setInterval(tickTimer, 1000);
+  if (sec <= 0) {
+    indication.textContent = 'La torche s\'est éteinte. La clé attendra demain.';
+    bouton.disabled = true; bouton.className = 'btn large'; bouton.textContent = 'Trop tard';
+    vedetteEtat = '';                                   // on rebâtit au prochain passage
+  } else if (reste === 0) {
+    indication.textContent = 'Tout est fait. La clé est à toi.';
+    bouton.disabled = false; bouton.className = 'btn principal large'; bouton.textContent = 'J\'ai fini !';
   } else {
-    clearInterval(timerInterval);
+    indication.textContent = 'Il te reste ' + reste + ' geste' + (reste > 1 ? 's' : '') +
+                             ' et ' + formatMinutes(Math.ceil(sec / 60)) + '.';
+    bouton.disabled = true; bouton.className = 'btn large'; bouton.textContent = 'Il te reste des gestes';
+  }
+}
+
+function rendreListeEpreuves() {
+  var hote = document.getElementById('liste-epreuves');
+  var jourId = idDuJour();
+  hote.innerHTML = '';
+
+  epreuvesDuJour(jourId).forEach(function (e) {
+    var st = etatEpreuve(jourId, e);
+    var badge = { reussie: '🔑', ratee: '✕', ouverte: '🔥', vacillante: '🔥', fermee: '✕', 'a-venir': '·', passee: '✕' }[st] || '·';
+
+    var b = document.createElement('div');
+    b.className = 'ligne-epreuve ' + st;
+    b.innerHTML =
+      '<span class="glyphe">' + e.glyphe + '</span>' +
+      '<span class="nom">' + e.nom + '</span>' +
+      '<span class="badge">' + badge + '</span>' +
+      '<span class="creneau">' + e.moment + ' · ' + fenetreDe(e)[0].replace(':', 'h') + ' → ' + fenetreDe(e)[1].replace(':', 'h') + '</span>';
+    hote.appendChild(b);
+  });
+}
+
+function rendreTempsForts() {
+  var jourId = idDuJour();
+  var liste = etat.jours[jourId].tempsForts;
+  var hote = document.getElementById('tf-liste');
+  hote.innerHTML = '';
+  liste.forEach(function (t) {
+    var li = document.createElement('li');
+    var libelle = { attente: 'En attente du gardien', valide: '+' + etat.reglages.secondesParTempsFort + ' s', refuse: 'Pas cette fois' }[t.statut];
+    li.innerHTML = '<span>' + t.libelle + '</span><span class="etiquette ' + t.statut + '">' + libelle + '</span>';
+    hote.appendChild(li);
+  });
+  var atteint = liste.length >= etat.reglages.tempsFortsMaxParJour;
+  var btn = document.getElementById('btn-temps-fort');
+  btn.disabled = atteint;
+  btn.textContent = atteint ? 'Deux temps forts aujourd\'hui, c\'est le maximum' : 'Signaler un temps fort';
+}
+
+function rendreIndiceDuJour() {
+  var jourId = idDuJour();
+  var motEl = document.getElementById('mot-indice');
+  var verdictEl = document.getElementById('verdict-indice');
+  var info = indiceRevele(jourId);
+  motEl.innerHTML = '';
+
+  if (!info) {
+    verdictEl.textContent = 'Le dimanche, le Père Fouras se tait : c\'est le soir de la salle du trésor.';
+    return;
+  }
+  if (info.etat === 'en-cours') {
+    verdictEl.textContent = 'Le Père Fouras attend la fin de ta journée. ' +
+      info.reussies + ' épreuve' + (info.reussies > 1 ? 's' : '') + ' réussie' + (info.reussies > 1 ? 's' : '') + ' sur ' + info.total + '.';
+    return;
+  }
+  if (info.etat === 'verrouille') {
+    verdictEl.textContent = 'Le Père Fouras garde son mot pour lui ce soir.';
+    return;
+  }
+
+  for (var i = 0; i < info.mot.length; i++) {
+    var cell = document.createElement('span');
+    var vide = !!info.caches[i];
+    cell.className = 'lettre' + (vide ? ' vide' : '');
+    cell.textContent = vide ? '?' : info.mot.charAt(i);
+    motEl.appendChild(cell);
+  }
+  verdictEl.textContent = info.rates === 0
+    ? 'Journée parfaite : le mot entier est à toi.'
+    : info.rates + (info.rates > 1 ? ' lettres cachées' : ' lettre cachée') + ' — à toi de deviner le reste.';
+}
+
+/* =========================================================
+   7. RENDU — LA SEMAINE
+   ========================================================= */
+
+function rendreSemaine() {
+  var cles = clesSemaine(), max = clesMaxSemaine(), seuil = etat.reglages.seuilPorte;
+  document.getElementById('c-cles').textContent = cles + '/' + max;
+  document.getElementById('c-tf').textContent = tempsFortsValides();
+  document.getElementById('c-secondes').textContent = secondesDansLaSalle() + ' s';
+  document.getElementById('piste-plein').style.width = Math.min(100, (cles / max) * 100) + '%';
+  document.getElementById('piste-seuil').style.left = ((seuil / max) * 100) + '%';
+  document.getElementById('piste-note').textContent = cles >= seuil
+    ? 'La porte s\'ouvrira dimanche soir. (' + seuil + ' clés étaient nécessaires)'
+    : 'Encore ' + (seuil - cles) + ' clé' + ((seuil - cles) > 1 ? 's' : '') + ' pour que la porte s\'ouvre.';
+
+  var hote = document.getElementById('jours');
+  hote.innerHTML = '';
+  JOURS.forEach(function (j) {
+    var ligne = document.createElement('div');
+    ligne.className = 'jour' + (j.id === idDuJour() ? ' aujourdhui' : '');
+    var info = indiceRevele(j.id);
+    var texte, classe = 'indice';
+
+    if (!info) { texte = 'Salle du trésor'; classe += ' muet'; }
+    else if (info.etat === 'en-cours') { texte = 'journée en cours'; classe += ' muet'; }
+    else if (info.etat === 'verrouille') { texte = 'aucun indice'; classe += ' muet'; }
+    else {
+      texte = '';
+      for (var i = 0; i < info.mot.length; i++) texte += info.caches[i] ? '?' : info.mot.charAt(i);
+    }
+
+    ligne.innerHTML =
+      '<span class="nom">' + j.court + '</span>' +
+      '<span class="' + classe + '">' + texte + '</span>' +
+      '<span class="cles">' + nbReussies(j.id) + '/' + epreuvesDuJour(j.id).length + '</span>';
+    hote.appendChild(ligne);
+  });
+}
+
+/* =========================================================
+   8. L'ÉPREUVE (superposition)
+   ========================================================= */
+
+/** Les gestes cochés d'une épreuve, tels qu'ils sont en mémoire. */
+function gestesDe(e) {
+  var r = resultat(idDuJour(), e.id);
+  var g = (r && r.gestes) ? r.gestes.slice() : [];
+  while (g.length < e.gestes.length) g.push(false);
+  return g;
+}
+
+function basculerGeste(e, i) {
+  reveillerAudio();
+  var jour = etat.jours[idDuJour()];
+  var r = jour.epreuves[e.id] || (jour.epreuves[e.id] = {});
+  if (r.statut) return;                       // déjà validée : on n'y touche plus
+  var g = gestesDe(e);
+  g[i] = !g[i];
+  r.gestes = g;
+  sauver();
+  if (g[i]) jouer(700, 900, 0.08, 'triangle', 0.1);
+  rendreVedette();
+}
+
+function validerEpreuve(e) {
+  if (secondesRestantesFenetre(e) <= 0) return;
+  etat.jours[idDuJour()].epreuves[e.id] = {
+    statut: 'reussie',
+    gestes: gestesDe(e),
+    a: new Date().toISOString()
+  };
+  sauver();
+  SONS.cle();
+  toutRendre();
+}
+
+/* =========================================================
+   9. LES TEMPS FORTS
+   ========================================================= */
+
+function ouvrirTempsFort() {
+  var hote = document.getElementById('tf-choix');
+  hote.innerHTML = '';
+  TEMPS_FORTS_POSSIBLES.forEach(function (libelle) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'geste';
+    b.innerHTML = '<span class="case">✓</span><span class="txt">' + libelle + '</span>';
+    b.addEventListener('click', function () {
+      etat.jours[idDuJour()].tempsForts.push({ libelle: libelle, statut: 'attente', a: new Date().toISOString() });
+      sauver();
+      document.getElementById('voile-tf').hidden = true;
+      toutRendre();
+    });
+    hote.appendChild(b);
+  });
+  document.getElementById('voile-tf').hidden = false;
+}
+
+/* =========================================================
+   10. LA SALLE DU TRÉSOR
+   ========================================================= */
+
+var salleEnCours = null;
+
+function rendreTresor() {
+  var hote = document.getElementById('tresor-contenu');
+  var cles = clesSemaine();
+  var seuil = etat.reglages.seuilPorte;
+  var estDimanche = idDuJour() === 'dimanche';
+  var accessible = estDimanche || etat.reglages.salleToujoursOuverte;
+
+  // déjà jouée cette semaine
+  if (etat.salle && etat.salle.faiteLe) {
+    hote.innerHTML =
+      '<div class="panneau porte">' +
+        '<img class="tigre" src="assets/cadre-tigre.png" alt="">' +
+        '<h3>La salle est refermée</h3>' +
+        '<p class="butin">' + etat.salle.butin + '</p>' +
+        '<p class="sous">' + etat.salle.boyards + ' boyards ramassés en ' + etat.salle.secondes + ' secondes.</p>' +
+        '<p class="sous">Rendez-vous lundi : tout repart à zéro.</p>' +
+      '</div>';
+    return;
+  }
+
+  if (!accessible) {
+    hote.innerHTML =
+      '<div class="panneau porte">' +
+        '<img class="tigre" src="assets/cadre-tigre.png" alt="">' +
+        '<h3>La salle ouvre dimanche soir</h3>' +
+        '<p class="sous">Tu as ' + cles + ' clés sur ' + clesMaxSemaine() + '. Il en faut ' + seuil + ' pour que la porte s\'ouvre.</p>' +
+        '<p class="sous">Tu auras <strong>' + secondesDansLaSalle() + ' secondes</strong> à l\'intérieur.</p>' +
+      '</div>';
+    return;
+  }
+
+  if (cles < seuil) {
+    hote.innerHTML =
+      '<div class="panneau porte">' +
+        '<img class="tigre" src="assets/cadre-tigre.png" alt="">' +
+        '<h3>La porte reste fermée</h3>' +
+        '<p class="sous">Il fallait ' + seuil + ' clés, tu en as ' + cles + '. Ce n\'est que partie remise.</p>' +
+        '<p class="sous">Le mot-code de la semaine était :</p>' +
+        '<p class="butin">' + etat.reglages.motCode + '</p>' +
+      '</div>';
+    return;
+  }
+
+  // La porte s'ouvre : le mot-code
+  var jetons = JOURS_INDICE.map(function (id) {
+    var info = indiceRevele(id);
+    if (!info || info.etat !== 'revele') return '<span class="jeton muet">? ? ?</span>';
+    var t = '';
+    for (var i = 0; i < info.mot.length; i++) t += info.caches[i] ? '?' : info.mot.charAt(i);
+    return '<span class="jeton">' + t + '</span>';
+  }).join('');
+
+  hote.innerHTML =
+    '<div class="panneau porte">' +
+      '<img class="tigre" src="assets/cadre-tigre.png" alt="">' +
+      '<h3>La porte s\'ouvre</h3>' +
+      '<p class="sous">' + cles + ' clés sur ' + clesMaxSemaine() + '. Annonce le mot-code.</p>' +
+      '<div class="jetons">' + jetons + '</div>' +
+      '<input class="champ-code" id="saisie-code" type="text" autocomplete="off" autocapitalize="characters" placeholder="LE MOT-CODE">' +
+      '<button class="btn principal large" id="btn-code" type="button">Annoncer le mot-code</button>' +
+      '<p class="verdict" id="code-verdict"></p>' +
+    '</div>';
+
+  document.getElementById('btn-code').addEventListener('click', verifierCode);
+  document.getElementById('saisie-code').addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') verifierCode();
+  });
+}
+
+function normaliser(s) {
+  return (s || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Z]/g, '');
+}
+
+function verifierCode() {
+  reveillerAudio();
+  var saisi = normaliser(document.getElementById('saisie-code').value);
+  var attendu = normaliser(etat.reglages.motCode);
+  var verdict = document.getElementById('code-verdict');
+  if (!saisi) return;
+  if (saisi === attendu) {
+    SONS.ouvre();
+    lancerLaSalle();
+  } else {
+    verdict.textContent = 'Ce n\'est pas le mot. Regarde bien tes indices et réessaie.';
+    jouer(200, 120, 0.3, 'sawtooth', 0.12);
+  }
+}
+
+function lancerLaSalle() {
+  var secondes = secondesDansLaSalle();
+  var hote = document.getElementById('tresor-contenu');
+  hote.innerHTML =
+    '<div class="panneau">' +
+      '<div class="arene" id="arene">' +
+        '<div class="arene-hud"><span id="hud-temps">' + secondes + '</span><span id="hud-boyards">0 🪙</span></div>' +
+      '</div>' +
+      '<p class="sous" style="text-align:center">Attrape les boyards !</p>' +
+    '</div>';
+
+  salleEnCours = {
+    boyards: 0,
+    secondes: secondes,
+    echeance: Date.now() + secondes * 1000,
+    semis: null,
+    tic: null
+  };
+
+  var arene = document.getElementById('arene');
+  salleEnCours.semis = setInterval(function () { semerBoyard(arene); }, 850);
+  semerBoyard(arene);
+  salleEnCours.tic = setInterval(function () {
+    var reste = Math.max(0, Math.ceil((salleEnCours.echeance - Date.now()) / 1000));
+    document.getElementById('hud-temps').textContent = reste;
+    if (reste <= 0) finirLaSalle();
+  }, 200);
+}
+
+function semerBoyard(arene) {
+  if (!salleEnCours) return;
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'boyard';
+  b.setAttribute('aria-label', 'Attraper un boyard');
+  b.style.left = (6 + Math.random() * 78) + '%';
+  b.style.animationDuration = (2.2 + Math.random() * 0.9) + 's';
+  b.addEventListener('click', function () {
+    if (!b.parentNode) return;
+    salleEnCours.boyards++;
+    document.getElementById('hud-boyards').textContent = salleEnCours.boyards + ' 🪙';
+    SONS.boyard();
+    b.remove();
+  });
+  b.addEventListener('animationend', function () { b.remove(); });
+  arene.appendChild(b);
+}
+
+function finirLaSalle() {
+  if (!salleEnCours) return;
+  clearInterval(salleEnCours.semis);
+  clearInterval(salleEnCours.tic);
+  var boyards = salleEnCours.boyards;
+  var secondes = salleEnCours.secondes;
+  var butin = butinPour(boyards);
+  salleEnCours = null;
+
+  etat.salle = { faiteLe: new Date().toISOString(), boyards: boyards, secondes: secondes, butin: butin };
+  etat.boyardsCumul = (etat.boyardsCumul || 0) + boyards;
+  sauver();
+  SONS.cle();
+
+  document.getElementById('tresor-contenu').innerHTML =
+    '<div class="panneau porte">' +
+      '<img class="tigre" src="assets/cadre-tigre.png" alt="">' +
+      '<h3>Le fort est refermé</h3>' +
+      '<p class="sous">' + boyards + ' boyards ramassés en ' + secondes + ' secondes.</p>' +
+      '<p class="butin">' + butin + '</p>' +
+    '</div>';
+}
+
+/* =========================================================
+   11. LE MODE PARENT
+   ========================================================= */
+
+function rendreParent() {
+  document.getElementById('parent-verrou').hidden = parentDeverrouille;
+  document.getElementById('parent-contenu').hidden = !parentDeverrouille;
+  if (!parentDeverrouille) return;
+
+  var r = etat.reglages;
+  var attente = tempsFortsEnAttente();
+
+  var htmlAttente = attente.length
+    ? attente.map(function (a, k) {
+        return '<li><span>' + a.tf.libelle + '<br><small style="color:var(--peche)">' + a.jour.nom + '</small></span>' +
+               '<span class="action-tf">' +
+                 '<button class="mini oui" data-tf-oui="' + k + '" type="button">Valider</button>' +
+                 '<button class="mini non" data-tf-non="' + k + '" type="button">Refuser</button>' +
+               '</span></li>';
+      }).join('')
+    : '<li><span>Rien à valider pour le moment.</span></li>';
+
+  var htmlIndices = JOURS_INDICE.map(function (id) {
+    var j = JOURS.filter(function (x) { return x.id === id; })[0];
+    return '<label class="champ"><span>' + j.nom + '</span>' +
+           '<input type="text" data-indice="' + id + '" value="' + (etat.indices[id] || '') + '"></label>';
+  }).join('');
+
+  var numero = ((etat.enigme || 0) % ENIGMES.length) + 1;
+
+  document.getElementById('parent-contenu').innerHTML =
+    '<div class="panneau">' +
+      '<h2 class="section-titre">Temps forts à valider</h2>' +
+      '<ul class="tf-liste">' + htmlAttente + '</ul>' +
+    '</div>' +
+
+    '<div class="panneau sombre">' +
+      '<h2 class="section-titre">L\'énigme de la semaine</h2>' +
+      '<p class="sous">Énigme ' + numero + ' sur ' + ENIGMES.length +
+        ' — servie automatiquement, la suivante arrivera lundi. Tu peux tout réécrire.</p>' +
+      '<div class="grille-2">' + htmlIndices + '</div>' +
+      '<label class="champ"><span>Mot-code (ce que les six indices évoquent)</span>' +
+        '<input type="text" id="r-motcode" value="' + r.motCode + '"></label>' +
+      '<button class="btn discret" id="btn-autre-enigme" type="button">Tirer une autre énigme</button>' +
+    '</div>' +
+
+    '<div class="panneau sombre">' +
+      '<h2 class="section-titre">Les fenêtres des épreuves</h2>' +
+      '<p class="sous">Le seul réglage qui compte vraiment. Une bonne fenêtre vaut environ le double du temps de l\'épreuve.</p>' +
+      EPREUVES.map(function (e) {
+        var f = fenetreDe(e);
+        return '<div class="fenetre-ligne">' +
+          '<span class="fenetre-nom">' + e.glyphe + ' ' + e.nom +
+            (e.quand === 'weekend' ? ' <small>(week-end)</small>' : '') + '</span>' +
+          '<span class="fenetre-champs">' +
+            '<input type="time" data-fen-debut="' + e.id + '" value="' + f[0] + '">' +
+            '<input type="time" data-fen-fin="' + e.id + '" value="' + f[1] + '">' +
+          '</span></div>';
+      }).join('') +
+    '</div>' +
+
+    '<div class="panneau">' +
+      '<h2 class="section-titre">Les réglages</h2>' +
+      '<div class="grille-2">' +
+        '<label class="champ"><span>Seuil de la porte (sur ' + clesMaxSemaine() + ')</span><input type="number" id="r-seuil" value="' + r.seuilPorte + '"></label>' +
+        '<label class="champ"><span>Secondes de base</span><input type="number" id="r-plancher" value="' + r.secondesPlancher + '"></label>' +
+        '<label class="champ"><span>Secondes par temps fort</span><input type="number" id="r-partf" value="' + r.secondesParTempsFort + '"></label>' +
+        '<label class="champ"><span>Plafond de secondes</span><input type="number" id="r-plafond" value="' + r.secondesPlafond + '"></label>' +
+        '<label class="champ"><span>Temps forts max / jour</span><input type="number" id="r-maxtf" value="' + r.tempsFortsMaxParJour + '"></label>' +
+        '<label class="champ"><span>Code PIN</span><input type="text" inputmode="numeric" id="r-pin" value="' + r.pin + '"></label>' +
+      '</div>' +
+      '<label class="champ"><span>Salle du trésor ouverte tous les jours (pour tester)</span>' +
+        '<input type="checkbox" id="r-test" ' + (r.salleToujoursOuverte ? 'checked' : '') + ' style="width:auto"></label>' +
+      '<button class="btn principal large" id="btn-enregistrer" type="button">Enregistrer</button>' +
+    '</div>' +
+
+    '<div class="panneau sombre">' +
+      '<h2 class="section-titre">Bac à sable</h2>' +
+      '<p class="sous">Pour voir ce que ça donne sans attendre. Rien ici n\'est destiné à Marius.</p>' +
+      '<div class="grille-2">' +
+        '<label class="champ"><span>Jour simulé</span><select id="bac-jour">' +
+          '<option value="">— le vrai jour —</option>' +
+          JOURS.map(function (j) {
+            return '<option value="' + j.id + '"' + (simulation().jour === j.id ? ' selected' : '') + '>' + j.nom + '</option>';
+          }).join('') +
+        '</select></label>' +
+        '<label class="champ"><span>Heure simulée</span><input type="time" id="bac-heure" value="' + (simulation().heure || '') + '"></label>' +
+      '</div>' +
+      '<div class="bac">' +
+        '<button class="btn" id="bac-appliquer" type="button">Se placer à ce moment</button>' +
+        '<button class="btn principal" id="bac-rejouer-jour" type="button">Se placer et rejouer ce jour</button>' +
+      '</div>' +
+      '<p class="sous" style="margin-top:8px">« Rejouer ce jour » efface les épreuves de la journée choisie pour que tu puisses les refaire.</p>' +
+
+      '<p class="sous" style="margin-top:18px">Remplir la semaine :</p>' +
+      '<div class="bac">' +
+        '<button class="btn" data-bac-cles="' + clesMaxSemaine() + '" data-bac-tf="7" type="button">Parfaite</button>' +
+        '<button class="btn" data-bac-cles="' + Math.round(clesMaxSemaine() * 0.8) + '" data-bac-tf="4" type="button">Bonne</button>' +
+        '<button class="btn" data-bac-cles="' + etat.reglages.seuilPorte + '" data-bac-tf="1" type="button">Tout juste</button>' +
+        '<button class="btn" data-bac-cles="' + Math.round(etat.reglages.seuilPorte * 0.7) + '" data-bac-tf="0" type="button">Ratée</button>' +
+      '</div>' +
+
+      '<p class="sous" style="margin-top:18px">La salle du trésor :</p>' +
+      '<div class="bac">' +
+        '<button class="btn" id="bac-salle" type="button">Se placer dimanche soir</button>' +
+        '<button class="btn" id="bac-rejouer" type="button">Rejouer la salle</button>' +
+      '</div>' +
+
+      '<button class="btn discret large" id="btn-raz" style="margin-top:18px" type="button">Tout effacer et revenir au temps réel</button>' +
+    '</div>';
+
+  attente.forEach(function (a, k) {
+    document.querySelector('[data-tf-oui="' + k + '"]').addEventListener('click', function () { deciderTF(a, 'valide'); });
+    document.querySelector('[data-tf-non="' + k + '"]').addEventListener('click', function () { deciderTF(a, 'refuse'); });
+  });
+
+  document.getElementById('btn-autre-enigme').addEventListener('click', function () {
+    etat.enigme = (etat.enigme || 0) + 1;
+    etat.indices = indicesDeLEnigme(etat.enigme);
+    etat.reglages.motCode = ENIGMES[etat.enigme % ENIGMES.length].motCode;
+    sauver();
+    rendreParent();
+  });
+
+  document.getElementById('btn-enregistrer').addEventListener('click', enregistrerReglages);
+  function placerLeBac(rejouer) {
+    var jour = document.getElementById('bac-jour').value;
+    var heure = document.getElementById('bac-heure').value;
+    etat.simulation = (jour || heure) ? { jour: jour || null, heure: heure || null } : null;
+    if (rejouer) viderJour(idDuJour());
+    sauver();
+    montrerVue('jour');
+  }
+  document.getElementById('bac-appliquer').addEventListener('click', function () { placerLeBac(false); });
+  document.getElementById('bac-rejouer-jour').addEventListener('click', function () { placerLeBac(true); });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-bac-cles]'), function (b) {
+    b.addEventListener('click', function () {
+      remplirSemaine(parseInt(b.dataset.bacCles, 10), parseInt(b.dataset.bacTf, 10));
+      montrerVue('semaine');
+    });
+  });
+
+  document.getElementById('bac-salle').addEventListener('click', function () {
+    etat.simulation = { jour: 'dimanche', heure: '20:00' };
+    etat.salle = null;
+    sauver();
+    montrerVue('tresor');
+  });
+
+  document.getElementById('bac-rejouer').addEventListener('click', function () {
+    etat.salle = null; sauver(); montrerVue('tresor');
+  });
+
+  document.getElementById('btn-raz').addEventListener('click', function () {
+    if (confirm('Effacer toute la semaine en cours et sortir du bac à sable ?')) {
+      JOURS.forEach(function (j) { etat.jours[j.id] = { epreuves: {}, tempsForts: [] }; });
+      etat.salle = null;
+      etat.simulation = null;
+      sauver();
+      toutRendre();
+    }
+  });
+}
+
+function deciderTF(a, statut) {
+  etat.jours[a.jour.id].tempsForts[a.index].statut = statut;
+  sauver();
+  if (statut === 'valide') SONS.cle();
+  toutRendre();
+}
+
+function enregistrerReglages() {
+  var r = etat.reglages;
+  JOURS_INDICE.forEach(function (id) {
+    var champ = document.querySelector('[data-indice="' + id + '"]');
+    if (champ) etat.indices[id] = champ.value.trim().toUpperCase();
+  });
+  r.motCode = document.getElementById('r-motcode').value.trim().toUpperCase() || r.motCode;
+  r.seuilPorte = entier('r-seuil', r.seuilPorte);
+  r.secondesPlancher = entier('r-plancher', r.secondesPlancher);
+  r.secondesParTempsFort = entier('r-partf', r.secondesParTempsFort);
+  r.secondesPlafond = entier('r-plafond', r.secondesPlafond);
+  r.tempsFortsMaxParJour = entier('r-maxtf', r.tempsFortsMaxParJour);
+  r.pin = document.getElementById('r-pin').value.trim() || r.pin;
+  var fenetres = {};
+  EPREUVES.forEach(function (e) {
+    var d = document.querySelector('[data-fen-debut="' + e.id + '"]');
+    var f = document.querySelector('[data-fen-fin="' + e.id + '"]');
+    if (d && f && d.value && f.value) fenetres[e.id] = [d.value, f.value];
+  });
+  r.fenetres = fenetres;
+  r.salleToujoursOuverte = document.getElementById('r-test').checked;
+  sauver();
+  toutRendre();
+}
+
+function entier(id, defaut) {
+  var v = parseInt(document.getElementById(id).value, 10);
+  return isNaN(v) ? defaut : v;
+}
+
+/* =========================================================
+   12. NAVIGATION ET DÉMARRAGE
+   ========================================================= */
+
+function montrerVue(nom) {
+  vueActive = nom;
+  ['jour', 'semaine', 'tresor', 'parent'].forEach(function (v) {
+    document.getElementById('vue-' + v).hidden = (v !== nom);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.onglet'), function (b) {
+    b.classList.toggle('actif', b.dataset.vue === nom);
+  });
+  toutRendre();
+}
+
+function rendreBanniere() {
+  var el = document.getElementById('banniere-test');
+  if (!enSimulation()) { el.hidden = true; return; }
+  var s = simulation();
+  var jour = s.jour ? JOURS.filter(function (j) { return j.id === s.jour; })[0].nom : 'aujourd\'hui';
+  el.hidden = false;
+  el.innerHTML = 'Bac à sable — ' + jour + (s.heure ? ' à ' + s.heure.replace(':', 'h') : '') +
+                 '<button type="button" id="btn-quitter-bac">Revenir au temps réel</button>';
+  document.getElementById('btn-quitter-bac').addEventListener('click', function () {
+    etat.simulation = null; sauver(); toutRendre();
+  });
+}
+
+function toutRendre() {
+  rendreBanniere();
+  if (vueActive === 'jour') {
+    rendreVedette();
+    rendreListeEpreuves();
+    rendreTempsForts();
+    rendreIndiceDuJour();
+  } else if (vueActive === 'semaine') {
+    rendreSemaine();
+  } else if (vueActive === 'tresor') {
+    if (!salleEnCours) rendreTresor();
+  } else if (vueActive === 'parent') {
+    rendreParent();
+  }
+}
+
+Array.prototype.forEach.call(document.querySelectorAll('.onglet'), function (b) {
+  b.addEventListener('click', function () { montrerVue(b.dataset.vue); });
+});
+
+document.getElementById('btn-temps-fort').addEventListener('click', ouvrirTempsFort);
+document.getElementById('tf-fermer').addEventListener('click', function () {
+  document.getElementById('voile-tf').hidden = true;
+});
+
+document.getElementById('btn-pin').addEventListener('click', function () {
+  var saisi = document.getElementById('saisie-pin').value.trim();
+  if (saisi === etat.reglages.pin) {
+    parentDeverrouille = true;
+    document.getElementById('pin-erreur').textContent = '';
+    document.getElementById('saisie-pin').value = '';
+    rendreParent();
+  } else {
+    document.getElementById('pin-erreur').textContent = 'Ce n\'est pas le bon code.';
   }
 });
-document.getElementById('t-minus').addEventListener('click', () => {
-  timerRemaining = Math.max(10, timerRemaining - 30);
-  updateTimerDisplay();
-});
-document.getElementById('t-plus').addEventListener('click', () => {
-  timerRemaining += 30;
-  updateTimerDisplay();
-});
-document.getElementById('t-close').addEventListener('click', closeTimer);
-document.getElementById('timer-overlay').addEventListener('click', (e) => {
-  if (e.target.id === 'timer-overlay') closeTimer();
+document.getElementById('saisie-pin').addEventListener('keydown', function (ev) {
+  if (ev.key === 'Enter') document.getElementById('btn-pin').click();
 });
 
-document.getElementById('final-word').addEventListener('blur', async (e) => {
-  state.finalWord = e.target.textContent.trim();
-  await save();
+// Le compte à rebours de la fenêtre, à la seconde.
+setInterval(function () {
+  if (vueActive === 'jour') majCompteur();
+}, 1000);
+
+// Les fenêtres qui s'ouvrent et se ferment.
+setInterval(function () {
+  if (vueActive === 'jour') toutRendre();
+}, 20000);
+
+// L'écran s'est rallumé : on recale tout de suite le chrono et les torches.
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState !== 'visible') return;
+  vedetteEtat = '';
+  toutRendre();
 });
 
-document.getElementById('fw-toggle').addEventListener('click', async () => {
-  state.finalWordVisible = !state.finalWordVisible;
-  renderClues();
-  await save();
-});
-
-document.getElementById('reset-btn').addEventListener('click', async () => {
-  if (confirm('Remettre toute la semaine et le trésor total à zéro ?')) {
-    state = {
-      weekStart: dateKey(getMonday(new Date())),
-      days: {},
-      treasureTotal: 0,
-      dailyReward: state.dailyReward,
-      weekReward: state.weekReward,
-      bonusReward: state.bonusReward,
-      weekThreshold: state.weekThreshold,
-      finalWord: state.finalWord,
-      finalWordVisible: false,
-      dailyClues: state.dailyClues,
-    };
-    render();
-    await save();
-  }
-});
-
-load();
+charger();
+montrerVue('jour');
 </script>
 </body>
 </html>

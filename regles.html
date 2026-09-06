@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Pacte de l'Aventurier</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root {
+    /* charte relevée sur fortboyardaventures.fr (kit Elementor) */
+    --noir: #000000;
+    --noir-doux: #0b0906;
+    --bois: #5E4D39;
+    --bois-clair: #6f5c45;
+    --bois-sombre: #3d3227;
+    --bronze: #8E7024;
+    --bronze-clair: #B89631;
+    --bronze-vif: #d8b463;
+    --peche: #FFBC7D;
+    --blanc: #FFFFFF;
+    --voile: rgba(0,0,0,.64);
+    --parchemin: #f3ead6;
+    --encre: #2b2318;
+
+    --titre: "Cinzel", "Trajan Pro", Georgia, serif;
+    --corps: "EB Garamond", "Adobe Garamond Pro", Garamond, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--noir);
+    color: var(--blanc);
+    font-family: var(--corps);
+    font-size: 20px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  .page { display: flex; flex-direction: column; }
+  .inner { max-width: 760px; margin: 0 auto; padding: 0 20px; width: 100%; }
+
+  /* ---------- panneau brun, la surface dominante du site ---------- */
+  .cadre {
+    background-color: var(--bois);
+    border: 1px solid rgba(184,150,49,.4);
+    border-radius: 4px;
+  }
+
+  /* ---------- en-tête ---------- */
+  header {
+    text-align: center;
+    padding: 40px 0 48px;
+    background: radial-gradient(ellipse 90% 70% at 50% 20%, #1d1710 0%, var(--noir) 70%);
+  }
+  .logo { max-width: 340px; margin: 0 auto 26px; }
+  .eyebrow {
+    font-family: var(--titre); font-weight: 600;
+    font-size: 12px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--bronze-clair); margin: 0 0 14px;
+  }
+  h1 {
+    font-family: var(--titre); font-weight: 700;
+    font-size: clamp(28px, 6vw, 46px); line-height: 1.12;
+    text-transform: uppercase; letter-spacing: .05em;
+    margin: 0 0 18px; color: var(--blanc);
+    text-wrap: balance;
+  }
+  .dedicace { font-size: 20px; color: var(--peche); margin: 0; font-style: italic; }
+  .dedicace strong {
+    font-style: normal; font-family: var(--titre); font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--bronze-vif);
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 50px 0; }
+  .bande { background: var(--noir-doux); }
+  .photo-bande { background: var(--noir-doux); }
+
+  h2 {
+    font-family: var(--titre); font-weight: 700;
+    font-size: 15px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--bronze-clair); margin: 0 0 10px;
+  }
+  .chapo {
+    font-family: var(--titre); font-weight: 400;
+    font-size: clamp(20px, 3.4vw, 27px); line-height: 1.28;
+    color: var(--blanc); margin: 0 0 26px; text-wrap: balance;
+  }
+  p { margin: 0 0 16px; }
+  p:last-child { margin-bottom: 0; }
+  .note { color: var(--peche); font-size: 18px; }
+  strong { color: var(--bronze-vif); font-weight: 600; }
+  .panneau { padding: 24px 22px; }
+  em { color: var(--peche); font-style: italic; }
+
+  /* ---------- les trois monnaies ---------- */
+  .monnaies { display: grid; gap: 18px; }
+  @media (min-width: 660px) { .monnaies { grid-template-columns: repeat(3, 1fr); } }
+  .monnaie { padding: 0 0 22px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+  .monnaie img { width: 100%; border-radius: 4px 4px 0 0; }
+  .monnaie h3 {
+    font-family: var(--titre); font-weight: 700; font-size: 17px;
+    letter-spacing: .1em; text-transform: uppercase; margin: 6px 20px 0; color: var(--bronze-vif);
+  }
+  .monnaie p { margin: 0 20px; font-size: 17px; }
+  .monnaie .source { color: var(--peche); }
+
+  /* ---------- déroulé de la journée ---------- */
+  .journee { padding: 8px 22px; }
+  .epreuve {
+    display: grid; gap: 3px 16px; padding: 18px 0;
+    grid-template-columns: 42px 1fr; align-items: start;
+  }
+  .epreuve + .epreuve { border-top: 1px solid rgba(184,150,49,.35); }
+  .epreuve .glyphe { font-size: 26px; line-height: 1.2; grid-row: span 3; }
+  .moment {
+    font-family: var(--titre); font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--peche); margin: 0;
+  }
+  .epreuve h3 {
+    font-family: var(--titre); font-weight: 700; font-size: 18px;
+    letter-spacing: .06em; text-transform: uppercase; margin: 0; color: var(--bronze-vif);
+  }
+  .gestes { margin: 3px 0 0; font-size: 18px; }
+  .sablier-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 13px;
+    color: var(--noir); background: var(--bronze-clair);
+    border-radius: 30px; padding: 2px 12px; margin-top: 9px;
+    font-variant-numeric: tabular-nums;
+  }
+  .sablier-tag.tenir { background: var(--peche); }
+  .total-cles {
+    margin-top: 18px; padding: 18px 22px; font-size: 18px;
+    background: var(--bois-sombre); border-left: 4px solid var(--bronze-clair);
+  }
+  .total-cles strong { font-family: var(--titre); font-size: 21px; }
+
+  /* ---------- panneaux jumelés ---------- */
+  .duo { display: grid; gap: 18px; }
+  @media (min-width: 620px) { .duo { grid-template-columns: 1fr 1fr; } }
+  .sablier-carte h3 {
+    font-family: var(--titre); font-size: 16px; letter-spacing: .1em; text-transform: uppercase;
+    margin: 0 0 8px; color: var(--bronze-vif);
+  }
+  .sablier-carte p { font-size: 18px; }
+  .sablier-carte .ex { color: var(--peche); font-size: 16px; font-style: italic; margin: 10px 0 0; }
+
+  /* ---------- Père Fouras ---------- */
+  .fouras-bloc { display: grid; gap: 20px; align-items: center; }
+  @media (min-width: 700px) { .fouras-bloc { grid-template-columns: 210px 1fr; } }
+  .fouras-bloc img { width: 100%; }
+
+  /* ---------- démos ---------- */
+  .demo { padding: 26px 22px; margin-top: 22px; }
+  .demo-titre {
+    font-family: var(--titre); font-size: 12px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--peche); margin: 0 0 18px; text-align: center;
+  }
+  .selecteur { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 22px; }
+  .selecteur button {
+    font-family: var(--corps); font-weight: 600; font-size: 16px;
+    color: var(--blanc); background: var(--bois-sombre);
+    border: 1px solid var(--bronze); border-radius: 30px;
+    padding: 6px 16px; cursor: pointer; font-variant-numeric: tabular-nums;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .selecteur button:hover { border-color: var(--bronze-vif); }
+  .selecteur button[aria-pressed="true"] {
+    color: var(--noir); background: var(--bronze-clair); border-color: var(--bronze-clair);
+  }
+  .selecteur button:focus-visible { outline: 2px solid var(--peche); outline-offset: 2px; }
+
+  .mot { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 62px; align-items: center; }
+  .lettre {
+    width: 42px; height: 54px; display: grid; place-items: center;
+    font-family: var(--titre); font-weight: 700; font-size: 26px;
+    color: var(--encre); background: var(--parchemin);
+    border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(142,112,36,.5);
+  }
+  .lettre.vide { color: rgba(255,255,255,.4); background: transparent; border: 1px solid rgba(184,150,49,.55); }
+  .verdict { text-align: center; margin: 18px 0 0; font-size: 18px; color: var(--peche); min-height: 1.6em; }
+  .verdict.verrouille { color: #e0703c; }
+
+  /* ---------- mot-code ---------- */
+  .indices-semaine { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 10px; }
+  .indice-jeton {
+    font-family: var(--titre); font-weight: 600; font-size: 14px; letter-spacing: .12em;
+    color: var(--blanc); border: 1px solid var(--bronze-clair); background: var(--bois-sombre);
+    border-radius: 30px; padding: 6px 16px;
+  }
+  .fleche-bas { text-align: center; color: var(--bronze-clair); font-size: 22px; margin: 10px 0; line-height: 1; }
+  .mot-code {
+    text-align: center; font-family: var(--titre); font-weight: 700;
+    font-size: clamp(32px, 8vw, 52px); letter-spacing: .12em;
+    color: var(--bronze-vif); margin: 0;
+    text-shadow: 0 0 30px rgba(216,180,99,.35);
+  }
+
+  /* ---------- salle du trésor ---------- */
+  .tigre { max-width: 250px; margin: 0 auto 26px; }
+  .etapes { counter-reset: etape; display: flex; flex-direction: column; gap: 20px; margin: 0; padding: 0; list-style: none; }
+  .etapes li { display: grid; grid-template-columns: 38px 1fr; gap: 3px 14px; align-items: start; }
+  .etapes li::before {
+    counter-increment: etape; content: counter(etape);
+    font-family: var(--titre); font-weight: 700; font-size: 16px;
+    color: var(--noir); background: var(--bronze-clair); border-radius: 50%;
+    width: 34px; height: 34px; display: grid; place-items: center; grid-row: span 2;
+  }
+  .etapes h3 {
+    font-family: var(--titre); font-weight: 700; font-size: 16px; letter-spacing: .09em;
+    text-transform: uppercase; margin: 5px 0 2px; color: var(--bronze-vif);
+  }
+  .etapes p { font-size: 18px; margin: 0; }
+
+  .calc-chaine { display: grid; gap: 10px; margin-top: 20px; }
+  @media (min-width: 580px) { .calc-chaine { grid-template-columns: repeat(3, 1fr); } }
+  .maillon { text-align: center; padding: 16px 10px; background: var(--bois-sombre); border: 1px solid rgba(184,150,49,.4); }
+  .maillon .lbl {
+    font-family: var(--titre); font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--peche); display: block; margin-bottom: 6px;
+  }
+  .maillon .val {
+    font-family: var(--mono); font-size: 30px; font-weight: 600;
+    color: var(--bronze-vif); font-variant-numeric: tabular-nums; display: block; line-height: 1.1;
+  }
+  .maillon.final { border-color: var(--bronze-clair); background: var(--bronze); }
+  .maillon.final .lbl { color: #2b2318; }
+  .maillon.final .val { font-family: var(--titre); font-size: 22px; letter-spacing: .05em; color: var(--blanc); }
+
+  /* ---------- règles d'or ---------- */
+  .regles { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 18px; }
+  .regles li {
+    display: grid; grid-template-columns: 26px 1fr; gap: 16px; align-items: start; font-size: 19px;
+  }
+  .regles li::before {
+    content: ""; width: 22px; height: 22px; margin-top: 6px;
+    background: url("assets/habillage-tableau.png") center/contain no-repeat;
+  }
+
+  /* ---------- registre du gardien ---------- */
+  .registre { background: var(--parchemin); color: var(--encre); padding: 44px 0 48px; }
+  .registre h2 { color: var(--bronze); }
+  .registre .chapo { color: var(--encre); font-size: 24px; }
+  .registre p { color: #4a3f2c; }
+  .registre .note { color: #6d604e; }
+  .registre strong { color: var(--encre); }
+  .tableau-wrap { overflow-x: auto; margin: 22px 0 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 17px; min-width: 380px; }
+  th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid rgba(43,35,24,.2); }
+  th {
+    font-family: var(--titre); font-weight: 700; font-size: 11px;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--bronze);
+  }
+  td.chiffre { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; padding-right: 0; white-space: nowrap; font-weight: 600; }
+
+  /* ---------- pacte ---------- */
+  .pacte { text-align: center; padding: 54px 0 60px; }
+  .pacte .serment {
+    font-family: var(--titre); font-size: clamp(19px, 3vw, 22px); line-height: 1.4;
+    color: var(--blanc); max-width: 480px; margin: 0 auto 34px; text-wrap: balance;
+  }
+  .signatures { display: grid; gap: 26px; max-width: 470px; margin: 0 auto; }
+  @media (min-width: 520px) { .signatures { grid-template-columns: 1fr 1fr; } }
+  .sign { border-top: 1px solid var(--bronze-clair); padding-top: 8px; }
+  .sign span {
+    font-family: var(--titre); font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--peche);
+  }
+  .sign .ligne { height: 36px; }
+  .fouras-sign {
+    margin: 40px auto 0; font-family: var(--titre); font-weight: 700;
+    font-size: 14px; letter-spacing: .2em; text-transform: uppercase; color: var(--bronze-clair);
+  }
+
+  .retour { text-align: center; padding: 0 0 46px; }
+  .retour a {
+    font-family: var(--titre); font-weight: 600;
+    font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--noir); background: var(--bronze-clair); text-decoration: none;
+    border-radius: 30px; padding: 14px 32px; display: inline-block;
+  }
+  .retour a:hover { background: var(--bronze-vif); }
+  .retour a:focus-visible { outline: 2px solid var(--peche); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="inner">
+      <img class="logo" src="assets/logo-fb.webp" alt="Fort Boyard Aventures">
+      <p class="eyebrow">Règlement du fort</p>
+      <h1>Le Pacte de l'Aventurier</h1>
+      <p class="dedicace">Aventurier : <strong>Marius</strong></p>
+    </div>
+  </header>
+
+  <section>
+    <div class="inner">
+      <h2>Ce qui se gagne</h2>
+      <p class="chapo">Au fort, il y a trois choses à gagner. Elles ne se gagnent pas de la même façon.</p>
+      <div class="monnaies">
+        <div class="monnaie cadre">
+          <img src="assets/cadre-cle.png" alt="Une clé du fort">
+          <h3>Les clés</h3>
+          <p class="source">En réussissant tes épreuves de tous les jours.</p>
+          <p>Elles ouvrent la porte de la salle du trésor, et elles dévoilent l'indice du jour.</p>
+        </div>
+        <div class="monnaie cadre">
+          <img src="assets/cadre-indice.png" alt="Un étui à indice">
+          <h3>Les temps forts</h3>
+          <p class="source">En faisant quelque chose de bien <em>sans qu'on te le demande</em>.</p>
+          <p>Chacun t'offre des secondes en plus dans la salle du trésor.</p>
+        </div>
+        <div class="monnaie cadre">
+          <img src="assets/cadre-boyards.png" alt="Des boyards d'or">
+          <h3>Les boyards</h3>
+          <p class="source">En les attrapant dans la salle du trésor, le dimanche soir.</p>
+          <p>Ce sont eux qui se transforment en cartes Pokémon.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande">
+    <div class="inner">
+      <h2>Ta journée au fort</h2>
+      <p class="chapo">Quatre épreuves par jour, cinq le week-end. Chacune vaut une clé, et chacune a sa fenêtre.</p>
+
+      <div class="journee cadre">
+        <div class="epreuve">
+          <span class="glyphe">🌅</span>
+          <p class="moment">Matin · 7h15 → 8h00</p>
+          <h3>L'Éveil du Fort</h3>
+          <p class="gestes">S'habiller · faire son lit · débarrasser la table du petit-déjeuner · se laver les dents et le visage
+          </p>
+        </div>
+        <div class="epreuve">
+          <span class="glyphe">🍽️</span>
+          <p class="moment">Midi · 12h00 → 13h30 (samedi &amp; dimanche)</p>
+          <h3>La Salle du Banquet</h3>
+          <p class="gestes">Mettre le couvert · débarrasser la table
+          </p>
+        </div>
+        <div class="epreuve">
+          <span class="glyphe">🚿</span>
+          <p class="moment">Retour d'école · 18h00 → 18h30</p>
+          <h3>Le Retour d'École</h3>
+          <p class="gestes">Les devoirs · la douche · le pyjama · le linge sale dans le panier
+          </p>
+        </div>
+        <div class="epreuve">
+          <span class="glyphe">🕯️</span>
+          <p class="moment">Soir · 19h30 → 20h05</p>
+          <h3>La Veillée du Fort</h3>
+          <p class="gestes">Débarrasser la table · se laver les dents · passer aux toilettes
+          </p>
+        </div>
+        <div class="epreuve">
+          <span class="glyphe">🌙</span>
+          <p class="moment">Coucher · 20h05 → 20h30</p>
+          <h3>La Chambre du Trésor</h3>
+          <p class="gestes">Au lit et prêt pour demain, avant 20h30
+          </p>
+        </div>
+      </div>
+
+      <p class="total-cles">
+        Quatre clés du lundi au vendredi, cinq le samedi et le dimanche : <strong>30 clés</strong> à gagner dans la semaine.
+      </p>
+      <p class="note" style="margin-top:14px"><strong>Ce que le fort protège.</strong> Le dessin animé du matin et la lecture du soir ne sont pas des épreuves : ni chrono, ni clé, le fort n'y touche pas. Mais ce sont eux qui bornent tes fenêtres. Finis l'Éveil du Fort avant 8h00 et le dessin animé est là. Sois au lit dès 20h05 et il te reste vingt-cinq minutes de lecture. Le temps que tu gagnes sur les épreuves, tu le gardes pour toi.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="inner">
+      <h2>La torche de l'épreuve</h2>
+      <p class="chapo">C'est toi qui décides quand tu commences.</p>
+      <div class="panneau cadre">
+        <p>Chaque épreuve a son heure dans la journée. Quand cette heure arrive, sa <strong>torche s'allume</strong> sur l'écran du fort. Personne ne te dit rien : tu regardes le fort, et tu vois quelles torches brûlent.</p>
+        <p>Tant qu'une torche brûle, tu fais l'épreuve <strong>quand tu veux</strong> et dans l'ordre que tu veux. Personne ne te dit de commencer, et personne ne te dit de te dépêcher.</p>
+        <p>Mais une torche ne brûle pas éternellement. Quand elle s'éteint, l'épreuve est fermée et sa clé est perdue pour aujourd'hui. Ce n'est pas une punition : c'est juste que l'heure de la douche, ce n'est plus l'heure de la douche à minuit.</p>
+        <p class="note">Le fort ne te réclame jamais rien et ne te presse pas. Il te montre seulement combien de temps il te reste pour décider. Et dans les cinq dernières minutes, la torche se met à vaciller — elle ne s'éteint jamais en douce.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande">
+    <div class="inner">
+      <h2>Se gérer dans le créneau</h2>
+      <p class="chapo">Il n'y a pas de chronomètre au fort. Il n'y a que la torche.</p>
+      <div class="duo">
+        <div class="panneau cadre sablier-carte">
+          <h3>Personne ne te presse</h3>
+          <p>Tu coches tes gestes à ton rythme, dans l'ordre que tu veux. Aller vite ne rapporte rien de plus : une épreuve bâclée vaut la même clé qu'une épreuve bien faite.</p>
+        </div>
+        <div class="panneau cadre sablier-carte">
+          <h3>Mais la torche brûle</h3>
+          <p>Elle ne s'arrête pas parce que tu t'arrêtes. Quand elle s'éteint, l'épreuve est fermée. C'est à toi de voir ce qu'il te reste à faire et le temps qu'il te reste pour le faire.</p>
+        </div>
+      </div>
+      <p class="note" style="margin-top:18px">Tout se passe sur l'écran d'accueil du fort : le compte à rebours de la fenêtre en gros, tes gestes juste en dessous, et une phrase qui te dit où tu en es — <em>« il te reste 2 gestes et 14 minutes »</em>. Le fort ne te dit jamais de te dépêcher. Il te donne de quoi décider tout seul, et c'est ça, la vraie épreuve.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="inner">
+      <h2>L'indice du Père Fouras</h2>
+      <p class="chapo">Chaque soir, le Père Fouras te donne un mot. Mais il ne te le donne en entier que si ta journée a été complète.</p>
+
+      <div class="fouras-bloc">
+        <img src="assets/pere-fouras.jpg" alt="Le Père Fouras">
+        <div>
+          <p>Chaque épreuve ratée dans la journée cache <strong>une lettre de plus</strong> dans le mot du soir. Et en dessous de deux épreuves réussies, le Père Fouras ne dit rien du tout.</p>
+          <p class="note">Un mot par soir, du lundi au samedi. Six mots pour toute la semaine.</p>
+        </div>
+      </div>
+
+      <div class="demo cadre">
+        <p class="demo-titre">Essaie : combien d'épreuves as-tu réussies aujourd'hui&nbsp;?</p>
+        <div class="selecteur" id="sel-epreuves" role="group" aria-label="Nombre d'épreuves réussies">
+          <button type="button" data-n="0" aria-pressed="false">0</button>
+          <button type="button" data-n="1" aria-pressed="false">1</button>
+          <button type="button" data-n="2" aria-pressed="false">2</button>
+          <button type="button" data-n="3" aria-pressed="false">3</button>
+          <button type="button" data-n="4" aria-pressed="true">4</button>
+        </div>
+        <div class="mot" id="mot-indice" aria-live="polite"></div>
+        <p class="verdict" id="verdict-indice"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande">
+    <div class="inner">
+      <h2>Le mot-code</h2>
+      <p class="chapo">Six soirs, six mots. Ensemble, ils parlent tous de la même chose.</p>
+      <p>Du lundi au samedi, tu récoltes six indices. Le dimanche soir, devant la porte, tu dois deviner le mot qu'ils cachent tous les six. Ce n'est pas un mot caché dans les lettres : c'est une idée cachée derrière les mots.</p>
+
+      <div class="panneau cadre" style="margin-top: 26px;">
+        <div class="indices-semaine">
+          <span class="indice-jeton">GROTTE</span>
+          <span class="indice-jeton">CARTE</span>
+          <span class="indice-jeton">PIRATES</span>
+          <span class="indice-jeton">OR</span>
+          <span class="indice-jeton">COFFRE</span>
+          <span class="indice-jeton">CACHÉ</span>
+        </div>
+        <p class="fleche-bas">▼</p>
+        <p class="mot-code">TRÉSOR</p>
+      </div>
+
+      <p class="note" style="text-align:center; margin-top: 18px;">S'il te manque des mots, tu peux quand même essayer. Mais c'est beaucoup plus dur avec quatre indices qu'avec six.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="inner">
+      <h2>Les temps forts</h2>
+      <p class="chapo">Ce sont les secondes que tu fabriques toi-même.</p>
+      <div class="panneau cadre">
+        <p>Un temps fort, c'est quelque chose de bien que tu fais <strong>sans qu'on te l'ait demandé</strong> : débarrasser une assiette qui n'est pas la tienne, aider à ranger, t'occuper de quelque chose tout seul.</p>
+        <p>Ça ne se réclame pas : ça se remarque. Quand tu en as fait un, tu le signales au fort et il part <strong>en attente du gardien</strong> : un adulte le validera quand il passera, et tu verras tes secondes arriver à ce moment-là. <strong>Deux au maximum par jour</strong>, et chacun vaut <strong>10 secondes</strong> de plus dans la salle du trésor.</p>
+        <p class="note">Les clés, c'est faire ce qu'on te demande. Les temps forts, c'est faire plus. Le fort ne paie pas les deux avec la même monnaie.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="photo-bande">
+    <div class="inner">
+      <img class="tigre" src="assets/cadre-tigre.png" alt="Le tigre du fort">
+      <h2>La salle du trésor</h2>
+      <p class="chapo">Dimanche soir. Tout se joue là.</p>
+
+      <ol class="etapes">
+        <li>
+          <h3>La porte</h3>
+          <p>Il te faut au moins <strong>21 clés sur 30</strong> pour qu'elle s'ouvre. En dessous, la salle reste fermée cette semaine — mais le Père Fouras te dira quand même le mot-code, pour que tu saches ce que tu as manqué.</p>
+        </li>
+        <li>
+          <h3>Le mot-code</h3>
+          <p>Tu annonces le mot que tes six indices cachaient. S'il est bon, le tigre recule et la grille se lève.</p>
+        </li>
+        <li>
+          <h3>Le temps</h3>
+          <p><strong>25 secondes</strong> pour tout le monde, plus <strong>10 secondes par temps fort</strong> de la semaine. Jamais plus de 90 secondes : personne n'a jamais vidé le fort.</p>
+        </li>
+        <li>
+          <h3>Les boyards</h3>
+          <p>Ils tombent pendant tout ton temps et tu les attrapes. Ensuite, on compte — et on les échange.</p>
+        </li>
+      </ol>
+
+      <div class="demo cadre">
+        <p class="demo-titre">Essaie : combien de temps forts dans ta semaine&nbsp;?</p>
+        <div class="selecteur" id="sel-temps-forts" role="group" aria-label="Nombre de temps forts de la semaine">
+          <button type="button" data-n="0" aria-pressed="true">0</button>
+          <button type="button" data-n="1" aria-pressed="false">1</button>
+          <button type="button" data-n="2" aria-pressed="false">2</button>
+          <button type="button" data-n="3" aria-pressed="false">3</button>
+          <button type="button" data-n="4" aria-pressed="false">4</button>
+          <button type="button" data-n="5" aria-pressed="false">5</button>
+          <button type="button" data-n="6" aria-pressed="false">6</button>
+          <button type="button" data-n="7" aria-pressed="false">7</button>
+        </div>
+        <div class="calc-chaine" aria-live="polite">
+          <div class="maillon">
+            <span class="lbl">Temps dans la salle</span>
+            <span class="val" id="calc-secondes">25 s</span>
+          </div>
+          <div class="maillon">
+            <span class="lbl">Boyards attrapés</span>
+            <span class="val" id="calc-boyards">≈ 20</span>
+          </div>
+          <div class="maillon final">
+            <span class="lbl">Ce que tu remportes</span>
+            <span class="val" id="calc-cartes">2 cartes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="inner">
+      <h2>Les quatre règles d'or</h2>
+      <div class="panneau cadre">
+        <ul class="regles">
+          <li>Une clé ne se perd jamais. Une épreuve ratée, c'est simplement une clé que tu n'as pas gagnée.</li>
+          <li>Personne ne te demande de commencer. Tu regardes le fort, tu vois quelle torche brûle, et tu y vas.</li>
+          <li>Un temps fort ne se réclame pas. Il se remarque.</li>
+          <li>Le lundi, tout repart à zéro. Au fort, on ne traîne jamais de dettes de la semaine d'avant.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="registre">
+    <div class="inner">
+      <h2>Le registre du gardien</h2>
+      <p class="chapo">Les réglages, côté adulte.</p>
+      <p>Ces valeurs sont des points de départ, pas des vérités. Le mieux est de faire une <strong>première semaine à blanc</strong>, sans annoncer de récompense, pour voir où il atterrit naturellement — puis de caler le seuil de la porte un cran au-dessus.</p>
+
+      <div class="tableau-wrap">
+        <table>
+          <thead>
+            <tr><th>Réglage</th><th style="text-align:right;">Valeur</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Clés par jour (lun–ven)</td><td class="chiffre">4</td></tr>
+            <tr><td>Clés par jour (sam–dim)</td><td class="chiffre">5</td></tr>
+            <tr><td>Total de la semaine</td><td class="chiffre">30</td></tr>
+            <tr><td>Seuil d'ouverture de la porte</td><td class="chiffre">21</td></tr>
+            <tr><td>Chrono de l'épreuve</td><td class="chiffre">aucun</td></tr>
+            <tr><td>Alerte « torche vacillante »</td><td class="chiffre">5 dernières min</td></tr>
+            <tr><td>Validation d'un temps fort</td><td class="chiffre">parent, code PIN</td></tr>
+            <tr><td>Indices dans la semaine</td><td class="chiffre">6</td></tr>
+            <tr><td>Indice verrouillé en dessous de</td><td class="chiffre">2 réussites</td></tr>
+            <tr><td>Temps forts, maximum par jour</td><td class="chiffre">2</td></tr>
+            <tr><td>Secondes par temps fort</td><td class="chiffre">10 s</td></tr>
+            <tr><td>Temps plancher dans la salle</td><td class="chiffre">25 s</td></tr>
+            <tr><td>Temps plafond dans la salle</td><td class="chiffre">90 s</td></tr>
+            <tr><td>Paliers : 2 cartes / 3 cartes / booster</td><td class="chiffre">20 · 35 · 55 boyards</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top: 22px;"><strong>L'énigme change toute seule chaque lundi.</strong> Le fort en garde douze en réserve — soit trois mois — et sert la suivante au changement de semaine, indices et mot-code compris. Tu n'as rien à préparer le dimanche soir. Le registre te laisse quand même réécrire les six mots, ou tirer l'énigme suivante si celle de la semaine ne te va pas.</p>
+
+      <p style="margin-top: 22px;"><strong>Les fenêtres horaires sont le seul vrai réglage à faire.</strong> Celles de la frise sont des valeurs par défaut, à remplacer par les horaires réels de la maison. Trop larges, elles ne poussent plus à démarrer ; trop serrées, elles transforment le jeu en course. Une bonne fenêtre vaut environ le double du temps de l'épreuve.</p>
+      <p class="note" style="margin-top: 22px;">Le plancher de 25 secondes n'est pas décoratif : une semaine de routine parfaite mais sans aucune initiative doit quand même rapporter quelque chose, sinon le message devient « la routine ne sert à rien ».</p>
+    </div>
+  </div>
+
+  <div class="pacte">
+    <div class="inner">
+      <p class="eyebrow">Le serment</p>
+      <p class="serment">« Je connais les règles du fort. Je jouerai le jeu, et le fort jouera le sien. »</p>
+      <div class="signatures">
+        <div class="sign"><div class="ligne"></div><span>L'aventurier</span></div>
+        <div class="sign"><div class="ligne"></div><span>Le gardien du fort</span></div>
+      </div>
+      <p class="fouras-sign">— Le Père Fouras</p>
+    </div>
+  </div>
+
+  <div class="retour">
+    <a href="index.html">Retour aux épreuves</a>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  // --- Démo 1 : l'indice qui se dévoile ---
+  var MOT = "PIRATES";
+  var NB_EPREUVES = 4;
+  var ORDRE_MASQUE = [4, 1, 6, 2, 0]; // ordre dans lequel les lettres disparaissent
+  var motEl = document.getElementById("mot-indice");
+  var verdictEl = document.getElementById("verdict-indice");
+
+  function rendreIndice(n) {
+    var rates = NB_EPREUVES - n;
+    var verrouille = n < 2;
+    var caches = verrouille ? MOT.length : Math.min(rates, ORDRE_MASQUE.length);
+    var masques = {};
+    for (var i = 0; i < caches; i++) {
+      masques[verrouille ? i : ORDRE_MASQUE[i]] = true;
+    }
+
+    motEl.innerHTML = "";
+    for (var j = 0; j < MOT.length; j++) {
+      var cell = document.createElement("span");
+      var vide = !!masques[j];
+      cell.className = "lettre" + (vide ? " vide" : "");
+      cell.textContent = vide ? "?" : MOT.charAt(j);
+      motEl.appendChild(cell);
+    }
+
+    if (verrouille) {
+      verdictEl.className = "verdict verrouille";
+      verdictEl.textContent = "Le Père Fouras garde son mot pour lui ce soir.";
+    } else if (rates === 0) {
+      verdictEl.className = "verdict";
+      verdictEl.textContent = "Journée parfaite : le mot entier est à toi.";
+    } else {
+      verdictEl.className = "verdict";
+      verdictEl.textContent = rates + (rates > 1 ? " lettres cachées" : " lettre cachée") + " — à toi de deviner le reste.";
+    }
+  }
+
+  // --- Démo 2 : le trésor qui se calcule ---
+  var secEl = document.getElementById("calc-secondes");
+  var boyEl = document.getElementById("calc-boyards");
+  var cartesEl = document.getElementById("calc-cartes");
+
+  function rendreTresor(n) {
+    var secondes = Math.min(90, 25 + 10 * n);
+    var boyards = Math.round(secondes * 0.8);
+    var butin;
+    if (boyards >= 55) butin = "le booster";
+    else if (boyards >= 35) butin = "3 cartes";
+    else if (boyards >= 20) butin = "2 cartes";
+    else butin = "1 carte";
+
+    secEl.textContent = secondes + " s";
+    boyEl.textContent = "≈ " + boyards;
+    cartesEl.textContent = butin;
+  }
+
+  // --- Câblage commun des deux sélecteurs ---
+  function brancher(id, rendu) {
+    var groupe = document.getElementById(id);
+    var boutons = groupe.querySelectorAll("button");
+    groupe.addEventListener("click", function (e) {
+      var btn = e.target.closest("button");
+      if (!btn) return;
+      for (var i = 0; i < boutons.length; i++) {
+        boutons[i].setAttribute("aria-pressed", String(boutons[i] === btn));
+      }
+      rendu(parseInt(btn.getAttribute("data-n"), 10));
+    });
+    for (var i = 0; i < boutons.length; i++) {
+      if (boutons[i].getAttribute("aria-pressed") === "true") {
+        rendu(parseInt(boutons[i].getAttribute("data-n"), 10));
+      }
+    }
+  }
+
+  brancher("sel-epreuves", rendreIndice);
+  brancher("sel-temps-forts", rendreTresor);
+})();
+</script>
+</body>
+</html>
