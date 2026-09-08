@@ -607,7 +607,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-08 18:48';   // estampillée par maj-version.js
+var VERSION = '2026-09-08 18:50';   // estampillée par maj-version.js
 
 var CLE_STOCKAGE = 'fort-marius-v2';
 
@@ -1468,6 +1468,14 @@ function finirLaSalle() {
    11. LE MODE PARENT
    ========================================================= */
 
+/** Referme le registre : le PIN sera redemandé. */
+function verrouillerRegistre(revenirAuJour) {
+  if (!parentDeverrouille) return;
+  parentDeverrouille = false;
+  if (revenirAuJour) montrerVue('jour');
+  else toutRendre();
+}
+
 function rendreParent() {
   document.getElementById('parent-verrou').hidden = parentDeverrouille;
   document.getElementById('parent-contenu').hidden = !parentDeverrouille;
@@ -1601,7 +1609,9 @@ function rendreParent() {
       '</div>' +
 
       '<button class="btn discret large" id="btn-raz" style="margin-top:18px" type="button">Tout effacer et revenir au temps réel</button>' +
-    '</div>';
+    '</div>' +
+
+    '<button class="btn principal large" id="btn-verrouiller" type="button">Fermer le registre</button>';
 
   attente.forEach(function (a, k) {
     document.querySelector('[data-tf-oui="' + k + '"]').addEventListener('click', function () { deciderTF(a, 'valide'); });
@@ -1614,6 +1624,10 @@ function rendreParent() {
     etat.reglages.motCode = ENIGMES[etat.enigme % ENIGMES.length].motCode;
     sauver();
     rendreParent();
+  });
+
+  document.getElementById('btn-verrouiller').addEventListener('click', function () {
+    verrouillerRegistre(true);
   });
 
   document.getElementById('btn-enregistrer').addEventListener('click', enregistrerReglages);
@@ -1787,6 +1801,7 @@ function montrerVue(nom) {
   });
   Array.prototype.forEach.call(document.querySelectorAll('.onglet'), function (b) {
     b.classList.toggle('actif', b.dataset.vue === nom);
+    if (b.dataset.vue === 'parent') b.textContent = parentDeverrouille ? '🔓' : '🔒';
   });
   toutRendre();
 }
@@ -1887,7 +1902,8 @@ setInterval(function () {
 
 // L'écran s'est rallumé : on recale tout de suite le chrono et les torches.
 document.addEventListener('visibilitychange', function () {
-  if (document.visibilityState !== 'visible') return;
+  // écran éteint ou appli quittée : on referme le registre derrière soi
+  if (document.visibilityState !== 'visible') { verrouillerRegistre(true); return; }
   verifierVersion();
   vedetteEtat = '';
   toutRendre();

@@ -231,6 +231,15 @@ titre('Le mot-code, tolérant aux accents et à la casse');
 t('TRÉSOR vaut tresor', normaliser('TRÉSOR'), normaliser('tresor'));
 t('ponctuation et espaces ignorés', normaliser(' Trésor ! '), 'TRESOR');
 
+titre('Le registre se referme');
+parentDeverrouille = true;
+verrouillerRegistre(false);
+t('« Fermer le registre » reverrouille', parentDeverrouille, false);
+parentDeverrouille = true;
+verrouillerRegistre(true);
+t('la mise en veille aussi', parentDeverrouille, false);
+t('et refermer deux fois ne casse rien', (verrouillerRegistre(false), parentDeverrouille), false);
+
 titre("L'estampille de version");
 {
   const vjson = JSON.parse(fs.readFileSync(path.join(__dirname, 'version.json'), 'utf8'));
