@@ -584,6 +584,7 @@ var REGLAGES_DEFAUT = {
   secondesPlafond: 90,
   tempsFortsMaxParJour: 2,
   minutesDeGrace: 5,         // les braises : du rab après l'extinction de la torche
+  minutesDeVacillement: 5,   // quand la torche se met à vaciller, avant de s'éteindre
   indiceVerrouilleSousSeuil: 2,
   paliers: [
     { boyards: 55, butin: 'Le booster complet' },
@@ -777,7 +778,7 @@ function etatEpreuve(jourId, epreuve) {
   if (maintenant < debut) return 'a-venir';
   if (maintenant >= fin + grace) return 'fermee';
   if (maintenant >= fin) return 'braises';       // la torche est éteinte, les braises tiennent encore
-  return (fin - maintenant <= 5) ? 'vacillante' : 'ouverte';
+  return (fin - maintenant <= (etat.reglages.minutesDeVacillement || 0)) ? 'vacillante' : 'ouverte';
 }
 
 function minutesRestantesFenetre(epreuve) {
@@ -1085,7 +1086,7 @@ function majCompteur() {
   var total = braises
     ? Math.max(1, graceDe(e)) * 60
     : (minutesDe(f[1]) - minutesDe(f[0])) * 60;
-  var vacille = braises || sec <= 5 * 60;
+  var vacille = braises || sec <= (etat.reglages.minutesDeVacillement || 0) * 60;
 
   valeur.textContent = formatCompte(sec);
   document.getElementById('compte-legende').textContent = braises
@@ -1522,6 +1523,7 @@ function rendreParent() {
         '<label class="champ"><span>Temps forts max / jour</span><input type="number" id="r-maxtf" value="' + r.tempsFortsMaxParJour + '"></label>' +
         '<label class="champ"><span>Code PIN</span><input type="text" inputmode="numeric" id="r-pin" value="' + r.pin + '"></label>' +
         '<label class="champ"><span>Braises après la fenêtre (min)</span><input type="number" id="r-grace" value="' + r.minutesDeGrace + '"></label>' +
+        '<label class="champ"><span>La torche vacille (dern. min)</span><input type="number" id="r-vacille" value="' + r.minutesDeVacillement + '"></label>' +
       '</div>' +
       '<label class="champ"><span>Salle du trésor ouverte tous les jours (pour tester)</span>' +
         '<input type="checkbox" id="r-test" ' + (r.salleToujoursOuverte ? 'checked' : '') + ' style="width:auto"></label>' +
@@ -1685,6 +1687,7 @@ function enregistrerReglages() {
   r.secondesPlafond = entier('r-plafond', r.secondesPlafond);
   r.tempsFortsMaxParJour = entier('r-maxtf', r.tempsFortsMaxParJour);
   r.minutesDeGrace = entier('r-grace', r.minutesDeGrace);
+  r.minutesDeVacillement = entier('r-vacille', r.minutesDeVacillement);
   r.pin = document.getElementById('r-pin').value.trim() || r.pin;
   var fenetres = {};
   EPREUVES.forEach(function (e) {

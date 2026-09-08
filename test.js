@@ -143,8 +143,10 @@ titre('Les braises : la marge après la fenêtre');
                                                     String(min % 60).padStart(2, '0') }; };
   etat.jours[idDuJour()] = { epreuves: {}, tempsForts: [] };
 
-  a(fin - 10); t('10 min avant la fin : ouverte', etatEpreuve(idDuJour(), e), 'ouverte');
-  a(fin - 3);  t('3 min avant la fin : vacillante', etatEpreuve(idDuJour(), e), 'vacillante');
+  a(fin - 20); t('20 min avant la fin : ouverte', etatEpreuve(idDuJour(), e), 'ouverte');
+  const vac = etat.reglages.minutesDeVacillement;
+  a(fin - vac);      t(vac + ' min avant la fin : vacillante', etatEpreuve(idDuJour(), e), 'vacillante');
+  a(fin - vac - 1);  t('une minute plus tôt : encore ouverte', etatEpreuve(idDuJour(), e), 'ouverte');
   a(fin);      t('à l\'heure pile : braises', etatEpreuve(idDuJour(), e), 'braises');
   a(fin + 1);  t('1 min après : encore des braises', etatEpreuve(idDuJour(), e), 'braises');
   t('  et la clé est encore prenable', secondesAvantFermeture(e) > 0, true);
@@ -178,6 +180,9 @@ titre('Les braises : la marge après la fenêtre');
   etat.simulation = null;
   etat.jours[idDuJour()] = { epreuves: {}, tempsForts: [] };
 }
+
+t('les deux marges sont des réglages, pas des constantes',
+  [etat.reglages.minutesDeGrace, etat.reglages.minutesDeVacillement].every(v => typeof v === 'number'), true);
 
 titre('Le bac à sable');
 [[30, 7], [24, 4], [21, 1], [15, 0]].forEach(([cles, tf]) => {
