@@ -309,6 +309,12 @@
     background: var(--bois-sombre); color: var(--blanc);
     border: 1px solid var(--bronze); border-radius: 4px; padding: 9px 11px;
   }
+  #sauve-zone {
+    width: 100%; font-family: var(--mono); font-size: 12px; line-height: 1.4;
+    background: var(--bois-sombre); color: var(--peche);
+    border: 1px solid var(--bronze); border-radius: 4px; padding: 10px;
+    resize: vertical; margin-bottom: 10px;
+  }
   .champ select {
     width: 100%; font-family: var(--corps); font-size: 16px;
     background: var(--bois-sombre); color: var(--blanc);
@@ -601,7 +607,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-08 18:43';   // estampillée par maj-version.js
+var VERSION = '2026-09-08 18:48';   // estampillée par maj-version.js
 
 var CLE_STOCKAGE = 'fort-marius-v2';
 
@@ -1549,6 +1555,20 @@ function rendreParent() {
     '</div>' +
 
     '<div class="panneau sombre">' +
+      '<h2 class="section-titre">Sauvegarde</h2>' +
+      '<p class="sous">iOS donne un stockage séparé à chaque installation : ' +
+        'l\'appli de l\'écran d\'accueil et celle de Safari ne partagent rien. ' +
+        'Voici de quoi transporter une partie de l\'une à l\'autre.</p>' +
+      '<textarea id="sauve-zone" rows="4" placeholder="La sauvegarde apparaîtra ici, ou colle-la pour restaurer."></textarea>' +
+      '<div class="bac">' +
+        '<button class="btn" id="sauve-lire" type="button">Lire la partie en cours</button>' +
+        '<button class="btn" id="sauve-copier" type="button">Copier</button>' +
+        '<button class="btn principal" id="sauve-ecrire" type="button">Restaurer</button>' +
+      '</div>' +
+      '<p class="verdict" id="sauve-verdict"></p>' +
+    '</div>' +
+
+    '<div class="panneau sombre">' +
       '<h2 class="section-titre">Bac à sable</h2>' +
       '<p class="sous">Pour voir ce que ça donne sans attendre. Rien ici n\'est destiné à Marius.</p>' +
       '<div class="grille-2">' +
@@ -1640,6 +1660,50 @@ function rendreParent() {
   }
   document.getElementById('corr-jour').addEventListener('change', rendreCorrection);
   rendreCorrection();
+
+  var zone = document.getElementById('sauve-zone');
+  var verdict = document.getElementById('sauve-verdict');
+
+  document.getElementById('sauve-lire').addEventListener('click', function () {
+    zone.value = JSON.stringify(etat);
+    zone.select();
+    verdict.textContent = 'Partie du ' + etat.semaine + ' — ' + clesSemaine() + ' clés. Copie ce texte.';
+  });
+
+  document.getElementById('sauve-copier').addEventListener('click', function () {
+    if (!zone.value) zone.value = JSON.stringify(etat);
+    zone.select();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(zone.value).then(function () {
+        verdict.textContent = 'Copié.';
+      }, function () {
+        verdict.textContent = 'Copie refusée : le texte est sélectionné, fais-le à la main.';
+      });
+    } else {
+      verdict.textContent = 'Le texte est sélectionné, copie-le à la main.';
+    }
+  });
+
+  document.getElementById('sauve-ecrire').addEventListener('click', function () {
+    var brut = zone.value.trim();
+    if (!brut) { verdict.textContent = 'Colle d\'abord une sauvegarde dans la case.'; return; }
+    var lu;
+    try { lu = JSON.parse(brut); }
+    catch (e) { verdict.textContent = 'Ce n\'est pas une sauvegarde lisible.'; return; }
+    if (!lu || lu.version !== 2 || !lu.jours || !lu.semaine) {
+      verdict.textContent = 'Ce n\'est pas une sauvegarde du Fort.'; return;
+    }
+    if (!confirm('Remplacer la partie en cours par cette sauvegarde ?')) return;
+    etat = lu;
+    etat.reglages = Object.assign({}, REGLAGES_DEFAUT, lu.reglages || {});
+    JOURS.forEach(function (j) {
+      if (!etat.jours[j.id]) etat.jours[j.id] = { epreuves: {}, tempsForts: [] };
+      if (!etat.jours[j.id].tempsForts) etat.jours[j.id].tempsForts = [];
+    });
+    sauver();
+    verdict.textContent = 'Restaurée : ' + clesSemaine() + ' clés.';
+    toutRendre();
+  });
 
   document.getElementById('bac-appliquer').addEventListener('click', function () { placerLeBac(false); });
   document.getElementById('bac-rejouer-jour').addEventListener('click', function () { placerLeBac(true); });
