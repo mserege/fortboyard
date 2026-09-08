@@ -150,6 +150,7 @@
     letter-spacing: .16em; text-transform: uppercase; color: var(--peche); margin-top: 6px;
   }
   .compte.vacille .compte-valeur { color: var(--braise); }
+  .ligne-epreuve.braises .nom { color: var(--braise); }
   .vedette .gestes-liste { margin: 16px 0 0; text-align: left; }
   .vedette .indication { text-align: center; }
 
@@ -522,7 +523,7 @@ var EPREUVES = [
 
   { id: 'veillee', nom: 'La Veillée du Fort', glyphe: '🕯️', moment: 'Soir',
     gestes: ['Débarrasser la table', 'Se laver les dents', 'Passer aux toilettes'],
-    fenetre: ['19:30', '20:05'], quand: 'tous' },
+    fenetre: ['19:30', '20:00'], quand: 'tous' },
 
   { id: 'chambre', nom: 'La Chambre du Trésor', glyphe: '🌙', moment: 'Coucher',
     gestes: ['Au lit', 'Prêt pour demain'],
@@ -582,6 +583,7 @@ var REGLAGES_DEFAUT = {
   secondesParTempsFort: 10,
   secondesPlafond: 90,
   tempsFortsMaxParJour: 2,
+  minutesDeGrace: 15,        // les braises : du rab après l'extinction de la torche
   indiceVerrouilleSousSeuil: 2,
   paliers: [
     { boyards: 55, butin: 'Le booster complet' },
@@ -771,8 +773,10 @@ function etatEpreuve(jourId, epreuve) {
   var maintenant = minutesMaintenant();
   var debut = minutesDe(f[0]);
   var fin = minutesDe(f[1]);
+  var grace = graceDe(epreuve, jourId);
   if (maintenant < debut) return 'a-venir';
-  if (maintenant >= fin) return 'fermee';
+  if (maintenant >= fin + grace) return 'fermee';
+  if (maintenant >= fin) return 'braises';       // la torche est éteinte, les braises tiennent encore
   return (fin - maintenant <= 5) ? 'vacillante' : 'ouverte';
 }
 
@@ -780,12 +784,39 @@ function minutesRestantesFenetre(epreuve) {
   return Math.max(0, minutesDe(fenetreDe(epreuve)[1]) - minutesMaintenant());
 }
 
+function secondesJusqua(minutes) {
+  if (simulation().heure) return Math.max(0, minutes * 60 - minutesDe(simulation().heure) * 60);
+  var d = new Date();
+  return Math.max(0, minutes * 60 - (d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds()));
+}
+
 /** Le temps restant avant que la torche s'éteigne, à la seconde près. */
 function secondesRestantesFenetre(epreuve) {
-  var fin = minutesDe(fenetreDe(epreuve)[1]) * 60;
-  if (simulation().heure) return Math.max(0, fin - minutesDe(simulation().heure) * 60);
-  var d = new Date();
-  return Math.max(0, fin - (d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds()));
+  return secondesJusqua(minutesDe(fenetreDe(epreuve)[1]));
+}
+
+/** Le temps restant avant que même les braises s'éteignent. */
+function secondesAvantFermeture(epreuve) {
+  return secondesJusqua(minutesDe(fenetreDe(epreuve)[1]) + graceDe(epreuve));
+}
+
+/**
+ * Les braises d'une épreuve : du rab après l'extinction de la torche,
+ * mais jamais au-delà de l'ouverture de l'épreuve suivante — sinon deux
+ * épreuves seraient jouables en même temps et l'une masquerait l'autre.
+ */
+function graceDe(epreuve, jourId) {
+  var grace = etat.reglages.minutesDeGrace || 0;
+  var fin = minutesDe(fenetreDe(epreuve)[1]);
+  var suivantes = epreuvesDuJour(jourId || idDuJour())
+    .map(function (x) { return minutesDe(fenetreDe(x)[0]); })
+    .filter(function (debut) { return debut >= fin; });
+  if (suivantes.length) grace = Math.min(grace, Math.min.apply(null, suivantes) - fin);
+  return Math.max(0, grace);
+}
+
+function epreuveJouable(st) {
+  return st === 'ouverte' || st === 'vacillante' || st === 'braises';
 }
 
 function formatCompte(sec) {
@@ -796,13 +827,14 @@ function formatCompte(sec) {
 function epreuveEnVedette() {
   var jourId = idDuJour();
   var liste = epreuvesDuJour(jourId);
-  var ouverte = null, prochaine = null;
+  var ouverte = null, braises = null, prochaine = null;
   liste.forEach(function (e) {
     var st = etatEpreuve(jourId, e);
     if (!ouverte && (st === 'ouverte' || st === 'vacillante')) ouverte = e;
+    if (!braises && st === 'braises') braises = e;
     if (!prochaine && st === 'a-venir') prochaine = e;
   });
-  return ouverte || prochaine || null;
+  return ouverte || braises || prochaine || null;
 }
 
 function tempsFortsValides() {
@@ -865,7 +897,7 @@ function ordreMasquage(n) {
 function journeeFinie(jourId) {
   return epreuvesDuJour(jourId).every(function (e) {
     var st = etatEpreuve(jourId, e);
-    return st !== 'a-venir' && st !== 'ouverte' && st !== 'vacillante';
+    return st !== 'a-venir' && !epreuveJouable(st);
   });
 }
 
@@ -990,7 +1022,7 @@ function rendreVedette() {
   }
 
   var st = etatEpreuve(jourId, e);
-  var ouverte = (st === 'ouverte' || st === 'vacillante');
+  var ouverte = epreuveJouable(st);
   var gestes = gestesDe(e);
   var signature = e.id + '|' + st + '|' + gestes.join(',');
   if (signature === vedetteEtat) { majCompteur(); return; }
@@ -1016,7 +1048,7 @@ function rendreVedette() {
       (e.promesse ? '<p class="promesse">' + e.promesse + '</p>' : '') +
       '<div class="compte" id="compte">' +
         '<span class="compte-valeur" id="compte-valeur">--:--</span>' +
-        '<span class="compte-legende">avant que la torche s\'éteigne</span>' +
+        '<span class="compte-legende" id="compte-legende">avant que la torche s\'éteigne</span>' +
       '</div>' +
       '<div class="torche" id="torche">' +
         '<div class="torche-piste"><div class="torche-flamme" id="torche-flamme"></div></div>' +
@@ -1048,11 +1080,17 @@ function majCompteur() {
   if (!e || !valeur) return;
 
   var f = fenetreDe(e);
-  var sec = secondesRestantesFenetre(e);
-  var total = (minutesDe(f[1]) - minutesDe(f[0])) * 60;
-  var vacille = sec <= 5 * 60;
+  var braises = etatEpreuve(idDuJour(), e) === 'braises';
+  var sec = braises ? secondesAvantFermeture(e) : secondesRestantesFenetre(e);
+  var total = braises
+    ? Math.max(1, graceDe(e)) * 60
+    : (minutesDe(f[1]) - minutesDe(f[0])) * 60;
+  var vacille = braises || sec <= 5 * 60;
 
   valeur.textContent = formatCompte(sec);
+  document.getElementById('compte-legende').textContent = braises
+    ? 'avant que les braises s\'éteignent'
+    : 'avant que la torche s\'éteigne';
   document.getElementById('compte').className = 'compte' + (vacille ? ' vacille' : '');
   document.getElementById('torche').className = 'torche' + (vacille ? ' vacille' : '');
   document.getElementById('torche-flamme').style.width =
@@ -1064,14 +1102,15 @@ function majCompteur() {
   var bouton = document.getElementById('btn-fini');
 
   if (sec <= 0) {
-    indication.textContent = 'La torche s\'est éteinte. La clé attendra demain.';
+    indication.textContent = 'Les braises se sont éteintes. La clé attendra demain.';
     bouton.disabled = true; bouton.className = 'btn large'; bouton.textContent = 'Trop tard';
     vedetteEtat = '';                                   // on rebâtit au prochain passage
   } else if (reste === 0) {
     indication.textContent = 'Tout est fait. La clé est à toi.';
     bouton.disabled = false; bouton.className = 'btn principal large'; bouton.textContent = 'J\'ai fini !';
   } else {
-    indication.textContent = 'Il te reste ' + reste + ' geste' + (reste > 1 ? 's' : '') +
+    indication.textContent = (braises ? 'La torche est éteinte, mais il reste des braises. ' : '') +
+                             'Il te reste ' + reste + ' geste' + (reste > 1 ? 's' : '') +
                              ' et ' + formatMinutes(Math.ceil(sec / 60)) + '.';
     bouton.disabled = true; bouton.className = 'btn large'; bouton.textContent = 'Il te reste des gestes';
   }
@@ -1084,7 +1123,8 @@ function rendreListeEpreuves() {
 
   epreuvesDuJour(jourId).forEach(function (e) {
     var st = etatEpreuve(jourId, e);
-    var badge = { reussie: '🔑', ratee: '✕', ouverte: '🔥', vacillante: '🔥', fermee: '✕', 'a-venir': '·', passee: '✕' }[st] || '·';
+    var badge = { reussie: '🔑', ratee: '✕', ouverte: '🔥', vacillante: '🔥', braises: '🜂',
+                  fermee: '✕', 'a-venir': '·', passee: '✕' }[st] || '·';
 
     var b = document.createElement('div');
     b.className = 'ligne-epreuve ' + st;
@@ -1212,7 +1252,7 @@ function basculerGeste(e, i) {
 }
 
 function validerEpreuve(e) {
-  if (secondesRestantesFenetre(e) <= 0) return;
+  if (secondesAvantFermeture(e) <= 0) return;
   etat.jours[idDuJour()].epreuves[e.id] = {
     statut: 'reussie',
     gestes: gestesDe(e),
@@ -1481,10 +1521,23 @@ function rendreParent() {
         '<label class="champ"><span>Plafond de secondes</span><input type="number" id="r-plafond" value="' + r.secondesPlafond + '"></label>' +
         '<label class="champ"><span>Temps forts max / jour</span><input type="number" id="r-maxtf" value="' + r.tempsFortsMaxParJour + '"></label>' +
         '<label class="champ"><span>Code PIN</span><input type="text" inputmode="numeric" id="r-pin" value="' + r.pin + '"></label>' +
+        '<label class="champ"><span>Braises après la fenêtre (min)</span><input type="number" id="r-grace" value="' + r.minutesDeGrace + '"></label>' +
       '</div>' +
       '<label class="champ"><span>Salle du trésor ouverte tous les jours (pour tester)</span>' +
         '<input type="checkbox" id="r-test" ' + (r.salleToujoursOuverte ? 'checked' : '') + ' style="width:auto"></label>' +
       '<button class="btn principal large" id="btn-enregistrer" type="button">Enregistrer</button>' +
+    '</div>' +
+
+    '<div class="panneau">' +
+      '<h2 class="section-titre">Corriger une journée</h2>' +
+      '<p class="sous">Il l\'a fait mais la fenêtre était passée ? Accorde la clé à la main.</p>' +
+      '<label class="champ"><span>Quel jour</span><select id="corr-jour">' +
+        JOURS.map(function (j) {
+          return '<option value="' + j.id + '"' + (j.id === idDuJour() ? ' selected' : '') + '>' +
+                 j.nom + (j.id === idDuJour() ? ' (aujourd\'hui)' : '') + '</option>';
+        }).join('') +
+      '</select></label>' +
+      '<div id="corr-liste"></div>' +
     '</div>' +
 
     '<div class="panneau sombre">' +
@@ -1544,6 +1597,42 @@ function rendreParent() {
     sauver();
     montrerVue('jour');
   }
+  function rendreCorrection() {
+    var jourId = document.getElementById('corr-jour').value;
+    var hote = document.getElementById('corr-liste');
+    hote.innerHTML = '';
+    epreuvesDuJour(jourId).forEach(function (e) {
+      var r = resultat(jourId, e.id);
+      var acquise = !!(r && r.statut === 'reussie');
+      var ligne = document.createElement('div');
+      ligne.className = 'fenetre-ligne';
+      ligne.innerHTML = '<span class="fenetre-nom">' + (acquise ? '🔑 ' : '· ') + e.glyphe + ' ' + e.nom + '</span>';
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'mini ' + (acquise ? 'non' : 'oui');
+      b.textContent = acquise ? 'Retirer la clé' : 'Accorder la clé';
+      b.addEventListener('click', function () {
+        if (acquise) {
+          delete etat.jours[jourId].epreuves[e.id];
+        } else {
+          etat.jours[jourId].epreuves[e.id] = {
+            statut: 'reussie',
+            gestes: e.gestes.map(function () { return true; }),
+            accordee: true,
+            a: new Date().toISOString()
+          };
+          SONS.cle();
+        }
+        sauver();
+        rendreCorrection();
+      });
+      ligne.appendChild(b);
+      hote.appendChild(ligne);
+    });
+  }
+  document.getElementById('corr-jour').addEventListener('change', rendreCorrection);
+  rendreCorrection();
+
   document.getElementById('bac-appliquer').addEventListener('click', function () { placerLeBac(false); });
   document.getElementById('bac-rejouer-jour').addEventListener('click', function () { placerLeBac(true); });
 
@@ -1595,6 +1684,7 @@ function enregistrerReglages() {
   r.secondesParTempsFort = entier('r-partf', r.secondesParTempsFort);
   r.secondesPlafond = entier('r-plafond', r.secondesPlafond);
   r.tempsFortsMaxParJour = entier('r-maxtf', r.tempsFortsMaxParJour);
+  r.minutesDeGrace = entier('r-grace', r.minutesDeGrace);
   r.pin = document.getElementById('r-pin').value.trim() || r.pin;
   var fenetres = {};
   EPREUVES.forEach(function (e) {

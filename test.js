@@ -134,6 +134,51 @@ enSemaine.forEach((e, i) => {
     minutesDe(e.fenetre[0]) >= minutesDe(prec.fenetre[1]), true);
 });
 
+titre('Les braises : la marge après la fenêtre');
+{
+  const e = EPREUVES.filter(x => x.id === 'retour')[0];
+  const fin = minutesDe(e.fenetre[1]);
+  const grace = graceDe(e);
+  const a = (min) => { etat.simulation = { heure: String(Math.floor(min / 60)).padStart(2, '0') + ':' +
+                                                    String(min % 60).padStart(2, '0') }; };
+  etat.jours[idDuJour()] = { epreuves: {}, tempsForts: [] };
+
+  a(fin - 10); t('10 min avant la fin : ouverte', etatEpreuve(idDuJour(), e), 'ouverte');
+  a(fin - 3);  t('3 min avant la fin : vacillante', etatEpreuve(idDuJour(), e), 'vacillante');
+  a(fin);      t('à l\'heure pile : braises', etatEpreuve(idDuJour(), e), 'braises');
+  a(fin + 5);  t('5 min après : encore des braises', etatEpreuve(idDuJour(), e), 'braises');
+  t('  et la clé est encore prenable', secondesAvantFermeture(e) > 0, true);
+  a(fin + grace);     t(grace + ' min après : fermée', etatEpreuve(idDuJour(), e), 'fermee');
+  a(fin + grace + 1); t('au-delà : toujours fermée', etatEpreuve(idDuJour(), e), 'fermee');
+  t('  et la clé ne l\'est plus', secondesAvantFermeture(e) > 0, false);
+
+  // Le cas de Marius : 18h35, il a tout fait, il doit pouvoir valider.
+  a(fin + 5);
+  validerEpreuve(e);
+  t('à 18h35, la clé est accordée', !!resultat(idDuJour(), e.id), true);
+  etat.jours[idDuJour()] = { epreuves: {}, tempsForts: [] };
+  a(fin + grace + 5);
+  validerEpreuve(e);
+  t('braises éteintes, la clé est refusée', !!resultat(idDuJour(), e.id), false);
+
+  // Les braises ne doivent pas déborder sur l'épreuve suivante.
+  const enOrdre = epreuvesDuJour('lundi').slice()
+    .sort((x, y) => minutesDe(x.fenetre[0]) - minutesDe(y.fenetre[0]));
+  enOrdre.forEach((ep, i) => {
+    if (i === 0) return;
+    const prec = enOrdre[i - 1];
+    t('les braises de « ' + prec.nom + ' » n\'empiètent pas sur la suite',
+      minutesDe(prec.fenetre[1]) + graceDe(prec, 'lundi') <= minutesDe(ep.fenetre[0]), true);
+  });
+  enOrdre.forEach((ep) => {
+    t('« ' + ep.nom + ' » garde ' + graceDe(ep, 'lundi') + ' min de braises',
+      graceDe(ep, 'lundi') > 0, true);
+  });
+
+  etat.simulation = null;
+  etat.jours[idDuJour()] = { epreuves: {}, tempsForts: [] };
+}
+
 titre('Le bac à sable');
 [[30, 7], [24, 4], [21, 1], [15, 0]].forEach(([cles, tf]) => {
   remplirSemaine(cles, tf);
