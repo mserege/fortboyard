@@ -240,6 +240,16 @@ verrouillerRegistre(true);
 t('la mise en veille aussi', parentDeverrouille, false);
 t('et refermer deux fois ne casse rien', (verrouillerRegistre(false), parentDeverrouille), false);
 
+// Le cadenas : il mène au registre, et une fois dedans il le referme.
+parentDeverrouille = false; vueActive = 'jour';
+t('cadenas fermé → il ouvre le registre', actionCadenas(), 'ouvre');
+parentDeverrouille = true; vueActive = 'semaine';
+t('déverrouillé mais ailleurs → il y ramène', actionCadenas(), 'ouvre');
+t('  sans reverrouiller au passage', parentDeverrouille, true);
+parentDeverrouille = true; vueActive = 'parent';
+t('déverrouillé et déjà dedans → il referme', actionCadenas(), 'verrouille');
+t('  et le registre est bien fermé', parentDeverrouille, false);
+
 titre("L'estampille de version");
 {
   const vjson = JSON.parse(fs.readFileSync(path.join(__dirname, 'version.json'), 'utf8'));

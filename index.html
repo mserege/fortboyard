@@ -607,7 +607,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-08 18:50';   // estampillée par maj-version.js
+var VERSION = '2026-09-08 18:52';   // estampillée par maj-version.js
 
 var CLE_STOCKAGE = 'fort-marius-v2';
 
@@ -1468,6 +1468,20 @@ function finirLaSalle() {
    11. LE MODE PARENT
    ========================================================= */
 
+/**
+ * Le cadenas est un va-et-vient : il mène au registre, et une fois
+ * dedans il le referme. Depuis une autre vue, il y ramène sans
+ * redemander le code — sinon on ne pourrait plus revenir du bac à sable.
+ */
+function actionCadenas() {
+  if (parentDeverrouille && vueActive === 'parent') {
+    verrouillerRegistre(true);
+    return 'verrouille';
+  }
+  montrerVue('parent');
+  return 'ouvre';
+}
+
 /** Referme le registre : le PIN sera redemandé. */
 function verrouillerRegistre(revenirAuJour) {
   if (!parentDeverrouille) return;
@@ -1801,7 +1815,12 @@ function montrerVue(nom) {
   });
   Array.prototype.forEach.call(document.querySelectorAll('.onglet'), function (b) {
     b.classList.toggle('actif', b.dataset.vue === nom);
-    if (b.dataset.vue === 'parent') b.textContent = parentDeverrouille ? '🔓' : '🔒';
+    if (b.dataset.vue === 'parent') {
+      b.textContent = parentDeverrouille ? '🔓' : '🔒';
+      b.setAttribute('aria-label', parentDeverrouille
+        ? (nom === 'parent' ? 'Fermer le registre' : 'Revenir au registre')
+        : 'Ouvrir le registre');
+    }
   });
   toutRendre();
 }
@@ -1836,7 +1855,10 @@ function toutRendre() {
 }
 
 Array.prototype.forEach.call(document.querySelectorAll('.onglet'), function (b) {
-  b.addEventListener('click', function () { montrerVue(b.dataset.vue); });
+  b.addEventListener('click', function () {
+    if (b.dataset.vue === 'parent') actionCadenas();
+    else montrerVue(b.dataset.vue);
+  });
 });
 
 document.getElementById('btn-temps-fort').addEventListener('click', ouvrirTempsFort);
