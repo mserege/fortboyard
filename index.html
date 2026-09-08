@@ -73,6 +73,7 @@
     background: rgba(0,0,0,.28); color: var(--blanc); border: none;
     border-radius: 30px; padding: 4px 12px; margin-left: 10px; cursor: pointer;
   }
+  .banniere.maj { background: var(--bronze-clair); }
   .bac { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .bac .btn { flex: 1 1 auto; }
 
@@ -383,6 +384,7 @@
     text-align: center; font-size: 13px; color: var(--cendre); margin-top: 22px;
   }
   .pied a { color: var(--peche); }
+  .pied .version { font-family: var(--mono); font-size: 11px; opacity: .6; }
 
   @media (prefers-reduced-motion: reduce) {
     *, .torche.vacille .torche-flamme { animation: none !important; transition: none !important; }
@@ -392,6 +394,7 @@
 <body>
 <div class="wrap">
 
+  <div class="banniere maj" id="banniere-maj" hidden></div>
   <div class="banniere" id="banniere-test" hidden></div>
 
   <header>
@@ -464,7 +467,8 @@
     <div id="parent-contenu" hidden></div>
   </main>
 
-  <p class="pied"><a href="regles.html">Les règles du Fort</a></p>
+  <p class="pied"><a href="regles.html">Les règles du Fort</a><br>
+    <span class="version" id="pied-version"></span></p>
 </div>
 
 <!-- ================= SUPERPOSITIONS ================= -->
@@ -596,6 +600,8 @@ var REGLAGES_DEFAUT = {
   fenetres: null,          // réglées par le parent ; sinon celles d'EPREUVES
   salleToujoursOuverte: false   // pour les tests
 };
+
+var VERSION = '2026-09-08 18:43';   // estampillée par maj-version.js
 
 var CLE_STOCKAGE = 'fort-marius-v2';
 
@@ -1774,6 +1780,37 @@ document.getElementById('saisie-pin').addEventListener('keydown', function (ev) 
   if (ev.key === 'Enter') document.getElementById('btn-pin').click();
 });
 
+/* ---------------------------------------------------------
+   Une nouvelle version en ligne ?
+
+   L'iPad garde la page en cache dix minutes et le « tirer pour
+   rafraîchir » ne marche pas dans une web app plein écran. On relit
+   donc version.json sans passer par le cache : si le serveur annonce
+   autre chose que la version chargée, on propose de recharger.
+   --------------------------------------------------------- */
+function verifierVersion() {
+  if (!window.fetch) return;
+  fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (info) {
+      if (!info || !info.version || info.version === VERSION) return;
+      var el = document.getElementById('banniere-maj');
+      if (!el.hidden) return;
+      el.hidden = false;
+      el.innerHTML = 'Une nouvelle version du fort est prête' +
+                     '<button type="button" id="btn-maj">Recharger</button>';
+      document.getElementById('btn-maj').addEventListener('click', function () {
+        // on change l'adresse pour contourner le cache ; localStorage suit l'origine,
+        // donc la semaine de Marius est conservée
+        location.replace(location.pathname + '?v=' + encodeURIComponent(info.version));
+      });
+    })
+    .catch(function () { /* hors ligne : on réessaiera */ });
+}
+
+setTimeout(verifierVersion, 4000);
+setInterval(verifierVersion, 10 * 60 * 1000);
+
 // Le compte à rebours de la fenêtre, à la seconde.
 setInterval(function () {
   if (vueActive === 'jour') majCompteur();
@@ -1787,9 +1824,12 @@ setInterval(function () {
 // L'écran s'est rallumé : on recale tout de suite le chrono et les torches.
 document.addEventListener('visibilitychange', function () {
   if (document.visibilityState !== 'visible') return;
+  verifierVersion();
   vedetteEtat = '';
   toutRendre();
 });
+
+document.getElementById('pied-version').textContent = 'version ' + VERSION;
 
 charger();
 montrerVue('jour');

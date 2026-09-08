@@ -231,6 +231,13 @@ titre('Le mot-code, tolérant aux accents et à la casse');
 t('TRÉSOR vaut tresor', normaliser('TRÉSOR'), normaliser('tresor'));
 t('ponctuation et espaces ignorés', normaliser(' Trésor ! '), 'TRESOR');
 
+titre("L'estampille de version");
+{
+  const vjson = JSON.parse(fs.readFileSync(path.join(__dirname, 'version.json'), 'utf8'));
+  t('version.json et index.html concordent', VERSION, vjson.version);
+  t("l'estampille n'est pas restée à zéro", VERSION !== '0000-00-00 00:00', true);
+}
+
 titre('La page de règles dit-elle la vérité ?');
 {
   const regles = fs.readFileSync(path.join(__dirname, 'regles.html'), 'utf8');
