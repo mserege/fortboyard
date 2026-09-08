@@ -146,16 +146,16 @@ titre('Les braises : la marge après la fenêtre');
   a(fin - 10); t('10 min avant la fin : ouverte', etatEpreuve(idDuJour(), e), 'ouverte');
   a(fin - 3);  t('3 min avant la fin : vacillante', etatEpreuve(idDuJour(), e), 'vacillante');
   a(fin);      t('à l\'heure pile : braises', etatEpreuve(idDuJour(), e), 'braises');
-  a(fin + 5);  t('5 min après : encore des braises', etatEpreuve(idDuJour(), e), 'braises');
+  a(fin + 1);  t('1 min après : encore des braises', etatEpreuve(idDuJour(), e), 'braises');
   t('  et la clé est encore prenable', secondesAvantFermeture(e) > 0, true);
   a(fin + grace);     t(grace + ' min après : fermée', etatEpreuve(idDuJour(), e), 'fermee');
   a(fin + grace + 1); t('au-delà : toujours fermée', etatEpreuve(idDuJour(), e), 'fermee');
   t('  et la clé ne l\'est plus', secondesAvantFermeture(e) > 0, false);
 
-  // Le cas de Marius : 18h35, il a tout fait, il doit pouvoir valider.
-  a(fin + 5);
+  // Le cas de Marius : il a tout fait, il valide juste après la fermeture.
+  a(fin + Math.max(1, grace - 1));
   validerEpreuve(e);
-  t('à 18h35, la clé est accordée', !!resultat(idDuJour(), e.id), true);
+  t('dans les braises, la clé est accordée', !!resultat(idDuJour(), e.id), true);
   etat.jours[idDuJour()] = { epreuves: {}, tempsForts: [] };
   a(fin + grace + 5);
   validerEpreuve(e);
