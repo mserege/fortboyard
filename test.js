@@ -137,7 +137,8 @@ enSemaine.forEach((e, i) => {
 titre('Les braises : la marge après la fenêtre');
 {
   const e = EPREUVES.filter(x => x.id === 'retour')[0];
-  const fin = minutesDe(e.fenetre[1]);
+  // la fenêtre effective du jour : le mercredi a la sienne (retour du foot)
+  const fin = minutesDe(fenetreDe(e, idDuJour())[1]);
   const grace = graceDe(e);
   const a = (min) => { etat.simulation = { heure: String(Math.floor(min / 60)).padStart(2, '0') + ':' +
                                                     String(min % 60).padStart(2, '0') }; };
@@ -204,6 +205,46 @@ t('la simulation force le jour', (etat.simulation = { jour: 'dimanche' }, idDuJo
 t("la simulation force l'heure", (etat.simulation = { heure: '07:30' }, minutesMaintenant()), 450);
 etat.simulation = null;
 t('sans simulation, on revient au temps réel', enSimulation(), false);
+
+titre('Les horaires propres à un jour');
+{
+  const retour = EPREUVES.filter(x => x.id === 'retour')[0];
+  t('le mercredi, le Retour d\'École démarre plus tard',
+    fenetreDe(retour, 'mercredi')[0], '19:00');
+  t('les autres jours gardent l\'horaire habituel',
+    fenetreDe(retour, 'lundi')[0], retour.fenetre[0]);
+  t('le mercredi est signalé comme différent', jourAExceptions('mercredi'), true);
+  t('le lundi ne l\'est pas', jourAExceptions('lundi'), false);
+
+  // Chaque jour doit rester jouable : pas de chevauchement, des braises partout.
+  JOURS.forEach((j) => {
+    const ordre = epreuvesDuJour(j.id).slice()
+      .sort((a, b) => minutesDe(fenetreDe(a, j.id)[0]) - minutesDe(fenetreDe(b, j.id)[0]));
+    const souci = ordre.map((e, i) => {
+      const f = fenetreDe(e, j.id);
+      if (minutesDe(f[1]) <= minutesDe(f[0])) return e.nom + ' : fenêtre vide';
+      if (i && minutesDe(f[0]) < minutesDe(fenetreDe(ordre[i - 1], j.id)[1]))
+        return e.nom + ' chevauche ' + ordre[i - 1].nom;
+      if (graceDe(e, j.id) <= 0) return e.nom + ' : aucune braise';
+      return null;
+    }).filter(Boolean)[0] || null;
+    t(j.nom + ' se tient debout', souci, null);
+  });
+
+  // Le garde-fou de saisie : on refuse des horaires qui se contredisent.
+  t('des horaires qui se chevauchent sont refusés',
+    !!souciDesFenetres('mercredi', { retour: ['19:00', '20:10'], veillee: ['19:55', '20:15'] }), true);
+  t('une fenêtre à l\'envers est refusée',
+    !!souciDesFenetres('lundi', { retour: ['18:30', '18:00'] }), true);
+  t('des horaires cohérents passent',
+    souciDesFenetres('mercredi', { retour: ['19:00', '19:35'] }), null);
+
+  // Une exception posée par le parent l'emporte sur celle du modèle.
+  etat.reglages.fenetresJour = { mercredi: { retour: ['19:10', '19:40'] } };
+  t('le parent peut redéfinir un jour', fenetreDe(retour, 'mercredi')[0], '19:10');
+  etat.reglages.fenetresJour = {};
+  t('et retrouver l\'horaire du modèle en l\'effaçant', fenetreDe(retour, 'mercredi')[0], '19:00');
+}
 
 titre('La réserve d\'énigmes');
 t('au moins trois mois de jeu', ENIGMES.length >= 12, true);

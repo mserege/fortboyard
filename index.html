@@ -529,16 +529,22 @@ var EPREUVES = [
 
   { id: 'retour', nom: "Le Retour d'École", glyphe: '🚿', moment: "Retour d'école",
     gestes: ['Les devoirs', 'La douche', 'Le pyjama', 'Le linge sale dans le panier'],
-    fenetre: ['18:00', '18:30'], quand: 'tous' },
+    fenetre: ['18:00', '18:30'],
+    fenetresJour: { mercredi: ['19:00', '19:35'] },   // retour du foot
+    quand: 'tous' },
 
   { id: 'veillee', nom: 'La Veillée du Fort', glyphe: '🕯️', moment: 'Soir',
     gestes: ['Débarrasser la table', 'Se laver les dents', 'Passer aux toilettes'],
-    fenetre: ['19:30', '20:00'], quand: 'tous' },
+    fenetre: ['19:30', '20:00'],
+    fenetresJour: { mercredi: ['19:55', '20:15'] },
+    quand: 'tous' },
 
   { id: 'chambre', nom: 'La Chambre du Trésor', glyphe: '🌙', moment: 'Coucher',
     gestes: ['Au lit', 'Prêt pour demain'],
     promesse: 'Au lit tôt : plus de lecture avant 20h30.',
-    fenetre: ['20:05', '20:30'], quand: 'tous' }
+    fenetre: ['20:05', '20:30'],
+    fenetresJour: { mercredi: ['20:20', '20:30'] },
+    quand: 'tous' }
 ];
 
 function texteGeste(g) { return (typeof g === 'string') ? g : g.texte; }
@@ -607,7 +613,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-08 18:52';   // estampillée par maj-version.js
+var VERSION = '2026-09-09 19:57';   // estampillée par maj-version.js
 
 var CLE_STOCKAGE = 'fort-marius-v2';
 
@@ -734,10 +740,30 @@ function formatChrono(sec) {
    4. LES RÈGLES
    ========================================================= */
 
-/** La fenêtre d'une épreuve : celle réglée par le parent, sinon celle du modèle. */
-function fenetreDe(e) {
-  var perso = etat.reglages.fenetres && etat.reglages.fenetres[e.id];
-  return (perso && perso.length === 2) ? perso : e.fenetre;
+/**
+ * La fenêtre d'une épreuve, pour un jour donné. Du plus précis au plus général :
+ *   1. l'exception que le parent a posée sur ce jour
+ *   2. l'exception du modèle pour ce jour (le mercredi, le foot)
+ *   3. l'horaire habituel réglé par le parent
+ *   4. l'horaire du modèle
+ */
+function fenetreDe(e, jourId) {
+  var j = jourId || idDuJour();
+  var r = etat.reglages;
+  var duParentCeJour = r.fenetresJour && r.fenetresJour[j] && r.fenetresJour[j][e.id];
+  if (duParentCeJour && duParentCeJour.length === 2) return duParentCeJour;
+  if (e.fenetresJour && e.fenetresJour[j]) return e.fenetresJour[j];
+  var duParent = r.fenetres && r.fenetres[e.id];
+  if (duParent && duParent.length === 2) return duParent;
+  return e.fenetre;
+}
+
+/** Ce jour a-t-il des horaires qui lui sont propres ? */
+function jourAExceptions(jourId) {
+  return epreuvesDuJour(jourId).some(function (e) {
+    var f = fenetreDe(e, jourId);
+    return f[0] !== e.fenetre[0] || f[1] !== e.fenetre[1];
+  });
 }
 
 function epreuvesDuJour(jourId) {
@@ -782,7 +808,7 @@ function etatEpreuve(jourId, epreuve) {
   if (indexJour > indexAuj) return 'a-venir';            // jour futur
   if (indexJour < indexAuj) return 'passee';             // jour écoulé, non jouée
 
-  var f = fenetreDe(epreuve);
+  var f = fenetreDe(epreuve, jourId);
   var maintenant = minutesMaintenant();
   var debut = minutesDe(f[0]);
   var fin = minutesDe(f[1]);
@@ -819,10 +845,11 @@ function secondesAvantFermeture(epreuve) {
  * épreuves seraient jouables en même temps et l'une masquerait l'autre.
  */
 function graceDe(epreuve, jourId) {
+  var j = jourId || idDuJour();
   var grace = etat.reglages.minutesDeGrace || 0;
-  var fin = minutesDe(fenetreDe(epreuve)[1]);
-  var suivantes = epreuvesDuJour(jourId || idDuJour())
-    .map(function (x) { return minutesDe(fenetreDe(x)[0]); })
+  var fin = minutesDe(fenetreDe(epreuve, j)[1]);
+  var suivantes = epreuvesDuJour(j)
+    .map(function (x) { return minutesDe(fenetreDe(x, j)[0]); })
     .filter(function (debut) { return debut >= fin; });
   if (suivantes.length) grace = Math.min(grace, Math.min.apply(null, suivantes) - fin);
   return Math.max(0, grace);
@@ -1490,6 +1517,47 @@ function verrouillerRegistre(revenirAuJour) {
   else toutRendre();
 }
 
+var fenJourChoisi = '';   // '' = les horaires de tous les jours
+
+function rendreFenetres() {
+  var jour = fenJourChoisi;
+  var liste = jour ? epreuvesDuJour(jour) : EPREUVES;
+  document.getElementById('fen-liste').innerHTML = liste.map(function (e) {
+    var f = jour ? fenetreDe(e, jour) : ((etat.reglages.fenetres && etat.reglages.fenetres[e.id]) || e.fenetre);
+    return '<div class="fenetre-ligne">' +
+      '<span class="fenetre-nom">' + e.glyphe + ' ' + e.nom +
+        (!jour && e.quand === 'weekend' ? ' <small>(week-end)</small>' : '') + '</span>' +
+      '<span class="fenetre-champs">' +
+        '<input type="time" data-fen-debut="' + e.id + '" value="' + f[0] + '">' +
+        '<input type="time" data-fen-fin="' + e.id + '" value="' + f[1] + '">' +
+      '</span></div>';
+  }).join('');
+}
+
+function lireFenetresSaisies() {
+  var lu = {};
+  Array.prototype.forEach.call(document.querySelectorAll('[data-fen-debut]'), function (d) {
+    var id = d.getAttribute('data-fen-debut');
+    var f = document.querySelector('[data-fen-fin="' + id + '"]');
+    if (d.value && f && f.value) lu[id] = [d.value, f.value];
+  });
+  return lu;
+}
+
+/** Refuse d'enregistrer des horaires qui se contredisent. */
+function souciDesFenetres(jour, saisies) {
+  var ordre = epreuvesDuJour(jour || 'lundi').map(function (e) {
+    var f = saisies[e.id] || fenetreDe(e, jour || 'lundi');
+    return { nom: e.nom, debut: minutesDe(f[0]), fin: minutesDe(f[1]) };
+  }).sort(function (a, b) { return a.debut - b.debut; });
+  for (var i = 0; i < ordre.length; i++) {
+    if (ordre[i].fin <= ordre[i].debut) return '« ' + ordre[i].nom + ' » se ferme avant de s\'ouvrir.';
+    if (i && ordre[i].debut < ordre[i - 1].fin)
+      return '« ' + ordre[i].nom + ' » chevauche « ' + ordre[i - 1].nom + ' ».';
+  }
+  return null;
+}
+
 function rendreParent() {
   document.getElementById('parent-verrou').hidden = parentDeverrouille;
   document.getElementById('parent-contenu').hidden = !parentDeverrouille;
@@ -1534,17 +1602,23 @@ function rendreParent() {
 
     '<div class="panneau sombre">' +
       '<h2 class="section-titre">Les fenêtres des épreuves</h2>' +
-      '<p class="sous">Le seul réglage qui compte vraiment. Une bonne fenêtre vaut environ le double du temps de l\'épreuve.</p>' +
-      EPREUVES.map(function (e) {
-        var f = fenetreDe(e);
-        return '<div class="fenetre-ligne">' +
-          '<span class="fenetre-nom">' + e.glyphe + ' ' + e.nom +
-            (e.quand === 'weekend' ? ' <small>(week-end)</small>' : '') + '</span>' +
-          '<span class="fenetre-champs">' +
-            '<input type="time" data-fen-debut="' + e.id + '" value="' + f[0] + '">' +
-            '<input type="time" data-fen-fin="' + e.id + '" value="' + f[1] + '">' +
-          '</span></div>';
-      }).join('') +
+      '<p class="sous">Choisis « tous les jours » pour l\'horaire habituel, ou un jour ' +
+        'précis pour lui en donner un à lui — le mercredi du foot, par exemple.</p>' +
+      '<label class="champ"><span>Horaires de</span><select id="fen-jour">' +
+        '<option value="">Tous les jours</option>' +
+        JOURS.map(function (j) {
+          return '<option value="' + j.id + '"' + (j.id === fenJourChoisi ? ' selected' : '') + '>' +
+                 j.nom + (jourAExceptions(j.id) ? ' ✳︎' : '') + '</option>';
+        }).join('') +
+      '</select></label>' +
+      '<div id="fen-liste"></div>' +
+      '<div class="bac">' +
+        '<button class="btn principal" id="fen-enregistrer" type="button">Enregistrer ces horaires</button>' +
+        (fenJourChoisi
+          ? '<button class="btn discret" id="fen-defaut" type="button">Revenir à l\'horaire de base</button>'
+          : '') +
+      '</div>' +
+      '<p class="verdict" id="fen-verdict"></p>' +
     '</div>' +
 
     '<div class="panneau">' +
@@ -1638,6 +1712,33 @@ function rendreParent() {
     etat.reglages.motCode = ENIGMES[etat.enigme % ENIGMES.length].motCode;
     sauver();
     rendreParent();
+  });
+
+  rendreFenetres();
+  document.getElementById('fen-jour').addEventListener('change', function () {
+    fenJourChoisi = this.value;
+    rendreParent();
+  });
+  document.getElementById('fen-enregistrer').addEventListener('click', function () {
+    var saisies = lireFenetresSaisies();
+    var souci = souciDesFenetres(fenJourChoisi, saisies);
+    if (souci) { document.getElementById('fen-verdict').textContent = souci; return; }
+    if (fenJourChoisi) {
+      etat.reglages.fenetresJour = etat.reglages.fenetresJour || {};
+      etat.reglages.fenetresJour[fenJourChoisi] = saisies;
+    } else {
+      etat.reglages.fenetres = saisies;
+    }
+    sauver();
+    rendreParent();
+    document.getElementById('fen-verdict').textContent = 'Horaires enregistrés.';
+  });
+  var btnDefaut = document.getElementById('fen-defaut');
+  if (btnDefaut) btnDefaut.addEventListener('click', function () {
+    if (etat.reglages.fenetresJour) delete etat.reglages.fenetresJour[fenJourChoisi];
+    sauver();
+    rendreParent();
+    document.getElementById('fen-verdict').textContent = 'Ce jour retrouve les horaires de base.';
   });
 
   document.getElementById('btn-verrouiller').addEventListener('click', function () {
@@ -1787,13 +1888,6 @@ function enregistrerReglages() {
   r.minutesDeGrace = entier('r-grace', r.minutesDeGrace);
   r.minutesDeVacillement = entier('r-vacille', r.minutesDeVacillement);
   r.pin = document.getElementById('r-pin').value.trim() || r.pin;
-  var fenetres = {};
-  EPREUVES.forEach(function (e) {
-    var d = document.querySelector('[data-fen-debut="' + e.id + '"]');
-    var f = document.querySelector('[data-fen-fin="' + e.id + '"]');
-    if (d && f && d.value && f.value) fenetres[e.id] = [d.value, f.value];
-  });
-  r.fenetres = fenetres;
   r.salleToujoursOuverte = document.getElementById('r-test').checked;
   sauver();
   toutRendre();
