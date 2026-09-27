@@ -84,6 +84,28 @@ poserTempsForts(2); t('2 temps forts', secondesDansLaSalle(), 45);
 poserTempsForts(5); t('5 temps forts', secondesDansLaSalle(), 75);
 poserTempsForts(9); t('9 temps forts → le plafond', secondesDansLaSalle(), 90);
 
+titre('Les temps forts proposés');
+{
+  // Un temps fort ne doit jamais doubler un geste d'épreuve, ni la lecture
+  // qui reste volontairement hors-jeu.
+  const reserve = ['débarrass', 'devoir', 'douche', 'pyjama', 'linge', 'dent',
+                   'couvert', 'mon lit', 'toilette', 'lire', 'lectur', 'habill'];
+  TEMPS_FORTS_POSSIBLES.forEach((tf) => {
+    const mot = reserve.filter(r => tf.toLowerCase().includes(r))[0] || null;
+    t('« ' + tf + ' »', mot && ('empiète sur les épreuves : ' + mot), null);
+  });
+  t('aucun doublon dans la liste',
+    new Set(TEMPS_FORTS_POSSIBLES).size, TEMPS_FORTS_POSSIBLES.length);
+  t('une porte de sortie pour ce qui n\'est pas dans la liste',
+    TEMPS_FORTS_POSSIBLES.some(tf => /autre chose/i.test(tf)), true);
+
+  // La semaine complète doit encore pouvoir atteindre le plafond de secondes.
+  const maxSemaine = JOURS.length * etat.reglages.tempsFortsMaxParJour;
+  t('sept jours à ' + etat.reglages.tempsFortsMaxParJour + ' temps fort atteignent le plafond',
+    etat.reglages.secondesPlancher + maxSemaine * etat.reglages.secondesParTempsFort
+      >= etat.reglages.secondesPlafond, true);
+}
+
 titre('Les paliers de butin');
 t('19 boyards', butinPour(19), '1 carte');
 t('20 boyards', butinPour(20), '2 cartes');

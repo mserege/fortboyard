@@ -605,13 +605,20 @@ var EPREUVES = [
 
 function texteGeste(g) { return (typeof g === 'string') ? g : g.texte; }
 
+/**
+ * Un temps fort, c'est du rab : jamais un geste déjà couvert par une épreuve
+ * (débarrasser, devoirs, douche, linge, dents…), jamais la lecture non plus,
+ * qui reste hors-jeu. Ce qui compte, c'est ce qui sert quelqu'un d'autre ou
+ * ce dont personne n'avait eu l'idée.
+ */
 var TEMPS_FORTS_POSSIBLES = [
-  "J'ai débarrassé sans qu'on me le demande",
-  "J'ai aidé à ranger",
-  "J'ai aidé en cuisine",
-  "J'ai rendu service à quelqu'un",
-  "J'ai fait mes devoirs tout seul",
-  "J'ai lu un moment"
+  "J'ai aidé à préparer le repas",
+  "J'ai vidé ou rempli le lave-vaisselle",
+  "J'ai rangé ma chambre sans qu'on me le demande",
+  "J'ai rangé quelque chose qui n'était pas à moi",
+  "J'ai aidé quelqu'un de la maison",
+  "J'ai été gentil quand ce n'était pas facile",
+  "Autre chose — je l'explique au gardien"
 ];
 
 /**
@@ -654,7 +661,7 @@ var REGLAGES_DEFAUT = {
   secondesPlancher: 25,
   secondesParTempsFort: 10,
   secondesPlafond: 90,
-  tempsFortsMaxParJour: 2,
+  tempsFortsMaxParJour: 1,   // on commence doucement : un par jour suffit
   minutesDeGrace: 5,         // les braises : du rab après l'extinction de la torche
   minutesDeVacillement: 5,
   secondesDuSas: 18,         // le temps que la grille se lève, après le mot-code   // quand la torche se met à vaciller, avant de s'éteindre
@@ -679,7 +686,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-27 18:08';   // estampillée par maj-version.js
+var VERSION = '2026-09-27 18:11';   // estampillée par maj-version.js
 
 // Les durées d'essai : le plancher, deux semaines ordinaires, le plafond.
 var ESSAIS_SALLE = [25, 45, 65, 90];
@@ -1307,7 +1314,11 @@ function rendreTempsForts() {
   var atteint = liste.length >= etat.reglages.tempsFortsMaxParJour;
   var btn = document.getElementById('btn-temps-fort');
   btn.disabled = atteint;
-  btn.textContent = atteint ? 'Deux temps forts aujourd\'hui, c\'est le maximum' : 'Signaler un temps fort';
+  var max = etat.reglages.tempsFortsMaxParJour;
+  btn.textContent = atteint
+    ? (max > 1 ? max + ' temps forts aujourd\'hui, c\'est le maximum'
+               : 'Un temps fort par jour, c\'est déjà beau')
+    : 'Signaler un temps fort';
 }
 
 function rendreIndiceDuJour() {
