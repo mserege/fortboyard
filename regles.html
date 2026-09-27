@@ -503,7 +503,8 @@
         </li>
         <li>
           <h3>Les boyards</h3>
-          <p>Ils tombent pendant tout ton temps et tu les attrapes. Ensuite, on compte — et on les échange.</p>
+          <p>Ils tombent pendant tout ton temps et tu les attrapes. Ensuite on compte : <strong>une carte de plus tous les huit boyards</strong>, d'une seule carte jusqu'aux <strong>10 cartes — le booster complet !</strong> à partir de <strong>84 boyards</strong>.</p>
+          <p>Autrement dit : chaque temps fort de ta semaine te rapporte à peu près une carte de plus.</p>
         </li>
       </ol>
 
@@ -577,7 +578,7 @@
             <tr><td>Secondes par temps fort</td><td class="chiffre">10 s</td></tr>
             <tr><td>Temps plancher dans la salle</td><td class="chiffre">25 s</td></tr>
             <tr><td>Temps plafond dans la salle</td><td class="chiffre">90 s</td></tr>
-            <tr><td>Paliers : 2 cartes / 3 cartes / booster</td><td class="chiffre">20 · 35 · 55 boyards</td></tr>
+            <tr><td>Butin : une carte de plus tous les 8 boyards</td><td class="chiffre">de 1 carte à 84 boyards</td></tr>
           </tbody>
         </table>
       </div>
@@ -655,12 +656,12 @@
 
   function rendreTresor(n) {
     var secondes = Math.min(90, 25 + 10 * n);
-    var boyards = Math.round(secondes * 0.8);
-    var butin;
-    if (boyards >= 55) butin = "le booster";
-    else if (boyards >= 35) butin = "3 cartes";
-    else if (boyards >= 20) butin = "2 cartes";
-    else butin = "1 carte";
+    var boyards = Math.round((1 + Math.floor(secondes * 1000 / 850)) * 0.8);
+    var cartes = 1;
+    [20, 28, 36, 44, 52, 60, 68, 76, 84].forEach(function (seuil, i) {
+      if (boyards >= seuil) cartes = i + 2;
+    });
+    var butin = cartes >= 10 ? "10 cartes — le booster !" : cartes + (cartes > 1 ? " cartes" : " carte");
 
     secEl.textContent = secondes + " s";
     boyEl.textContent = "≈ " + boyards;

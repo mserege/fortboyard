@@ -87,10 +87,25 @@ poserTempsForts(9); t('9 temps forts → le plafond', secondesDansLaSalle(), 90)
 titre('Les paliers de butin');
 t('19 boyards', butinPour(19), '1 carte');
 t('20 boyards', butinPour(20), '2 cartes');
-t('34 boyards', butinPour(34), '2 cartes');
-t('35 boyards', butinPour(35), '3 cartes');
-t('54 boyards', butinPour(54), '3 cartes');
-t('55 boyards', butinPour(55), 'Le booster complet');
+t('52 boyards', butinPour(52), '6 cartes');
+t('84 boyards', butinPour(84), '10 cartes — le booster complet !');
+t('le barème compte dix paliers, un par carte', etat.reglages.paliers.length, 10);
+t('les paliers sont rangés du plus haut au plus bas',
+  etat.reglages.paliers.every((p, i, l) => i === 0 || p.boyards < l[i - 1].boyards), true);
+// Le dernier palier part de 0 : c'est le filet, il a le droit d'être large.
+t('les paliers montent régulièrement, sans saut',
+  etat.reglages.paliers.filter(p => p.boyards).every((p, i, l) =>
+    i === 0 || l[i - 1].boyards - p.boyards <= 10), true);
+
+// Le gradient réel : à ce rythme de chute, un temps fort doit valoir une carte.
+{
+  const attrapes = (T) => Math.round((1 + Math.floor(T * 1000 / 850)) * 0.8);
+  const cartes = (T) => parseInt(butinPour(attrapes(T)), 10);
+  t('0 temps fort (25 s) → ' + cartes(25) + ' cartes', cartes(25) >= 2 && cartes(25) <= 3, true);
+  t('7 temps forts (90 s) → ' + cartes(90) + ' cartes', cartes(90) >= 9, true);
+  t('chaque temps fort rapporte au moins une carte',
+    [25, 35, 45, 55, 65, 75, 85].every((T, i, l) => i === 0 || cartes(T) > cartes(l[i - 1])), true);
+}
 
 titre("L'indice gradué");
 const NB = epreuvesDuJour('lundi').length;
@@ -389,9 +404,9 @@ titre('La page de règles dit-elle la vérité ?');
     t('réglage « ' + cle + ' » annoncé',
       visible.includes('>' + etat.reglages[cle] + unite + '<'), true);
   });
-  t('les paliers de boyards annoncés',
-    visible.includes(etat.reglages.paliers.slice().reverse().filter(p => p.boyards)
-      .map(p => p.boyards).join(' · ') + ' boyards'), true);
+  const plusHaut = etat.reglages.paliers[0];
+  t('le butin maximal est annoncé', visible.includes(plusHaut.butin), true);
+  t('  avec le nombre de boyards qu\'il demande', visible.includes(String(plusHaut.boyards)), true);
 
   // Ce que la page ne doit plus dire : le chrono a été retiré du jeu.
   ['gong', 'défi', 'étoile', 'Maître du Temps', 'record', 'à battre', 'à tenir']

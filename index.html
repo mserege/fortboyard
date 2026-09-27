@@ -659,18 +659,27 @@ var REGLAGES_DEFAUT = {
   minutesDeVacillement: 5,
   secondesDuSas: 18,         // le temps que la grille se lève, après le mot-code   // quand la torche se met à vaciller, avant de s'éteindre
   indiceVerrouilleSousSeuil: 2,
+  // Un booster = 10 cartes, donc le butin se compte carte par carte.
+  // Un palier tous les 8 boyards : environ une carte de plus par temps fort.
   paliers: [
-    { boyards: 55, butin: 'Le booster complet' },
-    { boyards: 35, butin: '3 cartes' },
+    { boyards: 84, butin: '10 cartes — le booster complet !' },
+    { boyards: 76, butin: '9 cartes' },
+    { boyards: 68, butin: '8 cartes' },
+    { boyards: 60, butin: '7 cartes' },
+    { boyards: 52, butin: '6 cartes' },
+    { boyards: 44, butin: '5 cartes' },
+    { boyards: 36, butin: '4 cartes' },
+    { boyards: 28, butin: '3 cartes' },
     { boyards: 20, butin: '2 cartes' },
     { boyards: 0,  butin: '1 carte' }
   ],
+
   pin: '1234',
   fenetres: null,          // réglées par le parent ; sinon celles d'EPREUVES
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-27 18:05';   // estampillée par maj-version.js
+var VERSION = '2026-09-27 18:08';   // estampillée par maj-version.js
 
 // Les durées d'essai : le plancher, deux semaines ordinaires, le plafond.
 var ESSAIS_SALLE = [25, 45, 65, 90];
