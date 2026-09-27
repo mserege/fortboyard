@@ -282,6 +282,23 @@ titre("L'essai de la salle du trésor");
   t('la vraie salle est enregistrée', !!etat.salle, true);
   t('  et les boyards vont au cumul', etat.boyardsCumul, 37);
 
+  // Le verdict n'arrive qu'au bout du sas, jamais avant.
+  etat.reglages.secondesDuSas = 18;
+  lancerLaSalle(null, false);
+  t('un mot-code faux passe quand même par le sas', salleEnCours.phase, 'sas');
+  t('  et la salle ne sait pas encore qu\'il est faux', salleEnCours.codeBon, false);
+  revelerVerdict();
+  t('  au verdict, la grille ne s\'ouvre pas', salleEnCours && salleEnCours.phase, 'sas');
+  salleEnCours = null;
+
+  lancerLaSalle(null, true);
+  t('un mot-code juste attend lui aussi le sas', salleEnCours.phase, 'sas');
+  revelerVerdict();
+  t('  puis la grille se lève', salleEnCours.phase, 'sas');
+  ouvrirLaGrille();
+  t('  et les boyards tombent', salleEnCours.phase, 'boyards');
+  finirLaSalle();
+
   // Un sas à zéro doit envoyer directement dans l'arène.
   etat.reglages.secondesDuSas = 0;
   lancerLaSalle(30);

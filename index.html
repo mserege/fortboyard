@@ -325,6 +325,11 @@
     font-size: clamp(15px, 4vw, 20px); letter-spacing: .12em; text-transform: uppercase;
     color: var(--bronze-vif); margin: 0; text-align: center; text-shadow: 0 2px 8px #000;
   }
+  .sas-texte.verdict-bon { color: #9fd17a; font-size: clamp(19px, 5.5vw, 27px); }
+  .sas-texte.verdict-rate { color: var(--braise); font-size: clamp(19px, 5.5vw, 27px); }
+  .sas.ouvre .grille { animation: grilleMonte .9s ease-in forwards; }
+  .sas.refuse .grille { animation: none; transform: translateY(0); }
+  .sas.refuse .sas-tigre { animation: none; opacity: 1; transform: scale(1.05); }
   .sas-compte {
     position: relative; font-family: var(--mono); font-size: 60px; font-weight: 600;
     color: var(--peche); line-height: 1.1; min-height: 66px;
@@ -665,7 +670,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-27 18:01';   // estampillée par maj-version.js
+var VERSION = '2026-09-27 18:05';   // estampillée par maj-version.js
 
 // Les durées d'essai : le plancher, deux semaines ordinaires, le plafond.
 var ESSAIS_SALLE = [25, 45, 65, 90];
@@ -1511,15 +1516,9 @@ function verifierCode() {
   reveillerAudio();
   var saisi = normaliser(document.getElementById('saisie-code').value);
   var attendu = normaliser(etat.reglages.motCode);
-  var verdict = document.getElementById('code-verdict');
   if (!saisi) return;
-  if (saisi === attendu) {
-    SONS.ouvre();
-    lancerLaSalle();
-  } else {
-    verdict.textContent = 'Ce n\'est pas le mot. Regarde bien tes indices et réessaie.';
-    jouer(200, 120, 0.3, 'sawtooth', 0.12);
-  }
+  // le verdict ne tombe qu'au bout du sas : c'est là qu'est le suspense
+  lancerLaSalle(null, saisi === attendu);
 }
 
 /**
@@ -1530,13 +1529,15 @@ function verifierCode() {
  * La salle se joue en deux temps : le sas, pendant que le mot-code est
  * validé et que la grille se lève, puis les boyards.
  */
-function lancerLaSalle(secondesForcees) {
+function lancerLaSalle(secondesForcees, codeBon) {
   var apercu = !!secondesForcees;
+  var bon = (codeBon === undefined) ? true : !!codeBon;
   var secondes = secondesForcees || secondesDansLaSalle();
   var sas = Math.max(0, etat.reglages.secondesDuSas || 0);
 
   salleEnCours = {
     apercu: apercu,
+    codeBon: bon,
     phase: sas ? 'sas' : 'boyards',
     boyards: 0,
     secondes: secondes,
@@ -1548,14 +1549,14 @@ function lancerLaSalle(secondesForcees) {
 
   lancerMusique();
 
-  if (!sas) { ouvrirLaGrille(); return; }
+  if (!sas) { bon ? ouvrirLaGrille() : revelerVerdict(); return; }
 
   document.getElementById('tresor-contenu').innerHTML =
     '<div class="panneau">' +
       '<div class="sas" id="sas">' +
         '<div class="grille" id="grille" style="animation-duration:' + sas + 's"></div>' +
         '<img class="sas-tigre" src="assets/cadre-tigre.png" alt="">' +
-        '<p class="sas-texte" id="sas-texte">Le mot-code est bon</p>' +
+        '<p class="sas-texte" id="sas-texte">Le fort examine ton mot-code…</p>' +
         '<div class="sas-compte" id="sas-compte"></div>' +
       '</div>' +
       '<p class="sous" style="text-align:center">Tiens-toi prêt.</p>' +
@@ -1567,7 +1568,7 @@ function lancerLaSalle(secondesForcees) {
   salleEnCours.finDuSas = Date.now() + sas * 1000;
   salleEnCours.tic = setInterval(majSas, 200);
   majSas();
-  salleEnCours.attente = setTimeout(ouvrirLaGrille, sas * 1000);
+  salleEnCours.attente = setTimeout(revelerVerdict, sas * 1000);
 }
 
 function majSas() {
@@ -1581,13 +1582,47 @@ function majSas() {
   var avance = 1 - reste / total;
 
   if (reste <= 5) {
-    texte.textContent = 'La grille est levée';
+    texte.textContent = 'Le verdict dans…';
     compte.textContent = Math.ceil(reste) || '';
   } else {
     compte.textContent = '';
-    texte.textContent = avance < 0.3 ? 'Le mot-code est bon'
-                      : avance < 0.6 ? 'Le tigre recule…'
-                      : 'La grille se lève…';
+    texte.textContent = avance < 0.35 ? 'Le fort examine ton mot-code…'
+                      : avance < 0.7  ? 'Le tigre s\'avance vers la grille…'
+                      : 'Le Père Fouras réfléchit…';
+  }
+}
+
+/**
+ * Le verdict, au bout du sas. Bon : la grille achève de se lever et les
+ * boyards tombent deux secondes plus tard. Mauvais : retour devant la porte.
+ */
+function revelerVerdict() {
+  if (!salleEnCours) return;
+  clearInterval(salleEnCours.tic);
+  clearTimeout(salleEnCours.attente);
+
+  var sas = document.getElementById('sas');
+  var texte = document.getElementById('sas-texte');
+  var compte = document.getElementById('sas-compte');
+  if (texte && compte) {
+    compte.textContent = '';
+    texte.textContent = salleEnCours.codeBon ? 'Le mot-code est bon !' : 'Ce n\'est pas le mot';
+    texte.className = 'sas-texte verdict-' + (salleEnCours.codeBon ? 'bon' : 'rate');
+  }
+  if (sas) sas.classList.add(salleEnCours.codeBon ? 'ouvre' : 'refuse');
+
+  if (salleEnCours.codeBon) {
+    SONS.ouvre();
+    salleEnCours.attente = setTimeout(ouvrirLaGrille, 2200);
+  } else {
+    jouer(200, 110, 0.6, 'sawtooth', 0.14);
+    arreterMusique();
+    salleEnCours.attente = setTimeout(function () {
+      salleEnCours = null;
+      rendreTresor();
+      var v = document.getElementById('code-verdict');
+      if (v) v.textContent = 'Le fort a refusé ce mot. Regarde bien tes indices et réessaie.';
+    }, 2600);
   }
 }
 
