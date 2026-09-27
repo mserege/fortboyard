@@ -246,6 +246,35 @@ titre('Les horaires propres à un jour');
   t('et retrouver l\'horaire du modèle en l\'effaçant', fenetreDe(retour, 'mercredi')[0], '19:00');
 }
 
+titre("L'essai de la salle du trésor");
+{
+  etat.salle = null;
+  etat.boyardsCumul = 7;
+  remplirSemaine(24, 4);
+
+  lancerLaSalle(45);
+  t('un essai force la durée demandée', salleEnCours.secondes, 45);
+  t('  et se sait essai', salleEnCours.apercu, true);
+  salleEnCours.boyards = 30;
+  finirLaSalle();
+  t("l'essai n'enregistre pas la salle", etat.salle, null);
+  t('  ni les boyards au cumul', etat.boyardsCumul, 7);
+
+  lancerLaSalle();
+  t('la vraie salle prend la durée des temps forts', salleEnCours.secondes, secondesDansLaSalle());
+  t('  et ne se dit pas essai', salleEnCours.apercu, false);
+  salleEnCours.boyards = 30;
+  finirLaSalle();
+  t('la vraie salle est enregistrée', !!etat.salle, true);
+  t('  et les boyards vont au cumul', etat.boyardsCumul, 37);
+
+  t('les durées proposées couvrent plancher et plafond',
+    [ESSAIS_SALLE[0], ESSAIS_SALLE[ESSAIS_SALLE.length - 1]],
+    [etat.reglages.secondesPlancher, etat.reglages.secondesPlafond]);
+
+  etat.salle = null;
+}
+
 titre('La réserve d\'énigmes');
 t('au moins trois mois de jeu', ENIGMES.length >= 12, true);
 t('TRÉSOR reste hors rotation : c\'est l\'exemple des règles',

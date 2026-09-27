@@ -613,7 +613,10 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-09 19:57';   // estampillée par maj-version.js
+var VERSION = '2026-09-27 17:41';   // estampillée par maj-version.js
+
+// Les durées d'essai : le plancher, deux semaines ordinaires, le plafond.
+var ESSAIS_SALLE = [25, 45, 65, 90];
 
 var CLE_STOCKAGE = 'fort-marius-v2';
 
@@ -1420,8 +1423,13 @@ function verifierCode() {
   }
 }
 
-function lancerLaSalle() {
-  var secondes = secondesDansLaSalle();
+/**
+ * Ouvre la salle. Avec une durée forcée, c'est un essai : on joue pour de vrai
+ * mais rien n'est enregistré — ni la salle, ni le cumul de boyards.
+ */
+function lancerLaSalle(secondesForcees) {
+  var apercu = !!secondesForcees;
+  var secondes = secondesForcees || secondesDansLaSalle();
   var hote = document.getElementById('tresor-contenu');
   hote.innerHTML =
     '<div class="panneau">' +
@@ -1432,6 +1440,7 @@ function lancerLaSalle() {
     '</div>';
 
   salleEnCours = {
+    apercu: apercu,
     boyards: 0,
     secondes: secondes,
     echeance: Date.now() + secondes * 1000,
@@ -1474,21 +1483,34 @@ function finirLaSalle() {
   clearInterval(salleEnCours.tic);
   var boyards = salleEnCours.boyards;
   var secondes = salleEnCours.secondes;
+  var apercu = salleEnCours.apercu;
   var butin = butinPour(boyards);
   salleEnCours = null;
 
-  etat.salle = { faiteLe: new Date().toISOString(), boyards: boyards, secondes: secondes, butin: butin };
-  etat.boyardsCumul = (etat.boyardsCumul || 0) + boyards;
-  sauver();
+  if (!apercu) {
+    etat.salle = { faiteLe: new Date().toISOString(), boyards: boyards, secondes: secondes, butin: butin };
+    etat.boyardsCumul = (etat.boyardsCumul || 0) + boyards;
+    sauver();
+  }
   SONS.cle();
 
   document.getElementById('tresor-contenu').innerHTML =
     '<div class="panneau porte">' +
       '<img class="tigre" src="assets/cadre-tigre.png" alt="">' +
-      '<h3>Le fort est refermé</h3>' +
+      '<h3>' + (apercu ? 'Essai terminé' : 'Le fort est refermé') + '</h3>' +
       '<p class="sous">' + boyards + ' boyards ramassés en ' + secondes + ' secondes.</p>' +
       '<p class="butin">' + butin + '</p>' +
+      (apercu
+        ? '<p class="sous">Rien n\'a été enregistré : la semaine en cours est intacte.</p>' +
+          '<button class="btn principal large" id="essai-encore" type="button">Recommencer l\'essai</button>'
+        : '') +
     '</div>';
+
+  if (apercu) {
+    document.getElementById('essai-encore').addEventListener('click', function () {
+      lancerLaSalle(secondes);
+    });
+  }
 }
 
 /* =========================================================
@@ -1690,7 +1712,15 @@ function rendreParent() {
         '<button class="btn" data-bac-cles="' + Math.round(etat.reglages.seuilPorte * 0.7) + '" data-bac-tf="0" type="button">Ratée</button>' +
       '</div>' +
 
-      '<p class="sous" style="margin-top:18px">La salle du trésor :</p>' +
+      '<p class="sous" style="margin-top:18px">Essayer la salle du trésor, sans rien enregistrer :</p>' +
+      '<div class="bac">' +
+        ESSAIS_SALLE.map(function (n) {
+          return '<button class="btn principal" data-essai="' + n + '" type="button">' + n + ' s</button>';
+        }).join('') +
+      '</div>' +
+      '<p class="sous" style="margin-top:8px">Un clic et les boyards tombent. La semaine de Marius n\'est pas touchée.</p>' +
+
+      '<p class="sous" style="margin-top:18px">Ou jouer la vraie salle :</p>' +
       '<div class="bac">' +
         '<button class="btn" id="bac-salle" type="button">Se placer dimanche soir</button>' +
         '<button class="btn" id="bac-rejouer" type="button">Rejouer la salle</button>' +
@@ -1841,6 +1871,14 @@ function rendreParent() {
     b.addEventListener('click', function () {
       remplirSemaine(parseInt(b.dataset.bacCles, 10), parseInt(b.dataset.bacTf, 10));
       montrerVue('semaine');
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-essai]'), function (b) {
+    b.addEventListener('click', function () {
+      reveillerAudio();
+      montrerVue('tresor');
+      lancerLaSalle(parseInt(b.dataset.essai, 10));
     });
   });
 
