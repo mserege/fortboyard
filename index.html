@@ -285,11 +285,52 @@
   }
   .jeton.muet { color: var(--cendre); border-color: var(--cendre); }
 
+  .arene, .sas {
+    /* « manipulation » ne suffit pas sur iOS dans une zone de jeu :
+       ici aucun geste du navigateur n'a sa place */
+    touch-action: none;
+  }
   .arene {
     position: relative; height: 330px; overflow: hidden;
     background: radial-gradient(ellipse 70% 60% at 50% 100%, #2a1d0d 0%, var(--noir-doux) 70%);
     border: 1px solid var(--bronze); border-radius: 4px; margin-bottom: 12px;
   }
+  .sas {
+    position: relative; height: 330px; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse 70% 70% at 50% 60%, #2a1d0d 0%, var(--noir-doux) 75%);
+    border: 1px solid var(--bronze); border-radius: 4px; margin-bottom: 12px;
+  }
+  .sas-tigre {
+    width: 150px; opacity: 0; margin-bottom: 14px;
+    animation: tigreRecule 4s ease-out 0.6s forwards;
+  }
+  @keyframes tigreRecule {
+    0%   { opacity: 0; transform: scale(1.35); }
+    35%  { opacity: 1; transform: scale(1.1); }
+    100% { opacity: .35; transform: scale(.9); }
+  }
+  .grille {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(184,150,49,.55) 0 7px, transparent 7px 36px),
+      linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.2));
+    animation-name: grilleMonte; animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+  @keyframes grilleMonte { to { transform: translateY(-100%); } }
+  .sas-texte {
+    position: relative; font-family: var(--titre); font-weight: 700;
+    font-size: clamp(15px, 4vw, 20px); letter-spacing: .12em; text-transform: uppercase;
+    color: var(--bronze-vif); margin: 0; text-align: center; text-shadow: 0 2px 8px #000;
+  }
+  .sas-compte {
+    position: relative; font-family: var(--mono); font-size: 60px; font-weight: 600;
+    color: var(--peche); line-height: 1.1; min-height: 66px;
+    font-variant-numeric: tabular-nums; text-shadow: 0 2px 10px #000;
+  }
+
   .boyard {
     position: absolute; top: -46px; width: 42px; height: 42px; border-radius: 50%;
     background: radial-gradient(circle at 34% 30%, #ffe9a8 0%, var(--bronze-vif) 45%, #8a6a1c 100%);
@@ -610,7 +651,8 @@ var REGLAGES_DEFAUT = {
   secondesPlafond: 90,
   tempsFortsMaxParJour: 2,
   minutesDeGrace: 5,         // les braises : du rab après l'extinction de la torche
-  minutesDeVacillement: 5,   // quand la torche se met à vaciller, avant de s'éteindre
+  minutesDeVacillement: 5,
+  secondesDuSas: 18,         // le temps que la grille se lève, après le mot-code   // quand la torche se met à vaciller, avant de s'éteindre
   indiceVerrouilleSousSeuil: 2,
   paliers: [
     { boyards: 55, butin: 'Le booster complet' },
@@ -623,7 +665,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-27 17:55';   // estampillée par maj-version.js
+var VERSION = '2026-09-27 18:01';   // estampillée par maj-version.js
 
 // Les durées d'essai : le plancher, deux semaines ordinaires, le plafond.
 var ESSAIS_SALLE = [25, 45, 65, 90];
@@ -1484,11 +1526,80 @@ function verifierCode() {
  * Ouvre la salle. Avec une durée forcée, c'est un essai : on joue pour de vrai
  * mais rien n'est enregistré — ni la salle, ni le cumul de boyards.
  */
+/**
+ * La salle se joue en deux temps : le sas, pendant que le mot-code est
+ * validé et que la grille se lève, puis les boyards.
+ */
 function lancerLaSalle(secondesForcees) {
   var apercu = !!secondesForcees;
   var secondes = secondesForcees || secondesDansLaSalle();
-  var hote = document.getElementById('tresor-contenu');
-  hote.innerHTML =
+  var sas = Math.max(0, etat.reglages.secondesDuSas || 0);
+
+  salleEnCours = {
+    apercu: apercu,
+    phase: sas ? 'sas' : 'boyards',
+    boyards: 0,
+    secondes: secondes,
+    echeance: null,
+    attente: null,
+    semis: null,
+    tic: null
+  };
+
+  lancerMusique();
+
+  if (!sas) { ouvrirLaGrille(); return; }
+
+  document.getElementById('tresor-contenu').innerHTML =
+    '<div class="panneau">' +
+      '<div class="sas" id="sas">' +
+        '<div class="grille" id="grille" style="animation-duration:' + sas + 's"></div>' +
+        '<img class="sas-tigre" src="assets/cadre-tigre.png" alt="">' +
+        '<p class="sas-texte" id="sas-texte">Le mot-code est bon</p>' +
+        '<div class="sas-compte" id="sas-compte"></div>' +
+      '</div>' +
+      '<p class="sous" style="text-align:center">Tiens-toi prêt.</p>' +
+    '</div>';
+
+  var sasEl = document.getElementById('sas');
+  if (sasEl) bloquerDoubleTap(sasEl);
+
+  salleEnCours.finDuSas = Date.now() + sas * 1000;
+  salleEnCours.tic = setInterval(majSas, 200);
+  majSas();
+  salleEnCours.attente = setTimeout(ouvrirLaGrille, sas * 1000);
+}
+
+function majSas() {
+  if (!salleEnCours || salleEnCours.phase !== 'sas') return;
+  var reste = Math.max(0, (salleEnCours.finDuSas - Date.now()) / 1000);
+  var texte = document.getElementById('sas-texte');
+  var compte = document.getElementById('sas-compte');
+  if (!texte || !compte) return;
+
+  var total = Math.max(1, etat.reglages.secondesDuSas || 1);
+  var avance = 1 - reste / total;
+
+  if (reste <= 5) {
+    texte.textContent = 'La grille est levée';
+    compte.textContent = Math.ceil(reste) || '';
+  } else {
+    compte.textContent = '';
+    texte.textContent = avance < 0.3 ? 'Le mot-code est bon'
+                      : avance < 0.6 ? 'Le tigre recule…'
+                      : 'La grille se lève…';
+  }
+}
+
+/** Fin du sas : les boyards tombent. */
+function ouvrirLaGrille() {
+  if (!salleEnCours) return;
+  clearInterval(salleEnCours.tic);
+  clearTimeout(salleEnCours.attente);
+  salleEnCours.phase = 'boyards';
+  var secondes = salleEnCours.secondes;
+
+  document.getElementById('tresor-contenu').innerHTML =
     '<div class="panneau">' +
       '<div class="arene" id="arene">' +
         '<div class="arene-hud"><span id="hud-temps">' + secondes + '</span><span id="hud-boyards">0 🪙</span></div>' +
@@ -1496,25 +1607,32 @@ function lancerLaSalle(secondesForcees) {
       '<p class="sous" style="text-align:center">Attrape les boyards !</p>' +
     '</div>';
 
-  salleEnCours = {
-    apercu: apercu,
-    boyards: 0,
-    secondes: secondes,
-    echeance: Date.now() + secondes * 1000,
-    semis: null,
-    tic: null
-  };
-
-  lancerMusique();
+  salleEnCours.echeance = Date.now() + secondes * 1000;
 
   var arene = document.getElementById('arene');
+  if (arene) bloquerDoubleTap(arene);
   salleEnCours.semis = setInterval(function () { semerBoyard(arene); }, 850);
   semerBoyard(arene);
   salleEnCours.tic = setInterval(function () {
     var reste = Math.max(0, Math.ceil((salleEnCours.echeance - Date.now()) / 1000));
-    document.getElementById('hud-temps').textContent = reste;
+    var hud = document.getElementById('hud-temps');
+    if (hud) hud.textContent = reste;
     if (reste <= 0) finirLaSalle();
   }, 200);
+}
+
+/**
+ * Deuxième verrou contre le zoom au double-tap : on annule le tap rapproché
+ * quand il tombe dans le vide. Jamais sur un boyard — deux boyards attrapés
+ * coup sur coup, c'est le jeu, pas un double-tap.
+ */
+function bloquerDoubleTap(el) {
+  var dernier = 0;
+  el.addEventListener('touchend', function (ev) {
+    var t = Date.now();
+    if (t - dernier < 350 && !(ev.target.closest && ev.target.closest('.boyard'))) ev.preventDefault();
+    dernier = t;
+  }, { passive: false });
 }
 
 function semerBoyard(arene) {
@@ -1540,6 +1658,7 @@ function finirLaSalle() {
   if (!salleEnCours) return;
   clearInterval(salleEnCours.semis);
   clearInterval(salleEnCours.tic);
+  clearTimeout(salleEnCours.attente);
   arreterMusique();
   var boyards = salleEnCours.boyards;
   var secondes = salleEnCours.secondes;
@@ -1714,6 +1833,7 @@ function rendreParent() {
         '<label class="champ"><span>Code PIN</span><input type="text" inputmode="numeric" id="r-pin" value="' + r.pin + '"></label>' +
         '<label class="champ"><span>Braises après la fenêtre (min)</span><input type="number" id="r-grace" value="' + r.minutesDeGrace + '"></label>' +
         '<label class="champ"><span>La torche vacille (dern. min)</span><input type="number" id="r-vacille" value="' + r.minutesDeVacillement + '"></label>' +
+        '<label class="champ"><span>Sas avant les boyards (s)</span><input type="number" id="r-sas" value="' + r.secondesDuSas + '"></label>' +
       '</div>' +
       '<label class="champ"><span>Salle du trésor ouverte tous les jours (pour tester)</span>' +
         '<input type="checkbox" id="r-test" ' + (r.salleToujoursOuverte ? 'checked' : '') + ' style="width:auto"></label>' +
@@ -1985,6 +2105,7 @@ function enregistrerReglages() {
   r.tempsFortsMaxParJour = entier('r-maxtf', r.tempsFortsMaxParJour);
   r.minutesDeGrace = entier('r-grace', r.minutesDeGrace);
   r.minutesDeVacillement = entier('r-vacille', r.minutesDeVacillement);
+  r.secondesDuSas = entier('r-sas', r.secondesDuSas);
   r.pin = document.getElementById('r-pin').value.trim() || r.pin;
   r.salleToujoursOuverte = document.getElementById('r-test').checked;
   sauver();

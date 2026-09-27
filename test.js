@@ -29,6 +29,7 @@ global.localStorage = { getItem: () => null, setItem() {} };
 global.setInterval = () => 0;
 global.clearInterval = () => {};
 global.setTimeout = () => 0;
+global.clearTimeout = () => {};
 global.confirm = () => false;
 // L'élément <audio> n'existe pas sous node : on le mime pour suivre l'état.
 global.Audio = function () {
@@ -261,6 +262,11 @@ titre("L'essai de la salle du trésor");
   lancerLaSalle(45);
   t('un essai force la durée demandée', salleEnCours.secondes, 45);
   t('  et la musique part avec la salle', musique && !musique.paused, true);
+  t('  on entre par le sas, pas par les boyards', salleEnCours.phase, 'sas');
+  t('  aucun boyard ne tombe pendant le sas', salleEnCours.echeance, null);
+  ouvrirLaGrille();
+  t('la grille levée, les boyards tombent', salleEnCours.phase, 'boyards');
+  t('  et le chrono de la salle démarre là', salleEnCours.echeance > Date.now(), true);
   t('  et se sait essai', salleEnCours.apercu, true);
   salleEnCours.boyards = 30;
   finirLaSalle();
@@ -275,6 +281,13 @@ titre("L'essai de la salle du trésor");
   finirLaSalle();
   t('la vraie salle est enregistrée', !!etat.salle, true);
   t('  et les boyards vont au cumul', etat.boyardsCumul, 37);
+
+  // Un sas à zéro doit envoyer directement dans l'arène.
+  etat.reglages.secondesDuSas = 0;
+  lancerLaSalle(30);
+  t('sans sas, on tombe direct dans les boyards', salleEnCours.phase, 'boyards');
+  finirLaSalle();
+  etat.reglages.secondesDuSas = 18;
 
   t('les durées proposées couvrent plancher et plafond',
     [ESSAIS_SALLE[0], ESSAIS_SALLE[ESSAIS_SALLE.length - 1]],
