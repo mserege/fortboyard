@@ -36,7 +36,17 @@
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
 
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    /* coupe le zoom au double-tap sans toucher au pincer-écarter :
+       une tablette d'enfant reçoit beaucoup de taps rapprochés */
+    touch-action: manipulation;
+  }
+
+  /* pas de sélection de texte au tap maintenu, sauf là où l'on saisit */
+  body { -webkit-user-select: none; user-select: none; }
+  input, textarea, select { -webkit-user-select: text; user-select: text; }
 
   body {
     margin: 0;
@@ -613,7 +623,7 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-27 17:41';   // estampillée par maj-version.js
+var VERSION = '2026-09-27 17:47';   // estampillée par maj-version.js
 
 // Les durées d'essai : le plancher, deux semaines ordinaires, le plafond.
 var ESSAIS_SALLE = [25, 45, 65, 90];
