@@ -30,6 +30,12 @@ global.setInterval = () => 0;
 global.clearInterval = () => {};
 global.setTimeout = () => 0;
 global.confirm = () => false;
+// L'élément <audio> n'existe pas sous node : on le mime pour suivre l'état.
+global.Audio = function () {
+  this.paused = true; this.volume = 1; this.currentTime = 0; this.preload = '';
+  this.play = () => { this.paused = false; return { catch() {} }; };
+  this.pause = () => { this.paused = true; };
+};
 
 const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 const script = html.split('<script>')[1].split('</script>')[0];
@@ -254,9 +260,11 @@ titre("L'essai de la salle du trésor");
 
   lancerLaSalle(45);
   t('un essai force la durée demandée', salleEnCours.secondes, 45);
+  t('  et la musique part avec la salle', musique && !musique.paused, true);
   t('  et se sait essai', salleEnCours.apercu, true);
   salleEnCours.boyards = 30;
   finirLaSalle();
+  t('le fondu est enclenché en fin de salle', musique.volume < VOLUME_MUSIQUE, true);
   t("l'essai n'enregistre pas la salle", etat.salle, null);
   t('  ni les boyards au cumul', etat.boyardsCumul, 7);
 

@@ -623,10 +623,12 @@ var REGLAGES_DEFAUT = {
   salleToujoursOuverte: false   // pour les tests
 };
 
-var VERSION = '2026-09-27 17:47';   // estampillée par maj-version.js
+var VERSION = '2026-09-27 17:55';   // estampillée par maj-version.js
 
 // Les durées d'essai : le plancher, deux semaines ordinaires, le plafond.
 var ESSAIS_SALLE = [25, 45, 65, 90];
+
+var VOLUME_MUSIQUE = 0.7;
 
 var CLE_STOCKAGE = 'fort-marius-v2';
 
@@ -1043,6 +1045,51 @@ function jouer(freqDepart, freqFin, duree, type, volume) {
     osc.start(t); osc.stop(t + duree);
   } catch (e) { /* audio indisponible */ }
 }
+/* ---------------------------------------------------------
+   La musique de la salle du trésor.
+   Un fichier, pas du WebAudio : c'est un morceau, pas un bruitage.
+   iOS n'autorise la lecture qu'après un geste — la saisie du mot-code
+   et les boutons d'essai en sont, donc on est toujours dans les clous.
+   --------------------------------------------------------- */
+var musique = null;
+
+function musiqueSalle() {
+  if (!musique) {
+    musique = new Audio('assets/musique-salle-tresor.mp3');
+    musique.preload = 'auto';
+  }
+  return musique;
+}
+
+function lancerMusique() {
+  try {
+    var m = musiqueSalle();
+    m.pause();
+    m.currentTime = 0;
+    m.volume = VOLUME_MUSIQUE;
+    var p = m.play();
+    if (p && p.catch) p.catch(function () { /* lecture refusée : tant pis, le jeu continue */ });
+  } catch (e) { /* audio indisponible */ }
+}
+
+/** Coupe en fondu : un arrêt net en pleine musique est brutal. */
+function arreterMusique() {
+  if (!musique || musique.paused) return;
+  var m = musique;
+  var pas = m.volume / 14;
+  var fondu = null;
+  function baisser() {
+    m.volume = Math.max(0, m.volume - pas);
+    if (m.volume > 0.02) return;
+    if (fondu) clearInterval(fondu);
+    m.pause();
+    m.currentTime = 0;
+    m.volume = VOLUME_MUSIQUE;
+  }
+  baisser();                       // la décrue commence tout de suite
+  if (!m.paused) fondu = setInterval(baisser, 45);
+}
+
 var SONS = {
   gong:    function () { jouer(150, 70, 1.4, 'sine', 0.3); jouer(300, 140, 1.1, 'triangle', 0.12); },
   cle:     function () { jouer(880, 1320, 0.25, 'triangle', 0.2); setTimeout(function () { jouer(1320, 1760, 0.3, 'triangle', 0.16); }, 130); },
@@ -1458,6 +1505,8 @@ function lancerLaSalle(secondesForcees) {
     tic: null
   };
 
+  lancerMusique();
+
   var arene = document.getElementById('arene');
   salleEnCours.semis = setInterval(function () { semerBoyard(arene); }, 850);
   semerBoyard(arene);
@@ -1491,6 +1540,7 @@ function finirLaSalle() {
   if (!salleEnCours) return;
   clearInterval(salleEnCours.semis);
   clearInterval(salleEnCours.tic);
+  arreterMusique();
   var boyards = salleEnCours.boyards;
   var secondes = salleEnCours.secondes;
   var apercu = salleEnCours.apercu;
@@ -1951,6 +2001,7 @@ function entier(id, defaut) {
    ========================================================= */
 
 function montrerVue(nom) {
+  if (nom !== 'tresor') arreterMusique();
   vueActive = nom;
   ['jour', 'semaine', 'tresor', 'parent'].forEach(function (v) {
     document.getElementById('vue-' + v).hidden = (v !== nom);
@@ -2067,7 +2118,7 @@ setInterval(function () {
 // L'écran s'est rallumé : on recale tout de suite le chrono et les torches.
 document.addEventListener('visibilitychange', function () {
   // écran éteint ou appli quittée : on referme le registre derrière soi
-  if (document.visibilityState !== 'visible') { verrouillerRegistre(true); return; }
+  if (document.visibilityState !== 'visible') { arreterMusique(); verrouillerRegistre(true); return; }
   verifierVersion();
   vedetteEtat = '';
   toutRendre();
